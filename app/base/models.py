@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
     email = Column(String, unique=True)
     password = Column(Binary)
     active = Column(Boolean(), default=True)
+    quota = Column(Integer(), default=1800)
     last_login_at = Column(DateTime())
     last_login_ip = Column(String(100))
     login_count = Column(Integer)

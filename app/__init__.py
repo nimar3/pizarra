@@ -4,34 +4,41 @@ License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
 
-from flask import Flask, url_for
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path
 
+from flask import Flask, url_for
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
+
 db = SQLAlchemy()
 login_manager = LoginManager()
+
 
 def register_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
+
 
 def register_blueprints(app):
     for module_name in ('base', 'home'):
         module = import_module('app.{}.routes'.format(module_name))
         app.register_blueprint(module.blueprint)
 
-def configure_database(app):
 
-    @app.before_first_request
-    def initialize_database():
+def initialize_database(app):
+    with app.app_context():
+        if app.debug:
+            db.drop_all()
         db.create_all()
 
+
+def configure_database(app):
     @app.teardown_request
     def shutdown_session(exception=None):
         db.session.remove()
+
 
 def configure_logs(app):
     # soft logging
@@ -41,6 +48,7 @@ def configure_logs(app):
         logger.addHandler(StreamHandler())
     except:
         pass
+
 
 def apply_themes(app):
     """
@@ -57,6 +65,7 @@ def apply_themes(app):
       the url will not be modified and the file is expected to be
       in the default /static/ location
     """
+
     @app.context_processor
     def override_url_for():
         return dict(url_for=_generate_url_for_theme)
@@ -64,12 +73,13 @@ def apply_themes(app):
     def _generate_url_for_theme(endpoint, **values):
         if endpoint.endswith('static'):
             themename = values.get('theme', None) or \
-                app.config.get('DEFAULT_THEME', None)
+                        app.config.get('DEFAULT_THEME', None)
             if themename:
                 theme_file = "{}/{}".format(themename, values.get('filename', ''))
                 if path.isfile(path.join(app.static_folder, theme_file)):
                     values['filename'] = theme_file
         return url_for(endpoint, **values)
+
 
 def create_app(config, selenium=False):
     app = Flask(__name__, static_folder='base/static')
@@ -78,6 +88,7 @@ def create_app(config, selenium=False):
         app.config['LOGIN_DISABLED'] = True
     register_extensions(app)
     register_blueprints(app)
+    initialize_database(app)
     configure_database(app)
     configure_logs(app)
     apply_themes(app)
