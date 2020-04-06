@@ -7,7 +7,7 @@ from os import environ
 
 import yaml
 
-from app.base.models import User, Role, ClassGroup, Team
+from app.base.models import User, Role, ClassGroup, Team, UserRole
 
 
 class Sample(object):
@@ -29,4 +29,6 @@ class Sample(object):
                     db.session.add(ClassGroup(**classgroup))
                 for team in data['teams']:
                     db.session.add(Team(**team))
+                for user_role in data['user_roles']:
+                    db.session.add(UserRole(**user_role))
                 db.session.commit()

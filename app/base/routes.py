@@ -3,6 +3,7 @@
 License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
+from datetime import datetime
 
 from flask import render_template, redirect, request, url_for
 from flask_login import (
@@ -45,8 +46,7 @@ def login():
 
         # Check the password
         if user and verify_pass(password, user.password):
-            user.last_login_ip = '123'
-            db.session.commit()
+            update_user_at_login(user)
             login_user(user)
             return redirect(url_for('base_blueprint.route_default'))
 
@@ -77,6 +77,7 @@ def create_user():
 
         # else we can create the user
         user = User(**request.form)
+        user.registered_at = datetime.utcnow()
         db.session.add(user)
         db.session.commit()
 
@@ -123,3 +124,10 @@ def not_found_error(error):
 @blueprint.errorhandler(500)
 def internal_error(error):
     return render_template('errors/page_500.html'), 500
+
+
+def update_user_at_login(user):
+    user.last_login_ip = request.remote_addr
+    user.last_login_at = datetime.utcnow()
+    user.login_count += 1
+    db.session.commit()

@@ -26,8 +26,8 @@ class User(db.Model, UserMixin):
     quota = Column(Integer(), default=1800)
     last_login_at = Column(DateTime())
     last_login_ip = Column(String(100))
-    login_count = Column(Integer)
-    confirmed_at = Column(DateTime())
+    login_count = Column(Integer, default=0)
+    registered_at = Column(DateTime())
     requests = relationship('Request')
     roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
     groups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
@@ -108,8 +108,8 @@ class Request(db.Model):
     status = Column(String(80))
     run_time = Column(BigInteger)
     file_location = Column(String(255))
-    assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
-    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
+    assignment = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
+    user = Column('user_id', String, ForeignKey('user.id'))
 
 
 class Assignment(db.Model):
@@ -118,14 +118,15 @@ class Assignment(db.Model):
     """
     __tablename__ = 'assignment'
     id = Column(Integer, primary_key=True)
-    name = Column(String(80))
+    name = Column(String, unique=True)
+    title = Column(String(80))
     description = Column(BLOB)
     header = Column(BLOB)
     template = Column(BLOB)
     start_date = Column(DateTime())
     due_date = Column(DateTime())
     attachments = relationship('Attachment')
-    group_id = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
+    group = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
 
 
 class Attachment(db.Model):
@@ -135,33 +136,33 @@ class Attachment(db.Model):
     __tablename__ = 'attachment'
     id = Column(Integer, primary_key=True)
     file_location = Column(String(255))
-    assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
+    assignment = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
 
 
 # many-to-many relation tables
 
-class RoleUser(db.Model):
+class UserRole(db.Model):
     __tablename__ = 'user_roles'
     id = Column(Integer(), primary_key=True)
-    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
-    role_id = Column('role_id', Integer(), ForeignKey('role.id'))
+    user = Column('user_id', Integer(), ForeignKey('user.id'))
+    role = Column('role_id', Integer(), ForeignKey('role.id'))
 
 
-class ClassGroupUser(db.Model):
+class UserClassGroup(db.Model):
     __tablename__ = 'user_classgroups'
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
-    team_id = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
+    classgroup = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
 
 
-class TeamUser(db.Model):
+class UserTeam(db.Model):
     __tablename__ = 'user_teams'
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     team_id = Column('team_id', Integer(), ForeignKey('team.id'))
 
 
-class Achievement(db.Model):
+class UserBadge(db.Model):
     __tablename__ = 'user_badges'
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
