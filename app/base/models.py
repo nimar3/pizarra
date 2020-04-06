@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
 License: MIT
-Copyright (c) 2019 - present AppSeed.us
+Copyright (c) 2020 - nimar3
 """
 
 from flask_security import UserMixin, RoleMixin
@@ -30,7 +30,7 @@ class User(db.Model, UserMixin):
     registered_at = Column(DateTime())
     requests = relationship('Request')
     roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
-    groups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
+    classgroups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
     teams = relationship('Team', secondary='user_teams', backref=backref('users', lazy='dynamic'))
     badges = relationship('Badge', secondary='user_badges', backref=backref('users', lazy='dynamic'))
 
@@ -55,7 +55,6 @@ class User(db.Model, UserMixin):
 class Role(db.Model, RoleMixin):
     """
     Represents the Roles of the users in the database
-    TODO: define in N-to-N or 1-to-N relationship
     """
     __tablename__ = 'role'
     id = Column(Integer(), primary_key=True)
@@ -83,6 +82,7 @@ class ClassGroup(db.Model):
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), unique=True)
     description = Column(String(255))
+    assignments = relationship('Assignment', secondary='classgroup_assignments', backref=backref('classgroups', lazy='dynamic'))
 
 
 class Badge(db.Model):
@@ -126,7 +126,6 @@ class Assignment(db.Model):
     start_date = Column(DateTime())
     due_date = Column(DateTime())
     attachments = relationship('Attachment')
-    group = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
 
 
 class Attachment(db.Model):
@@ -167,6 +166,13 @@ class UserBadge(db.Model):
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
+
+
+class ClassGroupAssignment(db.Model):
+    __tablename__ = 'classgroup_assignments'
+    id = Column(Integer(), primary_key=True)
+    classgroup_id = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
+    assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
 
 
 @login_manager.user_loader

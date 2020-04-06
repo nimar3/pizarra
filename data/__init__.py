@@ -5,9 +5,10 @@ Copyright (c) 2020 - nimar3
 """
 from os import environ
 
-import yaml
+import sqla_yaml_fixtures
+from sqlalchemy.ext.declarative import declarative_base
 
-from app.base.models import User, Role, ClassGroup, Team, UserRole
+BaseModel = declarative_base()
 
 
 class Sample(object):
@@ -20,15 +21,4 @@ class Sample(object):
     def init_app(self, app, db=None, directory=None):
         with app.app_context():
             if environ.get('IMPORT_SAMPLE_DATA', True):
-                data = yaml.load(open(directory + '/sample.yml'), Loader=yaml.FullLoader)
-                for user in data['users']:
-                    db.session.add(User(**user))
-                for role in data['roles']:
-                    db.session.add(Role(**role))
-                for classgroup in data['classgroups']:
-                    db.session.add(ClassGroup(**classgroup))
-                for team in data['teams']:
-                    db.session.add(Team(**team))
-                for user_role in data['user_roles']:
-                    db.session.add(UserRole(**user_role))
-                db.session.commit()
+                sqla_yaml_fixtures.load(db.Model, db.session, open(directory + '/sample.yml'))

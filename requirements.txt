@@ -6,4 +6,4 @@ flask_sqlalchemy
 flask_security
 gunicorn
 pyyaml
-
+sqla-yaml-fixtures

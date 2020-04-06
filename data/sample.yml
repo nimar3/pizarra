@@ -1,54 +1,69 @@
-users:
-  - id: "1"
+- Role:
+  - __key__: users
+    name: "users"
+    description: "Users of the system"
+  - __key__: admins
+    name: "admins"
+    description: "Administrators of the system"
+
+- Assignment:
+    - __key__: assignment_hello_world
+      name: hello_world
+      title: "Hello World"
+
+- Team:
+    - __key__: team_foo
+      name: "foo"
+    - __key__: team_bar
+      name: "bar"
+
+- Badge:
+    - __key__: badge_first_place
+      name: "first_place"
+      image: ""
+      title: "First Place"
+      description: "Earn when a Student finishes an Assignment first"
+
+- ClassGroup:
+  - __key__: class_a
+    id: 1
+    name: "G2019-A1"
+    description: "Class from 2019 A1 group"
+    assignments: [assignment_hello_world]
+  - __key__: class_b
+    id: 2
+    name: "G2019-B1"
+    description: "Class from 2019 A2 group"
+    assignments: [assignment_hello_world]
+
+- User:
+  - __key__: admin
     username: "admin"
     email: "nmartini@upv.es"
     password: "123"
-    quota: "9999"
-  - id: "2"
+    quota: 9999
+    roles: [users, admins]
+  - __key__: foo
     username: "foo"
     email: "foo@test.test"
     password: "foo"
-    quota: "60"
-  - id: "3"
+    quota: 60
+    roles: [users]
+    classgroups: [class_a]
+    teams: [team_foo]
+  - __key__: bar
     username: "bar"
     email: "bar@test.test"
     password: "bar"
-    quota: "0"
-  - id: "4"
+    quota: 0
+    roles: [users]
+    classgroups: [class_b]
+    teams: [team_bar]
+  - __key__: test
     username: "test"
     email: "test@test.test"
     password: "test"
-roles:
-  - id: "1"
-    name: "users"
-    description: "Users of the system"
-  - id: "100"
-    name: "admins"
-    description: "Administrators of the system"
-classgroups:
-  - id: "1"
-    name: "G2019-A1"
-    description: "Class from 2019 A1 group"
-  - id: "2"
-    name: "G2019-A2"
-    description: "Class from 2019 A2 group"
-teams:
-  - id: "1"
-    name: "foo"
-  - id: "2"
-    name: "bar"
-badges:
-  - id: "1"
-    name: "first_place"
-    image: ""
-    title: "First Place"
-    description: "Earn when a Student finishes an Assignment first"
-assignments:
-  - id: "1"
-    name: "Hello World"
-    description: "First test program"
-user_roles:
-  - user: "1"
-    role: "1"
-  - user: "1"
-    role: "100"
+    roles: [users]
+    classgroups: [class_a, class_b]
+    teams: [team_foo, team_bar]
+
