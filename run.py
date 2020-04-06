@@ -10,7 +10,7 @@ from sys import exit
 
 from config import config_dict
 from app import create_app, db
-from data.sample import create_sample
+from data import Sample
 
 get_config_mode = environ.get('CONFIG_MODE', 'Debug')
 
@@ -21,7 +21,7 @@ except KeyError:
 
 app = create_app(config_mode)
 Migrate(app, db)
-create_sample(app, db)
+Sample(app, db)
 
 if __name__ == "__main__":
     app.run()

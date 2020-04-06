@@ -13,6 +13,9 @@ from app.base.util import hash_pass
 
 
 class User(db.Model, UserMixin):
+    """
+    Represents the Users of the application in the database
+    """
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -25,10 +28,11 @@ class User(db.Model, UserMixin):
     last_login_ip = Column(String(100))
     login_count = Column(Integer)
     confirmed_at = Column(DateTime())
-    roles = relationship('Role', secondary='role_user', backref=backref('users', lazy='dynamic'))
-    teams = relationship('Team', secondary='team_user', backref=backref('users', lazy='dynamic'))
-    badges = relationship('Badge', secondary='achievement', backref=backref('users', lazy='dynamic'))
     requests = relationship('Request')
+    roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
+    groups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
+    teams = relationship('Team', secondary='user_teams', backref=backref('users', lazy='dynamic'))
+    badges = relationship('Badge', secondary='user_badges', backref=backref('users', lazy='dynamic'))
 
     def __init__(self, **kwargs):
         for property, value in kwargs.items():
@@ -49,6 +53,10 @@ class User(db.Model, UserMixin):
 
 
 class Role(db.Model, RoleMixin):
+    """
+    Represents the Roles of the users in the database
+    TODO: define in N-to-N or 1-to-N relationship
+    """
     __tablename__ = 'role'
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), unique=True)
@@ -56,91 +64,108 @@ class Role(db.Model, RoleMixin):
 
 
 class Team(db.Model):
+    """
+    Represents a Team of students in the database
+    A Student can be a part of many teams (in case he is part of more than one Group)
+    A Team can have many students
+    """
     __tablename__ = 'team'
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), unique=True)
-    group = Column(Integer(), ForeignKey('group.id'))
 
 
-class Group(db.Model):
-    __tablename__ = 'group'
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(80), unique=True)
-    teams = relationship('Team')
-
-
-class Badge(db.Model):
-    __tablename__ = 'badge'
+class ClassGroup(db.Model):
+    """
+    Represent a Class or Group in the database
+    A Student can be a part of more than one Class or Group
+    """
+    __tablename__ = 'classgroup'
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), unique=True)
     description = Column(String(255))
 
 
-class Achievement(db.Model):
-    __tablename__ = 'achievement'
+class Badge(db.Model):
+    """
+    Represents a Badge or achievement in the database
+    A Student can earn Badges as he completes the Tasks assigned to them
+    """
+    __tablename__ = 'badge'
     id = Column(Integer(), primary_key=True)
-    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
-    badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
+    name = Column(String(80), unique=True)
+    image = Column(String(255))
+    title = Column(String(255))
+    description = Column(String(255))
 
 
 class Request(db.Model):
+    """
+    Represents a Request sent by an User to Solve an Assignment
+    """
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime())
     status = Column(String(80))
+    run_time = Column(BigInteger)
     file_location = Column(String(255))
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
-    team_id = Column('team_id', Integer(), ForeignKey('team.id'))
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
 
 
 class Assignment(db.Model):
+    """
+    Represent an Assigment to complete by the Class or Group in the database
+    """
     __tablename__ = 'assignment'
-    id = Column(Integer, primary_key=True)
-    start_date = Column(DateTime())
-    due_date = Column(DateTime())
-    group_id = Column('group_id', Integer(), ForeignKey('group.id'))
-    task_id = Column('task_id', Integer(), ForeignKey('task.id'))
-
-
-class Task(db.Model):
-    __tablename__ = 'task'
     id = Column(Integer, primary_key=True)
     name = Column(String(80))
     description = Column(BLOB)
     header = Column(BLOB)
     template = Column(BLOB)
+    start_date = Column(DateTime())
+    due_date = Column(DateTime())
     attachments = relationship('Attachment')
+    group_id = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
 
 
 class Attachment(db.Model):
+    """
+    Represent an Attachment from an Assignment in the database
+    """
     __tablename__ = 'attachment'
     id = Column(Integer, primary_key=True)
     file_location = Column(String(255))
-    task_id = Column('task_id', Integer(), ForeignKey('task.id'))
-
-
-class Leaderboard(db.Model):
-    __tablename__ = 'leaderboard'
-    id = Column(Integer, primary_key=True)
-    timestamp = Column(DateTime())
-    run_time = Column(BigInteger)
-    request_id = Column('request_id', Integer(), ForeignKey('request.id'))
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
 
 
+# many-to-many relation tables
+
 class RoleUser(db.Model):
-    __tablename__ = 'role_user'
+    __tablename__ = 'user_roles'
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     role_id = Column('role_id', Integer(), ForeignKey('role.id'))
 
 
+class ClassGroupUser(db.Model):
+    __tablename__ = 'user_classgroups'
+    id = Column(Integer(), primary_key=True)
+    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
+    team_id = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
+
+
 class TeamUser(db.Model):
-    __tablename__ = 'team_user'
+    __tablename__ = 'user_teams'
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     team_id = Column('team_id', Integer(), ForeignKey('team.id'))
+
+
+class Achievement(db.Model):
+    __tablename__ = 'user_badges'
+    id = Column(Integer(), primary_key=True)
+    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
+    badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
 
 
 @login_manager.user_loader

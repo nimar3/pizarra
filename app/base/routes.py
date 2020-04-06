@@ -3,6 +3,7 @@
 License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
+
 from flask import render_template, redirect, request, url_for
 from flask_login import (
     current_user,
@@ -44,6 +45,8 @@ def login():
 
         # Check the password
         if user and verify_pass(password, user.password):
+            user.last_login_ip = '123'
+            db.session.commit()
             login_user(user)
             return redirect(url_for('base_blueprint.route_default'))
 
