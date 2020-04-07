@@ -30,7 +30,7 @@
                         <p>Total Requests</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-bag"></i>
+                        <i class="fa fa-upload"></i>
                     </div>
                     <a href="/account/requests" class="small-box-footer">More info <i
                             class="fa fa-arrow-circle-right"></i></a>
@@ -46,7 +46,7 @@
                         <p>Quota Used</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
+                        <i class="fa fa-hourglass-3"></i>
                     </div>
                     <a href="/account" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
@@ -61,7 +61,7 @@
                         <p>Success Rate</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                        <i class="fa fa-star"></i>
                     </div>
                     <a href="/account" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
@@ -76,7 +76,7 @@
                         <p>Assignments</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
+                        <i class="fa fa-file-text-o"></i>
                     </div>
                     <a href="/assignment" class="small-box-footer">More info <i
                             class="fa fa-arrow-circle-right"></i></a>
@@ -87,9 +87,70 @@
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
+            <!-- Left col -->
+            <div class="col-md-8">
+                <!-- TABLE: LATEST REQUESTS -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Latest Requests</h3>
 
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Assignment</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                    <th>Output</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for request in current_user.requests[0:5] %}
+                                    <tr>
+                                        <td>{{ request.id }}</td>
+                                        <td>{{ request.timestamp }}</td>
+                                        <td>
+                                            <a href="/assignment/{{ request.assignment.id }}">{{ request.assignment.title }}</a>
+                                        </td>
+                                        <td><span
+                                                class="label {{ request.status.label }}">{{ request.status.name }}</span>
+                                        </td>
+                                        <td>{{ request.run_time }} ms</td>
+                                        <td>{{ request.output }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer clearfix">
+                        <a href="/account/requests" class="btn btn-sm btn-default btn-flat pull-right">View All
+                            Requests</a>
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+
+            <div class="col-md-4">
+
+            </div>
+            <!-- /.col -->
         </div>
-        <!-- /.row (main row) -->
+        <!-- /.row -->
 
     </section>
     <!-- /.content -->
