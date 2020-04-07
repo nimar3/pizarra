@@ -5,12 +5,19 @@ Copyright (c) 2020 - nimar3
 """
 
 from flask_security import UserMixin, RoleMixin
-from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, BLOB, ForeignKey, Enum
+from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, BLOB, ForeignKey, Enum, Table
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
 from app.base.util import hash_pass
 from app.tasks.models import RequestStatus
+
+classgroup_assignments = Table('_classgroup_assignments', db.Model.metadata,
+                               Column('classgroup_id', Integer, ForeignKey('classgroup.id')),
+                               Column('assignment_id', Integer, ForeignKey('assignment.id'))
+                               # TODO fix this problem with duplicated keys
+                               # PrimaryKeyConstraint('classgroup_id', 'assignment_id'),
+                               )
 
 
 class User(db.Model, UserMixin):
@@ -56,7 +63,8 @@ class User(db.Model, UserMixin):
 
     @property
     def assignments(self):
-        return 1
+        classgroups_ids = [classgroup.id for classgroup in self.classgroups]
+        return Assignment.query.filter(Assignment.id.in_(classgroups_ids)).all()
 
     @property
     def quota_percentage_used(self):
@@ -99,7 +107,7 @@ class ClassGroup(db.Model):
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
     description = Column(String(255))
-    assignments = relationship('Assignment', secondary='classgroup_assignments',
+    assignments = relationship('Assignment', secondary='_classgroup_assignments',
                                backref=backref('classgroups', lazy='dynamic'))
 
 
@@ -148,6 +156,10 @@ class Assignment(db.Model):
     due_date = Column(DateTime())
     requests = relationship('Request', back_populates='assignment')
     attachments = relationship('Attachment')
+    classgroup = relationship(
+        'ClassGroup',
+        secondary='_classgroup_assignments',
+        back_populates='assignments')
 
 
 class Attachment(db.Model):
@@ -188,13 +200,6 @@ class UserBadge(db.Model):
     id = Column(Integer(), primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
-
-
-class ClassGroupAssignment(db.Model):
-    __tablename__ = 'classgroup_assignments'
-    id = Column(Integer(), primary_key=True)
-    classgroup_id = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
-    assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
 
 
 @login_manager.user_loader

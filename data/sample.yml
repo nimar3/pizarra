@@ -10,6 +10,12 @@
     - __key__: assignment_hello_world
       name: hello_world
       title: "Hello World"
+    - __key__: assignment_openmp_basic
+      name: openmp_basic
+      title: "OpenMP"
+    - __key__: assignment_openmpi_basic
+      name: openmpi_basic
+      title: "OpenMPI"
 
 - Team:
     - __key__: team_foo
@@ -34,12 +40,12 @@
     id: 1
     name: "G2019-A1"
     description: "Class from 2019 A1 group"
-    assignments: [assignment_hello_world]
+    assignments: [assignment_hello_world, assignment_openmp_basic]
   - __key__: class_b
     id: 2
     name: "G2019-B1"
     description: "Class from 2019 A2 group"
-    assignments: [assignment_hello_world]
+    assignments: [assignment_hello_world, assignment_openmpi_basic]
 
 - User:
   - __key__: user_admin
@@ -54,7 +60,7 @@
     password: "foo"
     quota_used: 3540
     roles: [users]
-    classgroups: [class_a]
+    classgroups: [class_a, class_b]
     teams: [team_foo]
     badges: [badge_first_place]
   - __key__: user_bar
