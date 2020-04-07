@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="/" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Pz</b></span>
         <!-- logo for regular state and mobile devices -->
@@ -61,7 +61,7 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="/static/assets/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <img src="/static/assets/pizarra/img/avatars/default-user-128x128.jpg" class="user-image" alt="User Image">
                         <span class="hidden-xs">
                 {{ current_user.username }}
               </span>
@@ -69,7 +69,7 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="/static/assets/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="/static/assets/pizarra/img/avatars/default-user-128x128.jpg" class="img-circle" alt="User Image">
 
                             <p>
                                 {{ current_user.username }}
@@ -80,13 +80,13 @@
                         <li class="user-body">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
-                                    <a href="/requests">Requests</a>
+                                    <a href="/account/requests">Requests</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">Assignments</a>
+                                    <a href="/account/assignments">Assignments</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="#">Teams</a>
+                                    <a href="/account/badges">Badges</a>
                                 </div>
                             </div>
                             <!-- /.row -->

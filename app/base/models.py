@@ -5,11 +5,12 @@ Copyright (c) 2020 - nimar3
 """
 
 from flask_security import UserMixin, RoleMixin
-from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, BigInteger, String, BLOB, ForeignKey
+from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, BLOB, ForeignKey, Enum
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
 from app.base.util import hash_pass
+from app.tasks.models import RequestStatus
 
 
 class User(db.Model, UserMixin):
@@ -23,11 +24,13 @@ class User(db.Model, UserMixin):
     email = Column(String, unique=True)
     password = Column(Binary)
     active = Column(Boolean(), default=True)
-    quota = Column(Integer(), default=1800)
+    quota = Column(Integer(), default=21600)
+    quota_used = Column(Integer(), default=0)
     last_login_at = Column(DateTime())
     last_login_ip = Column(String(100))
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime())
+    avatar = Column(String, default='default-user-128x128.jpg')
     requests = relationship('Request', back_populates='user')
     roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
     classgroups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
@@ -50,6 +53,20 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return str(self.username)
+
+    @property
+    def assignments(self):
+        return 1
+
+    @property
+    def quota_percentage_used(self):
+        return round((self.quota_used * 100) / self.quota, 2)
+
+    @property
+    def request_percentage_passed(self):
+        request_total = len(self.requests)
+        requests_finished = len(list(filter(lambda request: request.status is RequestStatus.FINISHED, self.requests)))
+        return 0 if request_total == 0 else round((requests_finished * 100) / request_total, 2)
 
 
 class Role(db.Model, RoleMixin):
@@ -82,7 +99,8 @@ class ClassGroup(db.Model):
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
     description = Column(String(255))
-    assignments = relationship('Assignment', secondary='classgroup_assignments', backref=backref('classgroups', lazy='dynamic'))
+    assignments = relationship('Assignment', secondary='classgroup_assignments',
+                               backref=backref('classgroups', lazy='dynamic'))
 
 
 class Badge(db.Model):
@@ -105,7 +123,7 @@ class Request(db.Model):
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime())
-    status = Column(String(10))
+    status = Column(Enum(RequestStatus))
     run_time = Column(Integer)
     file_location = Column(String(255))
     output = Column(BLOB)

@@ -12,11 +12,11 @@
     <section class="content-header">
         <h1>
             My Requests
-            <small>preview of results of all my task jobs to process</small>
+            <small>preview of results of all my task jobs</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Account</a></li>
+            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/account">Account</a></li>
             <li class="active">Requests</li>
         </ol>
     </section>
@@ -28,7 +28,6 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Responsive Hover Table</h3>
 
                         <div class="box-tools">
                             <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
@@ -46,6 +45,7 @@
                         <table class="table table-hover">
                             <tr>
                                 <th>ID</th>
+                                <th>Date</th>
                                 <th>Assignment</th>
                                 <th>Status</th>
                                 <th>Time</th>
@@ -54,8 +54,9 @@
                             {% for request in requests %}
                                 <tr>
                                     <td>{{ request.id }}</td>
+                                    <td>{{ request.timestamp }}</td>
                                     <td><a href="/assignment/{{ request.assignment.id }}">{{ request.assignment.title }}</a></td>
-                                    <td>{{ request.status }}</td>
+                                    <td><span class="label {{ request.status.label }}">{{ request.status.name }}</span></td>
                                     <td>{{ request.run_time }} ms</td>
                                     <td>{{ request.output }}</td>
                                 </tr>

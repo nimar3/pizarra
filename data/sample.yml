@@ -52,7 +52,7 @@
     username: "foo"
     email: "foo@test.test"
     password: "foo"
-    quota: 60
+    quota_used: 3540
     roles: [users]
     classgroups: [class_a]
     teams: [team_foo]
@@ -61,7 +61,6 @@
     username: "bar"
     email: "bar@test.test"
     password: "bar"
-    quota: 0
     roles: [users]
     classgroups: [class_b]
     teams: [team_bar]
@@ -76,121 +75,121 @@
 
 - Request:
   - __key__: request_1
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_2
-    status: "ERROR"
+    status: FINISHED
     timestamp: 2020-04-07 01:41:22
-    run_time: 1
+    run_time: 200
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_3
-    status: "ERROR"
+    status: QUEUED
     timestamp: 2020-04-07 01:41:22
     run_time: 1
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_4
-    status: "FINISHED"
+    status: WAITING
     timestamp: 2020-04-07 01:41:22
     run_time: 10
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_5
-    status: "ERROR"
+    status: QUEUED
     timestamp: 2020-04-02 03:44:05
     run_time: 1
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_6
-    status: "TIMEWALL"
+    status: ERROR
     timestamp: 2020-04-07 08:45:54
     run_time: 300
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_7
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-05 14:45:00
     run_time: 300
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_8
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-06 19:20:12
     run_time: 300
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_9
-    status: "ERROR"
+    status: ERROR
     timestamp: 2020-04-05 14:45:00
     run_time: 1
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_10
-    status: "FINISHED"
+    status: COMPILING
     timestamp: 2020-04-06 19:20:12
     run_time: 20
     assignment : assignment_hello_world
     user: user_foo
   - __key__: request_11
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_bar
   - __key__: request_12
-    status: "ERROR"
+    status: ERROR
     timestamp: 2020-04-07 01:41:06
     run_time: 1
     assignment : assignment_hello_world
     user: user_bar
   - __key__: request_13
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_bar
   - __key__: request_14
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_bar
   - __key__: request_15
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_bar
   - __key__: request_16
-    status: "TIMEWALL"
+    status: TIMEWALL
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_test
   - __key__: request_17
-    status: "ERROR"
+    status: ERROR
     timestamp: 2020-04-07 01:41:06
     run_time: 1
     assignment : assignment_hello_world
     user: user_test
   - __key__: request_18
-    status: "ERROR"
+    status: ERROR
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_test
   - __key__: request_19
-    status: "1"
+    status: ERROR
     timestamp: 2020-04-07 01:41:06
     run_time: 300
     assignment : assignment_hello_world
     user: user_test
   - __key__: request_20
-    status: "FINISHED"
+    status: WAITING
     timestamp: 2020-04-07 01:41:06
     run_time: 20
     assignment : assignment_hello_world

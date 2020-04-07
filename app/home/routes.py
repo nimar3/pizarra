@@ -11,13 +11,13 @@ from app.base.models import Assignment
 from app.home import blueprint
 
 
-@blueprint.route('/index')
+@blueprint.route('/home')
 @login_required
 def index():
     if not current_user.is_authenticated:
         return redirect(url_for('base_blueprint.login'))
 
-    return render_template('index.html')
+    return render_template('home.html')
 
 
 @blueprint.route('/assignment')
