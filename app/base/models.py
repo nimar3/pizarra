@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
     last_login_ip = Column(String(100))
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime())
-    requests = relationship('Request')
+    requests = relationship('Request', back_populates='user')
     roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
     classgroups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
     teams = relationship('Team', secondary='user_teams', backref=backref('users', lazy='dynamic'))
@@ -58,7 +58,7 @@ class Role(db.Model, RoleMixin):
     """
     __tablename__ = 'role'
     id = Column(Integer(), primary_key=True)
-    name = Column(String(80), unique=True)
+    name = Column(String(100), unique=True)
     description = Column(String(255))
 
 
@@ -70,7 +70,7 @@ class Team(db.Model):
     """
     __tablename__ = 'team'
     id = Column(Integer(), primary_key=True)
-    name = Column(String(80), unique=True)
+    name = Column(String(100), unique=True)
 
 
 class ClassGroup(db.Model):
@@ -80,7 +80,7 @@ class ClassGroup(db.Model):
     """
     __tablename__ = 'classgroup'
     id = Column(Integer(), primary_key=True)
-    name = Column(String(80), unique=True)
+    name = Column(String(100), unique=True)
     description = Column(String(255))
     assignments = relationship('Assignment', secondary='classgroup_assignments', backref=backref('classgroups', lazy='dynamic'))
 
@@ -92,7 +92,7 @@ class Badge(db.Model):
     """
     __tablename__ = 'badge'
     id = Column(Integer(), primary_key=True)
-    name = Column(String(80), unique=True)
+    name = Column(String(100), unique=True)
     image = Column(String(255))
     title = Column(String(255))
     description = Column(String(255))
@@ -105,11 +105,13 @@ class Request(db.Model):
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime())
-    status = Column(String(80))
-    run_time = Column(BigInteger)
+    status = Column(String(10))
+    run_time = Column(Integer)
     file_location = Column(String(255))
-    assignment = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
-    user = Column('user_id', String, ForeignKey('user.id'))
+    assignment = relationship('Assignment', back_populates='requests')
+    assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
+    user = relationship('User', back_populates='requests')
+    user_id = Column('user_id', String, ForeignKey('user.id'))
 
 
 class Assignment(db.Model):
@@ -119,12 +121,13 @@ class Assignment(db.Model):
     __tablename__ = 'assignment'
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
-    title = Column(String(80))
+    title = Column(String(100))
     description = Column(BLOB)
     header = Column(BLOB)
     template = Column(BLOB)
     start_date = Column(DateTime())
     due_date = Column(DateTime())
+    requests = relationship('Request', back_populates='assignment')
     attachments = relationship('Attachment')
 
 
