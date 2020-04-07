@@ -7,7 +7,7 @@ from flask import render_template, redirect, url_for
 from flask_login import login_required, current_user
 from jinja2 import TemplateNotFound
 
-from app.base.models import Assignment, Request
+from app.base.models import Assignment
 from app.home import blueprint
 
 
@@ -25,12 +25,6 @@ def index():
 def route_assignment(id):
     assignment = Assignment.query.filter_by(id=id).first()
     return render_template('assignment.html', assignment=assignment)
-
-
-@blueprint.route('/requests')
-def route_requests():
-    requests = Request.query.filter_by(user_id=current_user.id).all()
-    return render_template('requests.html', requests=requests)
 
 
 @blueprint.route('/<template>')
