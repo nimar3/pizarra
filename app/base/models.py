@@ -108,6 +108,7 @@ class Request(db.Model):
     status = Column(String(10))
     run_time = Column(Integer)
     file_location = Column(String(255))
+    output = Column(BLOB)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
