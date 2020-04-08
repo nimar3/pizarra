@@ -11,13 +11,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Class
+            Group
             <small>where you belong to</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="/account">Account</a></li>
-            <li class="active">Class</li>
+            <li class="active">Group</li>
         </ol>
     </section>
 
@@ -42,10 +42,26 @@
                                         <a class="users-list-name"
                                            href="#">{{ 'You!' if student == current_user else student.name }}</a>
                                         <span class="users-list-date">{{ student.username }}</span>
+                                        <span class="users-list-date">
+                                        {% set badges = student.badges | count %}
+                                            {% if badges == 0 %}
+                                                <i class="fa fa-battery-1"></i>
+                                            {% elif badges > 0 and badges < 4 %}
+                                                {% for i in range(badges) %}
+                                                    <i class="fa fa-trophy"></i>&nbsp;
+                                                {% endfor %}
+                                            {% else %}
+                                                <i class="fa fa-star"></i>
+                                            {% endif %}
+                                        </span>
                                     </li>
                                 {% endfor %}
                             </ul>
                             <!-- /.users-list -->
+                        </div>
+                        <div>
+                            <span class="pull-right"><a target="_blank"
+                                                        href="https://www.vecteezy.com/free-vector/panda">Panda Vectors by Vecteezy</a></span>
                         </div>
                     </div>
                     <!-- /.box -->

@@ -68,7 +68,7 @@ class User(db.Model, UserMixin):
 
         # if avatar is not presnent when creating user we set one at random
         if 'avatar' not in kwargs:
-            setattr(self, 'avatar', 'avatar-' + str(randint(1, 16)) + '-256x256.png')
+            setattr(self, 'avatar', 'avatar-' + str(randint(1, 18)) + '-256x256.png')
 
         if 'password' not in kwargs:
             setattr(self, 'password', hash_pass('123'))
