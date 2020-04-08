@@ -24,16 +24,17 @@
       name: "bar"
 
 - Badge:
-    - __key__: badge_first_place
-      name: "first_place"
-      image: ""
-      title: "First Place"
-      description: "Earn when a Student finishes an Assignment first"
+    - __key__: badge_flash
+      name: "badge_flash"
+      image: "flash-badge-128x128.png"
+      title: "Flash!!"
+      subtitle: "Fastest pal of the block"
+      description: "Earn when finishing an Assignment first of your Group"
     - __key__: badge_fastest
       name: "fastest"
       image: ""
       title: "Fastest in the Block"
-      description: "Earn when a Student program is the fastest of the Assignment"
+      description: "Earn when a program is the fastest of the Assignment"
 
 - ClassGroup:
   - __key__: class_a
@@ -62,7 +63,7 @@
     roles: [users]
     classgroups: [class_a, class_b]
     teams: [team_foo]
-    badges: [badge_first_place]
+    badges: [badge_flash]
   - __key__: user_bar
     username: "bar"
     email: "bar@test.test"

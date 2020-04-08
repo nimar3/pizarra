@@ -1,5 +1,7 @@
 {% extends "base_site.html" %}
 
+{% from "macros.html" import badge with context %}
+
 {% block title %} Dashboard {% endblock title %}
 
 {% block content %}
@@ -32,7 +34,7 @@
                     <div class="icon">
                         <i class="fa fa-upload"></i>
                     </div>
-                    <a href="/account/requests" class="small-box-footer">More info <i
+                    <a href="/account/requests" class="small-box-footer">Your Requests <i
                             class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
@@ -146,7 +148,7 @@
             <!-- /.col -->
 
             <div class="col-md-4">
-
+                {{ badge(current_user.badges[0], 'Latest Badge') }}
             </div>
             <!-- /.col -->
         </div>

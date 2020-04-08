@@ -121,6 +121,7 @@ class Badge(db.Model):
     name = Column(String(100), unique=True)
     image = Column(String(255))
     title = Column(String(255))
+    subtitle = Column(String(255))
     description = Column(String(255))
 
 
