@@ -1,0 +1,24 @@
+/*
+ * Component: Users List
+ * ---------------------
+ */
+.classgroup-student-list > li {
+    width: 10%;
+}
+
+.classgroup-student-list li img:hover:before {
+    transform: scale(1.2);
+    box-shadow: 0 0 25px #d35400;
+    filter: blur(3px);
+}
+
+.classgroup-student-list li img:hover {
+    color: #ffa502;
+    box-shadow: 0 0 25px #d35400;
+    text-shadow: 0 0 25px #d35400;
+}
+
+.classgroup-student-other img {
+    -webkit-filter: grayscale(70%);
+    filter: grayscale(70%);
+}

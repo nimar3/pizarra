@@ -3,6 +3,7 @@
 License: MIT
 Copyright (c) 2020 - nimar3
 """
+from random import randint
 
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, BLOB, ForeignKey, Enum, Table
@@ -38,11 +39,17 @@ class User(db.Model, UserMixin):
     last_login_ip = Column(String(100))
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime())
-    avatar = Column(String, default='default-user-128x128.jpg')
+    avatar = Column(String)
+    # Relations
+    # one-to-many
     requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)')
+    # many-to-one (bidirectional relationship)
+    classgroup_id = Column(Integer, ForeignKey('classgroup.id'))
+    classgroup = relationship('ClassGroup', back_populates='students')
+    team_id = Column(Integer, ForeignKey('team.id'))
+    team = relationship('Team', back_populates='members')
+    # many-to-many
     roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
-    classgroups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
-    teams = relationship('Team', secondary='user_teams', backref=backref('users', lazy='dynamic'))
     badges = relationship('Badge', secondary='user_badges', backref=backref('users', lazy='dynamic'))
 
     def __init__(self, **kwargs):
@@ -59,13 +66,12 @@ class User(db.Model, UserMixin):
 
             setattr(self, property, value)
 
+        # if avatar is not presnent when creating user we set one at random
+        if 'avatar' not in kwargs.items():
+            setattr(self, 'avatar', 'avatar-' + str(randint(1, 16)) + '-256x256.png')
+
     def __repr__(self):
         return str(self.username)
-
-    @property
-    def assignments(self):
-        classgroups_ids = [classgroup.id for classgroup in self.classgroups]
-        return Assignment.query.filter(Assignment.id.in_(classgroups_ids)).all()
 
     @property
     def quota_percentage_used(self):
@@ -97,6 +103,7 @@ class Team(db.Model):
     __tablename__ = 'team'
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
+    members = relationship('User', back_populates='team')
 
 
 class ClassGroup(db.Model):
@@ -108,6 +115,7 @@ class ClassGroup(db.Model):
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
     description = Column(String(255))
+    students = relationship('User', back_populates="classgroup")
     assignments = relationship('Assignment', secondary='_classgroup_assignments',
                                backref=backref('classgroups', lazy='dynamic'))
 
@@ -182,20 +190,6 @@ class UserRole(db.Model):
     id = Column(Integer(), primary_key=True)
     user = Column('user_id', Integer(), ForeignKey('user.id'))
     role = Column('role_id', Integer(), ForeignKey('role.id'))
-
-
-class UserClassGroup(db.Model):
-    __tablename__ = 'user_classgroups'
-    id = Column(Integer(), primary_key=True)
-    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
-    classgroup = Column('classgroup_id', Integer(), ForeignKey('classgroup.id'))
-
-
-class UserTeam(db.Model):
-    __tablename__ = 'user_teams'
-    id = Column(Integer(), primary_key=True)
-    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
-    team_id = Column('team_id', Integer(), ForeignKey('team.id'))
 
 
 class UserBadge(db.Model):

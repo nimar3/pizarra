@@ -16,3 +16,8 @@ def route_account_home():
 @blueprint.route('/requests')
 def route_account_requests():
     return render_template('requests.html')
+
+
+@blueprint.route('/classgroup')
+def route_account_classgroup():
+    return render_template('account_classgroup.html')

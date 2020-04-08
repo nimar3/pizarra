@@ -2,7 +2,7 @@
 
 {% from "macros/badges.html" import badge, no_badge with context %}
 {% from "macros/summaries.html" import summary with context %}
-
+{% from "macros/teams.html" import team, no_team with context %}
 {% block title %} Dashboard {% endblock title %}
 
 {% block content %}
@@ -27,7 +27,7 @@
             {{ summary(current_user.requests | count, 'Total Requests', 'Your Requests', '/account/requests' ,'fa fa-upload', 'bg-aqua') }}
             {{ summary(current_user.quota_percentage_used, 'Quota Used', 'More info', '/account', 'fa fa-hourglass-3', 'bg-green', true) }}
             {{ summary(current_user.request_percentage_passed, 'Success Rate', 'More info', '/account', 'fa fa-star', 'bg-yellow', true) }}
-            {{ summary(current_user.assignments | count, 'Assignments', 'More info', '/assignment', 'fa fa-file-text-o', 'bg-red') }}
+            {{ summary(current_user.classgroup.assignments | count, 'Assignments', 'More info', '/assignment', 'fa fa-file-text-o', 'bg-red') }}
         </div>
         <!-- /.row -->
         <!-- Main row -->
@@ -91,11 +91,14 @@
             <!-- /.col -->
 
             <div class="col-md-4">
+                <!-- User latest badge -->
                 {% if current_user.badges | count > 0 %}
                     {{ badge(current_user.badges[0], 'Latest Badge') }}
                 {% else %}
                     {{ no_badge() }}
                 {% endif %}
+
+                {{ team() if current_user.team != None else no_team() }}
             </div>
             <!-- /.col -->
         </div>

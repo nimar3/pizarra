@@ -30,12 +30,17 @@
       subtitle: "Fastest pal of the block"
       description: "Earn when finishing an Assignment first of your Group"
       background_color: "bg-aqua-active"
-      image: "flash-badge-128x128.png"
+      image: "badge-flash-128x128.png"
     - __key__: badge_first_place
       name: "first_place"
       title: "First Place"
       subtitle: "Number one!"
       description: "Earn when a program is the fastest of the Assignment"
+    - __key__: badge_beat_the_machine
+      name: "beat_the_machine"
+      title: "Beat the machine"
+      subtitle: "Damn! you are fast"
+      description: "Earn when your program runs below a certain threshold"
 
 - ClassGroup:
     - __key__: class_a
@@ -64,8 +69,8 @@
       password: "foo"
       quota_used: 3540
       roles: [users]
-      classgroups: [class_a]
-      teams: [team_foo]
+      classgroup: class_a
+      team: team_foo
       badges: [badge_flash]
     - __key__: user_bar
       username: "bar"
@@ -73,16 +78,15 @@
       name: "Francisco de Goya"
       password: "bar"
       roles: [users]
-      classgroups: [class_b]
-      teams: [team_bar]
+      classgroup: class_b
     - __key__: user_test
       username: "test"
       email: "test@test.test"
       name: "Salvador Dalí"
       password: "test"
       roles: [users]
-      classgroups: [class_a, class_b]
-      teams: [team_foo, team_bar]
+      classgroup: class_a
+      team: team_foo
 
 
 - Request:
@@ -181,30 +185,224 @@
       timestamp: 2020-04-07 01:41:06
       run_time: 300
       assignment: assignment_hello_world
-      user: user_test
+      user: user_bar
     - __key__: request_17
       status: ERROR
       timestamp: 2020-04-07 01:41:06
       run_time: 1
       assignment: assignment_hello_world
-      user: user_test
+      user: user_bar
     - __key__: request_18
       status: ERROR
       timestamp: 2020-04-07 01:41:06
       run_time: 300
       assignment: assignment_hello_world
-      user: user_test
-    - __key__: request_19
-      status: ERROR
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_test
-    - __key__: request_20
-      status: WAITING
-      timestamp: 2020-04-07 01:41:06
-      run_time: 20
-      assignment: assignment_hello_world
-      user: user_test
+      user: user_bar
 
 # BULK DATA
+- User:
+    - username: amet
+      name: Hamilton
+      quota: 3411
+      roles: [users]
+      classgroup: class_a
+    - username: gravida
+      name: Lev
+      quota: 5321
+      roles: [users]
+      classgroup: class_a
+    - username: et
+      name: Ryan
+      quota: 65
+      roles: [users]
+      classgroup: class_a
+    - username: luctus
+      name: Shelley
+      quota: 474
+      roles: [users]
+      classgroup: class_a
+    - username: enim
+      name: Thomas
+      quota: 1274
+      roles: [users]
+      classgroup: class_a
+    - username: pellentesque
+      name: Ignatius
+      quota: 1494
+      roles: [users]
+      classgroup: class_a
+    - username: eu
+      name: Devin
+      quota: 4869
+      roles: [users]
+      classgroup: class_a
+    - username: aliquam
+      name: Todd
+      quota: 3222
+      roles: [users]
+      classgroup: class_a
+    - username: in,
+      name: Lynn
+      quota: 3779
+      roles: [users]
+      classgroup: class_a
+    - username: risus
+      name: Abraham
+      quota: 5579
+      roles: [users]
+      classgroup: class_a
+    - username: vel
+      name: Ralph
+      quota: 1596
+      roles: [users]
+      classgroup: class_a
+    - username: ut
+      name: Noah
+      quota: 4483
+      roles: [users]
+      classgroup: class_a
+    - username: sit
+      name: Jacob
+      quota: 3916
+      roles: [users]
+      classgroup: class_a
+    - username: in
+      name: Frances
+      quota: 3230
+      roles: [users]
+      classgroup: class_a
+    - username: sem.
+      name: Abbot
+      quota: 5605
+      roles: [users]
+      classgroup: class_a
+    - username: rutrum
+      name: Kenneth
+      quota: 100
+      roles: [users]
+      classgroup: class_a
+    - username: eget,
+      name: Rooney
+      quota: 296
+      roles: [users]
+      classgroup: class_a
+    - username: vel,
+      name: Aimee
+      quota: 866
+      roles: [users]
+      classgroup: class_a
+    - username: urna.
+      name: Caldwell
+      quota: 386
+      roles: [users]
+      classgroup: class_a
+    - username: porttitor
+      name: Astra
+      quota: 1565
+      roles: [users]
+      classgroup: class_a
+    - username: id,
+      name: Mohammad
+      quota: 1809
+      roles: [users]
+      classgroup: class_a
+    - username: magna.
+      name: Whitney
+      quota: 3506
+      roles: [users]
+      classgroup: class_a
+    - username: hymenaeos.
+      name: Claudia
+      quota: 2578
+      roles: [users]
+      classgroup: class_a
+    - username: Morbi
+      name: Kiayada
+      quota: 2102
+      roles: [users]
+      classgroup: class_a
+    - username: arcu
+      name: Jeremy
+      quota: 3214
+      roles: [users]
+      classgroup: class_a
+    - username: erat
+      name: Lionel
+      quota: 204
+      roles: [users]
+      classgroup: class_a
+    - username: Pellentesque
+      name: Geoffrey
+      quota: 983
+      roles: [users]
+      classgroup: class_a
+    - username: natoque
+      name: Keegan
+      quota: 1161
+      roles: [users]
+      classgroup: class_a
+    - username: tempus
+      name: Paloma
+      quota: 3170
+      roles: [users]
+      classgroup: class_a
+    - username: malesuada
+      name: Ivana
+      quota: 5742
+      roles: [users]
+      classgroup: class_a
+    - username: fringilla
+      name: Amber
+      quota: 415
+      roles: [users]
+      classgroup: class_a
+    - username: tincidunt
+      name: Fiona
+      quota: 878
+      roles: [users]
+      classgroup: class_a
+    - username: habitant
+      name: Kaitlin
+      quota: 2373
+      roles: [users]
+      classgroup: class_a
+    - username: Sed
+      name: Brandon
+      quota: 3764
+      roles: [users]
+      classgroup: class_a
+    - username: nulla.
+      name: Shay
+      quota: 4885
+      roles: [users]
+      classgroup: class_a
+    - username: molestie.
+      name: May
+      quota: 2282
+      roles: [users]
+      classgroup: class_a
+    - username: tempor,
+      name: Jermaine
+      quota: 4381
+      roles: [users]
+      classgroup: class_a
+    - username: eu,
+      name: Kimberly
+      quota: 2470
+      roles: [users]
+      classgroup: class_a
+    - username: faucibus
+      name: Danielle
+      quota: 2239
+      roles: [users]
+      classgroup: class_a
+    - username: blandit
+      name: Fletcher
+      quota: 5981
+      roles: [users]
+      classgroup: class_a
+    - username: tempor
+      name: Orson
+      quota: 247
+      roles: [users]
+      classgroup: class_a
