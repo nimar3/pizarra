@@ -10,7 +10,7 @@ from app.account import blueprint
 
 @blueprint.route('/')
 def route_account_home():
-    return render_template('home.html')
+    return render_template('account_home.html')
 
 
 @blueprint.route('/requests')

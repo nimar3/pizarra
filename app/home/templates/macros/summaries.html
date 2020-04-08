@@ -1,0 +1,18 @@
+{% macro summary(title, subtitle, more_info_msg, more_info_link, icon, background_color, show_percentage=false) %}
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box {{ background_color }}">
+            <div class="inner">
+                <h3>{{ title }}{% if show_percentage %}<sup style="font-size: 20px">%</sup>{% endif %}</h3>
+                <p>{{ subtitle }}</p>
+            </div>
+            <div class="icon">
+                <i class="{{ icon }}"></i>
+            </div>
+            <a href="{{ more_info_link }}" class="small-box-footer">{{ more_info_msg }} <i
+                    class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+{% endmacro %}

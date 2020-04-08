@@ -1,0 +1,56 @@
+{% macro badge(badge, footer_message=None) %}
+    <!-- Widget: Badge -->
+    <div class="box box-widget widget-user">
+        <!-- Add the bg color to the header using any of the bg-* classes -->
+        <div class="widget-user-header {{ badge.background_color }}">
+            <h3 class="widget-user-username">{{ badge.title }}</h3>
+            <h5 class="widget-user-desc">{{ badge.subtitle }}</h5>
+        </div>
+
+        <div class="widget-user-image">
+            <img class="img-circle" src="/static/assets/pizarra/img/badges/{{ badge.image }}"
+                 alt="User Avatar">
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <!-- /.col -->
+                <div class="col-sm-12">
+                    <div class="description-block">
+                        <span class="description-text">{{ badge.description }}</span>
+                    </div>
+                    <!-- /.description-block -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            {% if footer_message != None %}
+                <ul class="nav nav-stacked">
+                    <li><span class="pull-right"><i class="fa fa-fw fa-star-o"></i> {{ footer_message }}</span></li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <!-- /.widget-badge -->
+{% endmacro %}
+
+{% macro no_badge() %}
+    <!-- Widget: No BADGE -->
+    <div class="box box-widget widget-user-2">
+        <!-- Add the bg color to the header using any of the bg-* classes -->
+        <div class="widget-user-header bg-light-blue">
+            <div class="widget-user-image">
+                <img class="img-circle" src="/static/assets/pizarra/img/badges/crying-badge-128x128.png" alt="No Badge">
+            </div>
+            <!-- /.widget-user-image -->
+            <h3 class="widget-user-username">No Badges found</h3>
+            <h5 class="widget-user-desc">Keep fightning!</h5>
+        </div>
+        <div class="box-footer no-padding">
+            <ul class="nav nav-stacked">
+                <li><a href="/assignments">Check your for assignments to earn some badges</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /.widget-no-badge -->
+{% endmacro %}

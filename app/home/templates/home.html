@@ -1,6 +1,7 @@
 {% extends "base_site.html" %}
 
-{% from "macros.html" import badge with context %}
+{% from "macros/badges.html" import badge, no_badge with context %}
+{% from "macros/summaries.html" import summary with context %}
 
 {% block title %} Dashboard {% endblock title %}
 
@@ -23,68 +24,10 @@
 
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-aqua">
-                    <div class="inner">
-                        <h3>{{ current_user.requests | count }}</h3>
-
-                        <p>Total Requests</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-upload"></i>
-                    </div>
-                    <a href="/account/requests" class="small-box-footer">Your Requests <i
-                            class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-green">
-                    <div class="inner">
-                        <h3>{{ current_user.quota_percentage_used }}<sup style="font-size: 20px">%</sup></h3>
-
-                        <p>Quota Used</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-hourglass-3"></i>
-                    </div>
-                    <a href="/account" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3>{{ current_user.request_percentage_passed }}<sup style="font-size: 20px">%</sup></h3>
-
-                        <p>Success Rate</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <a href="/account" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3>{{ current_user.assignments | count }}</h3>
-
-                        <p>Assignments</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-file-text-o"></i>
-                    </div>
-                    <a href="/assignment" class="small-box-footer">More info <i
-                            class="fa fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
+            {{ summary(current_user.requests | count, 'Total Requests', 'Your Requests', '/account/requests' ,'fa fa-upload', 'bg-aqua') }}
+            {{ summary(current_user.quota_percentage_used, 'Quota Used', 'More info', '/account', 'fa fa-hourglass-3', 'bg-green', true) }}
+            {{ summary(current_user.request_percentage_passed, 'Success Rate', 'More info', '/account', 'fa fa-star', 'bg-yellow', true) }}
+            {{ summary(current_user.assignments | count, 'Assignments', 'More info', '/assignment', 'fa fa-file-text-o', 'bg-red') }}
         </div>
         <!-- /.row -->
         <!-- Main row -->
@@ -148,7 +91,11 @@
             <!-- /.col -->
 
             <div class="col-md-4">
-                {{ badge(current_user.badges[0], 'Latest Badge') }}
+                {% if current_user.badges | count > 0 %}
+                    {{ badge(current_user.badges[0], 'Latest Badge') }}
+                {% else %}
+                    {{ no_badge() }}
+                {% endif %}
             </div>
             <!-- /.col -->
         </div>

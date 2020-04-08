@@ -29,6 +29,7 @@ class User(db.Model, UserMixin):
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True)
     email = Column(String, unique=True)
+    name = Column(String)
     password = Column(Binary)
     active = Column(Boolean(), default=True)
     quota = Column(Integer(), default=21600)
@@ -38,7 +39,7 @@ class User(db.Model, UserMixin):
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime())
     avatar = Column(String, default='default-user-128x128.jpg')
-    requests = relationship('Request', back_populates='user')
+    requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)')
     roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
     classgroups = relationship('ClassGroup', secondary='user_classgroups', backref=backref('users', lazy='dynamic'))
     teams = relationship('Team', secondary='user_teams', backref=backref('users', lazy='dynamic'))
@@ -119,10 +120,11 @@ class Badge(db.Model):
     __tablename__ = 'badge'
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
-    image = Column(String(255))
     title = Column(String(255))
     subtitle = Column(String(255))
     description = Column(String(255))
+    background_color = Column(String(100))
+    image = Column(String(255))
 
 
 class Request(db.Model):
