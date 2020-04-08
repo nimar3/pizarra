@@ -70,6 +70,9 @@ class User(db.Model, UserMixin):
         if 'avatar' not in kwargs.items():
             setattr(self, 'avatar', 'avatar-' + str(randint(1, 16)) + '-256x256.png')
 
+        if 'password' not in kwargs.items():
+            setattr(self, 'password', hash_pass('123'))
+
     def __repr__(self):
         return str(self.username)
 
