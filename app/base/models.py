@@ -170,10 +170,7 @@ class Assignment(db.Model):
     due_date = Column(DateTime())
     requests = relationship('Request', back_populates='assignment')
     attachments = relationship('Attachment')
-    classgroup = relationship(
-        'ClassGroup',
-        secondary='_classgroup_assignments',
-        back_populates='assignments')
+    classgroup = relationship('ClassGroup', secondary='_classgroup_assignments', back_populates='assignments')
 
 
 class Attachment(db.Model):
