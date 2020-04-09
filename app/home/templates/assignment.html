@@ -74,8 +74,8 @@
             <div class="col-xs-12">
                 <a href="#" target="_blank" class="btn btn-default" onclick="window.print()"><i class="fa fa-print"></i>
                     Print</a>
-                <button type="button" class="btn btn-success pull-right" data-target="#modal-default"><i
-                        class="fa fa-upload"></i> Submit
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal"
+                        data-target="#modal-default"><i class="fa fa-upload"></i> Submit
                     Assignment
                 </button>
             </div>
@@ -85,7 +85,7 @@
     <div class="clearfix"></div>
 
     <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -94,9 +94,22 @@
                 </div>
                 <div class="modal-body">
                     <p>Copy the following code in your console to submit your Assignment</p>
+                    <div class="row">
+                        <div class="col-xs-10">
+                            <p id="code"><code>curl -F 'files[]=@/path/to/fileX' -F 'files[]=@/path/to/fileY' ...
+                                http://localhost/upload</code></p>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-2" onclick="copyText()">
+                            <a class="btn btn-app">
+                                <i class="fa fa-copy"></i> Copy
+                            </a>
+                        </div>
+                        <!-- /.col -->
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -111,5 +124,19 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="/static/assets/js/demo.js"></script>
+
+    <script>
+        function copyText() {
+            /* Get the text field */
+            const copyText = document.getElementById("code");
+            const textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("Copy");
+            textArea.remove();
+        }
+    </script>
 
 {% endblock %}
