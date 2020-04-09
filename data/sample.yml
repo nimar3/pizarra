@@ -44,15 +44,26 @@
 
 - ClassGroup:
     - __key__: class_a
-      id: 1
       name: "G2019-A1"
       description: "Class from 2019 A1 group"
       assignments: [assignment_hello_world, assignment_openmp_basic]
     - __key__: class_b
-      id: 2
       name: "G2019-B1"
-      description: "Class from 2019 A2 group"
+      description: "Class from 2019 B1 group"
       assignments: [assignment_hello_world, assignment_openmpi_basic]
+    - __key__: class_c
+      name: "G2019-C1"
+      description: "Class from 2019 C1 group"
+      assignments: [assignment_hello_world, assignment_openmpi_basic]
+    - __key__: class_d
+      name: "G2019-D1"
+      description: "Class from 2019 D1 group"
+      assignments: [assignment_hello_world, assignment_openmpi_basic]
+    - __key__: class_e
+      name: "G2019-E1"
+      description: "Class from 2019 E1 group"
+      assignments: [assignment_hello_world, assignment_openmpi_basic]
+
 
 - User:
     - __key__: user_admin
