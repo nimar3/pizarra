@@ -14,6 +14,5 @@ class AssignmentForm(FlaskForm):
     description = StringField('Description', id='description', validators=[DataRequired()])
     header = StringField('Header', id='header', validators=[DataRequired()])
     template = StringField('Template', id='template', validators=[DataRequired()])
-    classgroups = SelectMultipleField('Class Groups', coerce=int, validators=[InputRequired()])
-    start_date = DateField('StartDate', id='start_date', validators=[DataRequired()])
-    due_date = DateField('DueDate', id='due_date', validators=[DataRequired()])
+    classgroups = SelectMultipleField('Class Groups', coerce=int, validators=[]) #InputRequired()
+    date = DateField('Date', id='date', validators=[DataRequired()])

@@ -89,7 +89,7 @@ def create_app(config, selenium=False):
         app.config['LOGIN_DISABLED'] = True
     register_extensions(app)
     register_blueprints(app)
-    initialize_database(app)
+    #initialize_database(app)
     configure_database(app)
     configure_logs(app)
     apply_themes(app)

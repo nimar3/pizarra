@@ -36,33 +36,44 @@
 
                         {{ form.hidden_tag() }}
                         <div class="box-body">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                {{ form.name(placeholder="Name", class="form-control") }}
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="name">Unique Name</label>
+                                        {{ form.name(placeholder="Name", class="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <!-- Date and time range -->
+                                    <div class="form-group">
+                                        <label>Date and time range:</label>
+
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                            {{ form.date(placeholder="Date", class="form-control pull-right") }}
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <!-- /.form group -->
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Title</label>
+                                <label for="title">Title</label>
                                 {{ form.title(placeholder="Title", class="form-control") }}
                             </div>
                             <div class="for-group">
                                 <label for="editor">Description</label>
                                 <textarea id="editor" name="description" rows="10" cols="80"></textarea>
                             </div>
+
                             <div class="form-group">
-                                <label>Groups</label>
+                                <label for="groups">Groups</label>
                                 {{ form.classgroups(placeholder="Class Groups", class="form-control") }}
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputFile">Attachments</label>
-                                <input type="file" id="exampleInputFile">
 
-                                <p class="help-block">Example block-level help text here.</p>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Check me out
-                                </label>
-                            </div>
                         </div>
                         <!-- /.box-body -->
 
@@ -96,5 +107,25 @@
             });
         })
     </script>
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+            //Date range picker with time picker
+            $('#date').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerIncrement: 1,
+                locale: {
+                    format: 'DD/MM/YYYY HH:mm'
+                }
+            })
+        })
+    </script>
+
+    <!-- Select2 -->
+    <script src="/static/assets/select2/js/select2.js"></script>
+    <script src="/static/assets/js/jquery.inputmask.js"></script>
 
 {% endblock %}

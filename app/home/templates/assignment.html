@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% block title %} Simple Tables {% endblock title %}
+{% block title %} Invoice {% endblock title %}
 
 {% block stylesheets %}
     <!-- Specific CSS goes HERE -->
@@ -11,83 +11,99 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Simple Tables
-            <small>preview of simple tables</small>
+            Assignment
+            <small>#{{ assignment.id }}</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Assignment</a></li>
-            <li class="active">Simple</li>
+            <li><a href="#">Assignments</a></li>
+            <li class="active">{{ assignment.name }}</li>
         </ol>
     </section>
 
+    <div class="pad margin no-print">
+        <div class="callout callout-danger" style="margin-bottom: 0!important;">
+            <div class="row">
+                <div class="col-xs-1">
+                    <h1>
+                        <i class="fa fa-battery-1"></i>
+                    </h1>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-11">
+                    <h4>Note:</h4>
+                    This Assignment is going to close in less than 24 hours!
+                    <!-- title row -->
+                </div>
+                <!-- /.col -->
+            </div>
+        </div>
+
+    </div>
+
     <!-- Main content -->
-    <section class="content">
-        <!-- /.row -->
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-10">
+                <h2 class="page-header">
+                    <i class="fa fa-file-text-o"></i> {{ assignment.title }}
+                    <small class="pull-right">Due date: {{ assignment.due_date }}</small>
+                </h2>
+            </div>
+            <div class="col-xs-2 no-print">
+                <button type="button" class="btn btn-success pull-right" data-toggle="modal"
+                        data-target="#modal-default"><i class="fa fa-upload"></i> Submit
+                    Assignment
+                </button>
+            </div>
+            <!-- /.col -->
+        </div>
+
+        <!-- Table row -->
         <div class="row">
             <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Responsive Hover Table</h3>
+                {{ assignment.description | safe }}
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control pull-right"
-                                       placeholder="Search">
-
-                                <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-                            <tr>
-                                <th>ID</th>
-                                <th>User</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Reason</th>
-                            </tr>
-                            <tr>
-                                <td>183</td>
-                                <td>John Doe</td>
-                                <td>11-7-2014</td>
-                                <td><span class="label label-success">Approved</span></td>
-                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                            </tr>
-                            <tr>
-                                <td>219</td>
-                                <td>Alexander Pierce</td>
-                                <td>11-7-2014</td>
-                                <td><span class="label label-warning">Pending</span></td>
-                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                            </tr>
-                            <tr>
-                                <td>657</td>
-                                <td>Bob Doe</td>
-                                <td>11-7-2014</td>
-                                <td><span class="label label-primary">Approved</span></td>
-                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                            </tr>
-                            <tr>
-                                <td>175</td>
-                                <td>Mike Doe</td>
-                                <td>11-7-2014</td>
-                                <td><span class="label label-danger">Denied</span></td>
-                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
+        <!-- this row will not appear when printing -->
+        <div class="row no-print">
+            <div class="col-xs-12">
+                <a href="#" target="_blank" class="btn btn-default" onclick="window.print()"><i class="fa fa-print"></i>
+                    Print</a>
+                <button type="button" class="btn btn-success pull-right" data-target="#modal-default"><i
+                        class="fa fa-upload"></i> Submit
+                    Assignment
+                </button>
             </div>
         </div>
     </section>
     <!-- /.content -->
+    <div class="clearfix"></div>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Submit Task</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Copy the following code in your console to submit your Assignment</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
 {% endblock content %}
 

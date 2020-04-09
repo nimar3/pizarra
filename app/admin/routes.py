@@ -4,8 +4,8 @@ License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
 from flask import render_template, request
-from wtforms import SelectMultipleField
 
+from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm
 from app.base.models import Assignment, ClassGroup
@@ -24,8 +24,14 @@ def login():
         # read form data
         name = request.form['name']
 
-        # Locate user
-        user = Assignment.query.filter_by(name=name).first()
+        # Locate assignment
+        assignment = Assignment.query.filter_by(name=name).first()
+
+        if assignment is None:
+            assignment = Assignment(**request.form)
+
+        db.session.add(assignment)
+        db.session.commit()
 
         # Something (user or pass) is not ok
         return render_template('assignment_new.html', msg='Wrong user or password', form=assignment_form)

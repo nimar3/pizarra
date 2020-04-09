@@ -6,7 +6,7 @@ Copyright (c) 2020 - nimar3
 from random import randint
 
 from flask_security import UserMixin, RoleMixin
-from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, BLOB, ForeignKey, Enum, Table
+from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, Table, UnicodeText
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
@@ -148,7 +148,7 @@ class Request(db.Model):
     status = Column(Enum(RequestStatus))
     run_time = Column(Integer)
     file_location = Column(String(255))
-    output = Column(BLOB)
+    output = Column(UnicodeText)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
@@ -163,14 +163,21 @@ class Assignment(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
     title = Column(String(100))
-    description = Column(BLOB)
-    header = Column(BLOB)
-    template = Column(BLOB)
+    description = Column(UnicodeText)
+    header = Column(UnicodeText)
+    template = Column(UnicodeText)
     start_date = Column(DateTime())
     due_date = Column(DateTime())
     requests = relationship('Request', back_populates='assignment')
     attachments = relationship('Attachment')
     classgroup = relationship('ClassGroup', secondary='_classgroup_assignments', back_populates='assignments')
+
+    def __init__(self, **kwargs):
+        for property, value in kwargs.items():
+            if hasattr(value, '__iter__') and not isinstance(value, str):
+                value = value[0]
+
+            setattr(self, property, value)
 
 
 class Attachment(db.Model):
