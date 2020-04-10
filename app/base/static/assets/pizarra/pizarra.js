@@ -2,18 +2,12 @@
  * Pizarra
  * ------------------
  */
-$(function () {
-    'use strict'
 
-    function copyText() {
-        /* Get the text field */
-        var copyText = document.getElementById("code");
-
-        /* Select the text field */
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-        /* Copy the text inside the text field */
-        document.execCommand("copy");
-    }
+/**
+ * fades out alerts from flash flask messages
+ */
+$(document).ready(function () {
+    $("#flash-alert").fadeTo(3000, 500).slideUp(500, function () {
+        $("#flash-alert").slideUp(500);
+    });
 });

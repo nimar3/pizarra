@@ -10,7 +10,7 @@ from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, Forei
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
-from app.base.util import hash_pass, random_access_key
+from app.base.util import hash_pass, random_string
 from app.tasks.models import RequestStatus
 
 classgroup_assignments = Table('_classgroup_assignments', db.Model.metadata,
@@ -75,7 +75,7 @@ class User(db.Model, UserMixin):
             setattr(self, 'password', hash_pass('123'))
 
         if 'access_key' not in kwargs:
-            setattr(self, 'access_key', random_access_key())
+            setattr(self, 'access_key', random_string())
 
     def __repr__(self):
         return str(self.username)

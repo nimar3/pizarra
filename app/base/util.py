@@ -34,5 +34,6 @@ def verify_pass(provided_password, stored_password):
     return pwdhash == stored_password
 
 
-def random_access_key():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for i in range(60))
+def random_string(size=60):
+    """Generates a random alphanumeric string for a given size"""
+    return ''.join(random.choice(string.ascii_letters + string.digits) for i in range(size))

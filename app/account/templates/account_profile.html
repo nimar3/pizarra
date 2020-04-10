@@ -46,14 +46,20 @@
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
                                 <b>Group Members</b> <a class="pull-right"
-                                                        href="/my-account/classgroup">{{ current_user.classgroup.students | count }}</a>
+                                                        href="{{ url_for('account_blueprint.route_account_classgroup') }}">
+                                {{ current_user.classgroup.students | count }}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>Badges</b> <a class="pull-right">{{ current_user.badges | count }}</a>
                             </li>
+                            <li class="list-group-item">
+                                <b>Requests</b> <a class="pull-right">{{ current_user.requests | count }}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Quota</b> <a class="pull-right">{{ current_user.quota_used }}
+                                / {{ current_user.quota }}</a>
+                            </li>
                         </ul>
-
-                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -69,7 +75,7 @@
                         <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
 
                         <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                            You are enroled in <b>{{ current_user.classgroup.description }}</b>
                         </p>
 
                         <hr>
@@ -106,7 +112,7 @@
                     <ul class="nav nav-tabs">
                         <li {{ 'class=active' if anchor == None }}><a href="#activity" data-toggle="tab">Activity</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'badges' }}><a href="#badges" data-toggle="tab">Badges</a>
+                        <li><a href="#badges" data-toggle="tab">Badges</a>
                         </li>
                         <li {{ 'class=active' if anchor == 'password' }}><a href="#password"
                                                                             data-toggle="tab">Password</a>
@@ -231,7 +237,8 @@
                                     {% endfor %}
                                 {% endif %}
                             </p>
-                            <form class="form-horizontal" action="{{ url_for('account_blueprint.update_password') }}"
+                            <form class="form-horizontal"
+                                  action="{{ url_for('account_blueprint.route_update_password') }}"
                                   method="post">
 
                                 {{ form.hidden_tag() }}
@@ -266,18 +273,18 @@
                                     shared! Use it wisely.</h5>
                             </div>
                             <div class="row">
-                                <div class="col-md-10 col-md-offset-1 text-center"><i
+                                <div class="col-md-10 col-md-offset-1 text-center" id="code"><i
                                         class="fa fa-fw fa-key"></i> <code>{{ current_user.access_key }}</code>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <a href="{{ url_for('account_blueprint.regenerate_key') }}">
+                                    <a href="{{ url_for('account_blueprint.route_regenerate_key') }}">
                                         <button type="button" class="btn btn-primary pull-right">
                                             <i class="fa fa-refresh"></i> Regenerate Key
                                         </button>
                                     </a>
-                                    <button type="button" class="btn btn-success pull-right"
+                                    <button type="button" class="btn btn-success pull-right" onclick="copyText()"
                                             style="margin-right: 5px;"><i
                                             class="fa fa-copy"></i> Copy Key
                                     </button>
@@ -304,5 +311,19 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="/static/assets/js/demo.js"></script>
+
+    <script>
+        function copyText() {
+            /* Get the text field */
+            const copyText = document.getElementById("code");
+            const textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("Copy");
+            textArea.remove();
+        }
+    </script>
 
 {% endblock %}
