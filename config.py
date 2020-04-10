@@ -28,6 +28,10 @@ class Config(object):
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
 
+    #rq
+    REDIS_URL = "redis://localhost:6379/0"
+    QUEUES = ["default"]
+
 
 class ProductionConfig(Config):
     DEBUG = False

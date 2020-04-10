@@ -8,12 +8,22 @@ from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path
 
+import rq_dashboard
 from flask import Flask, url_for
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+
+
+def register_rq_dashboard(app):
+    app.config.from_object(rq_dashboard.default_settings)
+    app.register_blueprint(rq_dashboard.blueprint, url_prefix="/admin/scheduler")
+
+
+def register_global_variables(app):
+    app.jinja_env.globals['STATIC_PZ'] = '/static/assets/pizarra/img'
 
 
 def register_extensions(app):
@@ -83,13 +93,15 @@ def apply_themes(app):
 
 def create_app(config, selenium=False):
     app = Flask(__name__, static_folder='base/static')
+
     app.config.from_object(config)
-    app.jinja_env.globals['STATIC_PZ'] = '/static/assets/pizarra/img'
     if selenium:
         app.config['LOGIN_DISABLED'] = True
+    register_rq_dashboard(app)
+    register_global_variables(app)
     register_extensions(app)
     register_blueprints(app)
-    #initialize_database(app)
+    # initialize_database(app)
     configure_database(app)
     configure_logs(app)
     apply_themes(app)
