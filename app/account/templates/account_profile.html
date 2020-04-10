@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% from 'macros.html' import errors %}
+{% from 'macros.html' import show_badge, errors %}
 
 {% block title %} Profile {% endblock title %}
 
@@ -53,7 +53,9 @@
                                 <b>Badges</b> <a class="pull-right">{{ current_user.badges | count }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Requests</b> <a class="pull-right">{{ current_user.requests | count }}</a>
+                                <b>Requests</b> <a class="pull-right"
+                                                   href="{{ url_for('account_blueprint.route_account_requests') }}">
+                                {{ current_user.requests | count }}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>Quota</b> <a class="pull-right">{{ current_user.quota_used }}
@@ -75,14 +77,15 @@
                         <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
 
                         <p class="text-muted">
-                            You are enroled in <b>{{ current_user.classgroup.description }}</b>
+                            You are enroled in <a href="{{ url_for('account_blueprint.route_account_classgroup') }}"
+                        ><b>{{ current_user.classgroup.description }}</b></a>
                         </p>
 
                         <hr>
 
                         <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
 
-                        <p class="text-muted">Malibu, California</p>
+                        <p class="text-muted">Space <i class="fa fa-fw fa-rocket"></i></p>
 
                         <hr>
 
@@ -224,7 +227,11 @@
 
                         <!-- tab pane Badges -->
                         <div class="tab-pane" id="badges">
-
+                            <div class="row">
+                                {% for badge in current_user.badges %}
+                                    {{ show_badge(badge) }}
+                                {% endfor %}
+                            </div>
                         </div>
                         <!-- /.tab-pane -->
 

@@ -3,3 +3,35 @@
         <span class="help-block">{{ '<br/>'.join(dict[key]) | safe }}</span>
     {% endif %}
 {% endmacro %}
+
+{% macro show_badge(badge) %}
+    <div class="col-md-4">
+        <!-- Widget: Badge -->
+        <div class="box box-widget widget-user">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header {{ badge.background_color }}">
+                <h3 class="widget-user-username">{{ badge.title }}</h3>
+                <h5 class="widget-user-desc">{{ badge.subtitle }}</h5>
+            </div>
+
+            <div class="widget-user-image">
+                <img class="img-circle" src="{{ STATIC_PZ }}/{{ badge.image }}"
+                     alt="User Avatar">
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-sm-12">
+                        <div class="description-block">
+                            <span class="description-text">{{ badge.description }}</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+        </div>
+        <!-- /.widget-badge -->
+    </div>
+    <!-- /.col -->
+{% endmacro %}
