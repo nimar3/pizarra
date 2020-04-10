@@ -16,7 +16,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="/account">Account</a></li>
+            <li><a href="/my-account">Account</a></li>
             <li class="active">Group</li>
         </ol>
     </section>
@@ -42,18 +42,6 @@
                                         <a class="users-list-name"
                                            href="#">{{ 'You!' if student == current_user else student.name }}</a>
                                         <span class="users-list-date">{{ student.username }}</span>
-                                        <span class="users-list-date">
-                                        {% set badges = student.badges | count %}
-                                            {% if badges == 0 %}
-                                                <i class="fa fa-battery-1"></i>
-                                            {% elif badges > 0 and badges < 4 %}
-                                                {% for i in range(badges) %}
-                                                    <i class="fa fa-trophy"></i>&nbsp;
-                                                {% endfor %}
-                                            {% else %}
-                                                <i class="fa fa-star"></i>
-                                            {% endif %}
-                                        </span>
                                     </li>
                                 {% endfor %}
                             </ul>

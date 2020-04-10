@@ -4,10 +4,13 @@ License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
 
-import hashlib, binascii, os
-
-
+import binascii
+import hashlib
+import os
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
+import random
+import string
+
 
 def hash_pass(password):
     """Hash a password for storing."""
@@ -29,3 +32,7 @@ def verify_pass(provided_password, stored_password):
                                   100000)
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash == stored_password
+
+
+def random_access_key():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for i in range(60))

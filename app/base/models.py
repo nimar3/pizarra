@@ -10,7 +10,7 @@ from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, Forei
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
-from app.base.util import hash_pass
+from app.base.util import hash_pass, random_access_key
 from app.tasks.models import RequestStatus
 
 classgroup_assignments = Table('_classgroup_assignments', db.Model.metadata,
@@ -40,6 +40,7 @@ class User(db.Model, UserMixin):
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime())
     avatar = Column(String)
+    access_key = Column(String)
     # Relations
     # one-to-many
     requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)')
@@ -72,6 +73,9 @@ class User(db.Model, UserMixin):
 
         if 'password' not in kwargs:
             setattr(self, 'password', hash_pass('123'))
+
+        if 'access_key' not in kwargs:
+            setattr(self, 'access_key', random_access_key())
 
     def __repr__(self):
         return str(self.username)

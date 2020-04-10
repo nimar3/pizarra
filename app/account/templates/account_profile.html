@@ -1,0 +1,308 @@
+{% extends "base_site.html" %}
+
+{% from 'macros.html' import errors %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block stylesheets %}
+    <!-- Specific CSS goes HERE -->
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Profile
+            <small>everything about you</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}"><i class="fa fa-user"></i> Account</a>
+            </li>
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}">Profile</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle"
+                             src="{{ STATIC_PZ }}/{{ current_user.avatar }}" alt="User profile picture">
+
+                        <h3 class="profile-username text-center">
+                            {{ current_user.username }}
+                        </h3>
+
+                        <p class="text-muted text-center">
+                            {{ current_user.email }}
+                        </p>
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Group Members</b> <a class="pull-right"
+                                                        href="/my-account/classgroup">{{ current_user.classgroup.students | count }}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Badges</b> <a class="pull-right">{{ current_user.badges | count }}</a>
+                            </li>
+                        </ul>
+
+                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+                <!-- About Me Box -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">About Me</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+
+                        <p class="text-muted">
+                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                        <p class="text-muted">Malibu, California</p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+
+                        <p>
+                            <span class="label label-danger">UI Design</span>
+                            <span class="label label-success">Coding</span>
+                            <span class="label label-info">Javascript</span>
+                            <span class="label label-warning">PHP</span>
+                            <span class="label label-primary">Node.js</span>
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li {{ 'class=active' if anchor == None }}><a href="#activity" data-toggle="tab">Activity</a>
+                        </li>
+                        <li {{ 'class=active' if anchor == 'badges' }}><a href="#badges" data-toggle="tab">Badges</a>
+                        </li>
+                        <li {{ 'class=active' if anchor == 'password' }}><a href="#password"
+                                                                            data-toggle="tab">Password</a>
+                        </li>
+                        <li {{ 'class=active' if anchor == 'access-key' }}><a href="#accesss-key"
+                                                                              data-toggle="tab">Access Key</a>
+                        </li>
+                    </ul>
+                    <!-- tabs -->
+                    <div class="tab-content">
+                        <!-- tab pane Activity -->
+                        <div class="tab-pane {{ 'active' if anchor == None }}" id="activity">
+                            <!-- The timeline -->
+                            <ul class="timeline timeline-inverse">
+                                <!-- timeline time label -->
+                                <li class="time-label">
+                        <span class="bg-red">
+                          10 Feb. 2014
+                        </span>
+                                </li>
+                                <!-- /.timeline-label -->
+                                <!-- timeline item -->
+                                <li>
+                                    <i class="fa fa-envelope bg-blue"></i>
+
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+
+                                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                                        <div class="timeline-body">
+                                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                            quora plaxo ideeli hulu weebly balihoo...
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a class="btn btn-primary btn-xs">Read more</a>
+                                            <a class="btn btn-danger btn-xs">Delete</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                                <!-- timeline item -->
+                                <li>
+                                    <i class="fa fa-user bg-aqua"></i>
+
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+
+                                        <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your
+                                            friend request
+                                        </h3>
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                                <!-- timeline item -->
+                                <li>
+                                    <i class="fa fa-comments bg-yellow"></i>
+
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
+
+                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post
+                                        </h3>
+
+                                        <div class="timeline-body">
+                                            Take me to your leader!
+                                            Switzerland is small and neutral!
+                                            We are more like Germany, ambitious and misunderstood!
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a class="btn btn-warning btn-flat btn-xs">View comment</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                                <!-- timeline time label -->
+                                <li class="time-label">
+                        <span class="bg-green">
+                          3 Jan. 2014
+                        </span>
+                                </li>
+                                <!-- /.timeline-label -->
+                                <!-- timeline item -->
+                                <li>
+                                    <i class="fa fa-camera bg-purple"></i>
+
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
+
+                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                                        <div class="timeline-body">
+                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                            <img src="http://placehold.it/150x100" alt="..." class="margin">
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                                <li>
+                                    <i class="fa fa-clock-o bg-gray"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <!-- tab pane Badges -->
+                        <div class="tab-pane" id="badges">
+
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <!-- tab pane Password-->
+                        <div class="tab-pane {{ 'active' if anchor == 'password' }}" id="password">
+                            <p>
+                                {% if errors %}
+                                    {% for error in error %}
+                                        <span class="text-danger">{{ error.msg | safe }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </p>
+                            <form class="form-horizontal" action="{{ url_for('account_blueprint.update_password') }}"
+                                  method="post">
+
+                                {{ form.hidden_tag() }}
+
+                                <div class="form-group">
+                                    <label for="inputName" class="col-sm-2 control-label">Password</label>
+                                    <div class="col-sm-10">
+                                        {{ form.password(placeholder="Password", class="form-control", type="password") }}
+                                    </div>
+                                </div>
+                                <div class="form-group {{ 'has-error' if 'password' in form.errors.keys() }}">
+                                    <label for="inputSkills" class="col-sm-2 control-label">Repeat Password</label>
+                                    <div class="col-sm-10">
+                                        {{ form.confirm(placeholder="Repeat Password", class="form-control", type="password") }}
+                                        {{ errors(form.errors, 'password') }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" id="submit" class="btn btn-danger">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <!-- tab pane Access Key -->
+                        <div class="tab-pane {{ 'active' if anchor == 'access-key' }}" id="accesss-key">
+                            <div class="callout callout-warning">
+                                <h5><i class="icon fa fa-warning"></i> This key is for <b>personal</b> use and should
+                                    not be
+                                    shared! Use it wisely.</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10 col-md-offset-1 text-center"><i
+                                        class="fa fa-fw fa-key"></i> <code>{{ current_user.access_key }}</code>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a href="{{ url_for('account_blueprint.regenerate_key') }}">
+                                        <button type="button" class="btn btn-primary pull-right">
+                                            <i class="fa fa-refresh"></i> Regenerate Key
+                                        </button>
+                                    </a>
+                                    <button type="button" class="btn btn-success pull-right"
+                                            style="margin-right: 5px;"><i
+                                            class="fa fa-copy"></i> Copy Key
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="/static/assets/js/demo.js"></script>
+
+{% endblock %}

@@ -1,0 +1,5 @@
+{% macro errors(dict, key) %}
+    {% if key in dict.keys() %}
+        <span class="help-block">{{ '<br/>'.join(dict[key]) | safe }}</span>
+    {% endif %}
+{% endmacro %}

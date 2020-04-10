@@ -9,7 +9,7 @@ from flask import Blueprint
 blueprint = Blueprint(
     'account_blueprint',
     __name__,
-    url_prefix='/account',
+    url_prefix='/my-account',
     template_folder='templates',
     static_folder='static'
 )
