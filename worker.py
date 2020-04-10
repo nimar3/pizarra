@@ -3,7 +3,7 @@ from os import environ
 import redis
 from rq import Connection, Worker
 
-from app import create_app
+from app import create_app, create_worker_app
 from config import config_dict
 
 get_config_mode = environ.get('CONFIG_MODE', 'Debug')
@@ -14,7 +14,7 @@ try:
 except KeyError:
     exit('Error: Invalid CONFIG_MODE environment variable entry.')
 
-app = create_app(config_mode)
+app = create_worker_app(config_mode)
 app.app_context().push()
 redis_url = app.config["REDIS_URL"]
 redis_connection = redis.from_url(redis_url)

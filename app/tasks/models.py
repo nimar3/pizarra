@@ -5,6 +5,12 @@ Copyright (c) 2020 - nimar3
 """
 
 import enum
+import time
+
+
+def simple_task():
+    time.sleep(10)
+    return True
 
 
 class RequestStatus(enum.Enum):

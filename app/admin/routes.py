@@ -13,6 +13,7 @@ from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm
 from app.base.models import Assignment, ClassGroup
+from app.tasks.models import simple_task
 
 
 @blueprint.route('/')
@@ -42,17 +43,11 @@ def login():
 
     return render_template('assignment_new.html', form=assignment_form)
 
-
-def create_task():
-    time.sleep(10)
-    return True
-
-
 @blueprint.route('/create-task')
 def create_task():
     with Connection(redis.from_url(current_app.config["REDIS_URL"])):
         q = Queue()
-        task = q.enqueue(create_task)
+        task = q.enqueue(simple_task)
     response_object = {
         "status": "success",
         "data": {

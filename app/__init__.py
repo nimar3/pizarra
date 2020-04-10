@@ -106,3 +106,8 @@ def create_app(config, selenium=False):
     configure_logs(app)
     apply_themes(app)
     return app
+
+def create_worker_app(config):
+    app = Flask(__name__, static_folder='base/static')
+    app.config.from_object(config)
+    return app
