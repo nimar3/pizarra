@@ -12,7 +12,7 @@
                 <p>
                     {{ current_user.username }}
                 </p>
-                <a href="/page-profile">
+                <a href="{{ url_for('account_blueprint.route_account_home') }}">
                     <i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>

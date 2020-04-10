@@ -89,21 +89,27 @@
 
                         <hr>
 
-                        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-                        <p>
-                            <span class="label label-danger">UI Design</span>
-                            <span class="label label-success">Coding</span>
-                            <span class="label label-info">Javascript</span>
-                            <span class="label label-warning">PHP</span>
-                            <span class="label label-primary">Node.js</span>
-                        </p>
-
-                        <hr>
-
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                        <strong><i class="fa fa-group margin-r-5"></i> Team</strong>
+                        <!-- /.box-header -->
+                        <div class="box-body no-padding">
+                            {% if current_user.team != None %}
+                                <ul class="users-list clearfix">
+                                    {% for member in current_user.team.members %}
+                                        <li>
+                                            <img src="{{ STATIC_PZ }}/{{ member.avatar }}" alt="User Image">
+                                            <a class="users-list-name"
+                                               href="#">{{ 'You!' if member == current_user else member.name }} </a>
+                                            <span class="users-list-date">{{ member.username }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">Seems like you are not part of a team</p>
+                                <a href="{{ url_for('account_blueprint.route_account_classgroup') }}"
+                                   class="btn btn-primary btn-block"><b>Join a new Team</b></a>
+                            {% endif %}
+                            <!-- /.users-list -->
+                        </div>
                     </div>
                     <!-- /.box-body -->
                 </div>
