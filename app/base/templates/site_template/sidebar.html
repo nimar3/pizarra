@@ -20,34 +20,37 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="active treeview">
-                <a href="#">
+            <li class="active">
+                <a href="{{ url_for('home_blueprint.index') }}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
                 </a>
-                <ul class="treeview-menu">
-                    <li class="active"><a href="index"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li><a href="index2"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                </ul>
             </li>
-            <!-- Layouts - @WIP
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-files-o"></i>
-                <span>Layout Options</span>
-                <span class="pull-right-container">
-                  <span class="label label-primary pull-right">4</span>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="/layout-top-nav"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                <li><a href="/layout-boxed"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                <li><a href="/layout-fixed"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                <li><a href="/layout-collapsed"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-              </ul>
-            </li> -->
+            <li>
+                <a href="{{ url_for('home_blueprint.route_assignments') }}">
+                    <i class="fa fa-file-text-o"></i> <span>Assignments</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('account_blueprint.route_account_requests') }}">
+                    <i class="fa fa-upload"></i> <span>Requests</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-flag-checkered"></i> <span>Leaderboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-calendar"></i> <span>Calendar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-question"></i> <span>FAQ</span>
+                </a>
+            </li>
+            <!--
             <li>
                 <a href="/page-widgets">
                     <i class="fa fa-th"></i> <span>Widgets</span>
@@ -121,16 +124,7 @@
             </span>
                 </a>
             </li>
-            <li>
-                <a href="/page-mailbox">
-                    <i class="fa fa-envelope"></i> <span>Mailbox</span>
-                    <span class="pull-right-container">
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
-            </span>
-                </a>
-            </li>
+
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-folder"></i> <span>Examples</span>
@@ -181,6 +175,7 @@
                     <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
                 </ul>
             </li>
+            -->
             <li><a href="/logout"><i class="fa fa-circle-o text-red"></i> <span>Logout</span></a></li>
         </ul>
     </section>

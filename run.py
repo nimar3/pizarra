@@ -10,6 +10,7 @@ from flask_migrate import Migrate
 
 from app import create_app, db
 from config import config_dict
+from data import Sample
 
 get_config_mode = environ.get('CONFIG_MODE', 'Debug')
 config_mode = []
@@ -20,7 +21,7 @@ except KeyError:
 
 app = create_app(config_mode)
 Migrate(app, db)
-# Sample(app, db)
+Sample(app, db)
 
 if __name__ == "__main__":
     app.run()

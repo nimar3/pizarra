@@ -39,8 +39,7 @@ def register_blueprints(app):
 
 def initialize_database(app):
     with app.app_context():
-        if app.debug:
-            db.drop_all()
+        db.drop_all()
         db.create_all()
 
 
@@ -93,19 +92,20 @@ def apply_themes(app):
 
 def create_app(config, selenium=False):
     app = Flask(__name__, static_folder='base/static')
-
     app.config.from_object(config)
     if selenium:
         app.config['LOGIN_DISABLED'] = True
+
     register_rq_dashboard(app)
     register_global_variables(app)
     register_extensions(app)
     register_blueprints(app)
-    # initialize_database(app)
+    initialize_database(app)
     configure_database(app)
     configure_logs(app)
     apply_themes(app)
     return app
+
 
 def create_worker_app(config):
     app = Flask(__name__, static_folder='base/static')

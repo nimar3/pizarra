@@ -10,6 +10,36 @@
     - __key__: assignment_hello_world
       name: hello_world
       title: "Hello World"
+      due_date: 2020-05-01 23:59:59
+      description: |+
+       <h2>Hilos OpenMP</h2>
+       <p>Para escoger el número de hilos OpenMP, hay que especificar el parámetro -t del cliente. Por defecto el número de hilos es 1. En tablón, la función omp_set_num_threads ya no tiene prioridad. Aunque se puede seguir utilizando para reducir el número de hilos que se usa en la región paralela.</p>
+       <p>Por ejemplo, el siguiente código selecciona manualmente 3 hilos pero sólo se hará efectivo cuando desde el cliente se envíe el programa con -t >= 3.</p>
+       <pre>
+       <code>#include <omp.h>
+       #include <stdio.h>
+       #include <stdlib.h>
+
+       int main (int argc, char *argv[]) {
+
+       int maxt = omp_get_max_threads();
+       printf("Max threads is: %d\n", maxt);
+
+       omp_set_num_threads(3);
+
+       int tid, tnum;
+
+       #pragma omp parallel private(tnum, tid)
+         {
+             tid = omp_get_thread_num();
+             tnum = omp_get_num_threads();
+             printf("Hello World from thread = %d/%d\n", tid, tnum);
+         }
+
+         return 0;
+       }
+       </code>
+       </pre>
     - __key__: assignment_openmp_basic
       name: openmp_basic
       title: "OpenMP"

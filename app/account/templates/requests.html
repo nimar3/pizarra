@@ -15,8 +15,9 @@
             <small>preview of results of all my task jobs</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="/my-account">Account</a></li>
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}"><i class="fa fa-user"></i> Account</a>
+            </li>
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}">Profile</a></li>
             <li class="active">Requests</li>
         </ol>
     </section>
@@ -55,9 +56,9 @@
                                 <tr>
                                     <td>{{ request.id }}</td>
                                     <td>{{ request.timestamp }}</td>
-                                    <td><a href="/assignment/{{ request.assignment.id }}">{{ request.assignment.title }}</a></td>
+                                    <td><a href="{{ url_for('home_blueprint.route_assignments')}}{{ request.assignment.id }}">{{ request.assignment.title }}</a></td>
                                     <td><span class="label {{ request.status.label }}">{{ request.status.name }}</span></td>
-                                    <td>{{ request.run_time }} ms</td>
+                                    <td>{{ request.run_time }} s.</td>
                                     <td>{{ request.output }}</td>
                                 </tr>
                             {% endfor %}
