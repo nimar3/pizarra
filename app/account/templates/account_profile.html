@@ -118,16 +118,18 @@
             <!-- /.col -->
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <li {{ 'class=active' if anchor == None }}><a href="#activity" data-toggle="tab">Activity</a>
+                    <ul class="nav nav-tabs" id="profile-tabs">
+                        <li {{ 'class=active' if anchor == None }} id="profile-tabs-activity"><a href="#activity"
+                                                                                                 data-toggle="tab">Activity</a>
                         </li>
-                        <li><a href="#badges" data-toggle="tab">Badges</a>
+                        <li id="profile-tabs-badges"><a href="#badges" data-toggle="tab">Badges</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'password' }}><a href="#password"
-                                                                            data-toggle="tab">Password</a>
+                        <li {{ 'class=active' if anchor == 'password' }} id="profile-tabs-password"><a href="#password"
+                                                                                                       data-toggle="tab">Password</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'access-key' }}><a href="#accesss-key"
-                                                                              data-toggle="tab">Access Key</a>
+                        <li {{ 'class=active' if anchor == 'access-key' }} id="profile-tabs-access-key"><a
+                                href="#accesss-key"
+                                data-toggle="tab">Access Key</a>
                         </li>
                     </ul>
                     <!-- tabs -->
@@ -237,6 +239,15 @@
                                 {% for badge in current_user.badges %}
                                     {{ show_badge(badge) }}
                                 {% endfor %}
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img id="doge-tooltip" class="pull-right" src="{{ STATIC_PZ }}/doge-tooltip.png"
+                                         data-container="body"
+                                         data-toggle="popover" data-placement="left"
+                                         data-content="{{ "SO SHINY!!<br/> MUCH AMAZING" if current_user.badges | count > 0
+                                         else "SO EMPTY!!<br/> MUCH WORK TO DO" }}"/>
+                                </div>
                             </div>
                         </div>
                         <!-- /.tab-pane -->
