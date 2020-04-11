@@ -66,11 +66,15 @@
       title: "First Place"
       subtitle: "Number one!"
       description: "Earn when a program is the fastest of the Assignment"
+      background_color: "bg-maroon-active"
+      image: "badge-number-one-128x128.png"
     - __key__: badge_beat_the_machine
       name: "beat_the_machine"
       title: "Beat the machine"
       subtitle: "Damn! you are fast"
       description: "Earn when your program runs below a certain threshold"
+      background_color: "bg-navy-active"
+      image: "badge-beat-the-machine-256x256.png"
 
 - ClassGroup:
     - __key__: class_a
@@ -112,7 +116,7 @@
       roles: [users]
       classgroup: class_a
       team: team_foo
-      badges: [badge_flash]
+      badges: [badge_flash, badge_first_place, badge_beat_the_machine]
     - __key__: user_bar
       username: "bar"
       email: "bar@test.test"
