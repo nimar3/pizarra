@@ -44,7 +44,8 @@
                                     <a href="{{ url_for('home_blueprint.route_assignments') }}">Assignments</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="{{ url_for('account_blueprint.route_account_home') }}">Badges</a>
+                                    <i class="fa fa-fw fa-trophy"></i><a
+                                        href="{{ url_for('account_blueprint.route_account_home', anchor='badges') }}">Badges</a>
                                 </div>
                             </div>
                             <!-- /.row -->
@@ -52,10 +53,12 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{ url_for('account_blueprint.route_account_home') }}" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{ url_for('account_blueprint.route_account_home') }}"
+                                   class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{ url_for('base_blueprint.logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="{{ url_for('base_blueprint.logout') }}" class="btn btn-default btn-flat">Sign
+                                    out</a>
                             </div>
                         </li>
                     </ul>

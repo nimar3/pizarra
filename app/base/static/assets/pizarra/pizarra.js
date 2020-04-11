@@ -19,15 +19,7 @@ $(document).ready(function () {
     $('#doge-tooltip').popover({
         html: true
     });
-
-
-    $("#profile-tabs li").click(function () {
-        if ($(this).attr('id') === 'profile-tabs-badges') {
-            setTimeout(function () {
-                $('#doge-tooltip').popover('show')
-            }, 1000);
-        } else {
-            $('#doge-tooltip').popover('hide')
-        }
-    });
+    setTimeout(function () {
+        $('#doge-tooltip').popover('show')
+    }, 1000);
 });

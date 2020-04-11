@@ -3,7 +3,7 @@
 License: MIT
 Copyright (c) 2020 - Pizarra
 """
-from flask import render_template, request, flash
+from flask import render_template, request, flash, redirect, url_for
 from flask_login import current_user
 
 from app import db
@@ -12,19 +12,19 @@ from app.account.forms import ChangePassword
 from app.base.util import random_string, hash_pass
 
 
-@blueprint.route('/')
-def route_account_home():
-    return render_template('account_profile.html', anchor=None, form=ChangePassword())
+@blueprint.route('/', defaults={'anchor': None})
+@blueprint.route('/<anchor>')
+def route_account_home(anchor):
+    anchors = ['badges', 'classgroup', 'password', 'access-key']
+    if anchor is not None and anchor not in anchors:
+        return redirect(url_for('account_blueprint.route_account_home', anchor=None))
+
+    return render_template('account_profile.html', anchor=anchor, form=ChangePassword())
 
 
 @blueprint.route('/requests')
 def route_account_requests():
     return render_template('requests.html')
-
-
-@blueprint.route('/classgroup')
-def route_account_classgroup():
-    return render_template('account_classgroup.html')
 
 
 @blueprint.route('/regenerate-key')

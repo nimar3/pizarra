@@ -24,7 +24,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer text-center">
-            <a href="{{ url_for('account_blueprint.route_account_classgroup') }}" class="uppercase">View all group
+            <a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}" class="uppercase">View all group
                 members</a>
         </div>
         <!-- /.box-footer -->
@@ -57,7 +57,7 @@
             <!-- /.row -->
             {% if footer_message != None %}
                 <ul class="nav nav-stacked">
-                    <li><a href="{{ url_for('account_blueprint.route_account_classgroup') }}"><i
+                    <li><a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"><i
                             class="fa fa-fw fa-info"></i> Go to your Class to find teammates!</a></li>
                 </ul>
             {% endif %}

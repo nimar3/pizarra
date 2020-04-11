@@ -46,7 +46,7 @@
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
                                 <b>Group Members</b> <a class="pull-right"
-                                                        href="{{ url_for('account_blueprint.route_account_classgroup') }}">
+                                                        href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}">
                                 {{ current_user.classgroup.students | count }}</a>
                             </li>
                             <li class="list-group-item">
@@ -77,7 +77,8 @@
                         <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
 
                         <p class="text-muted">
-                            You are enroled in <a href="{{ url_for('account_blueprint.route_account_classgroup') }}"
+                            You are enroled in <a
+                                href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"
                         ><b>{{ current_user.classgroup.description }}</b></a>
                         </p>
 
@@ -105,7 +106,7 @@
                                 </ul>
                             {% else %}
                                 <p class="text-muted">Seems like you are not part of a team</p>
-                                <a href="{{ url_for('account_blueprint.route_account_classgroup') }}"
+                                <a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"
                                    class="btn btn-primary btn-block"><b>Join a new Team</b></a>
                             {% endif %}
                             <!-- /.users-list -->
@@ -122,7 +123,12 @@
                         <li {{ 'class=active' if anchor == None }} id="profile-tabs-activity"><a href="#activity"
                                                                                                  data-toggle="tab">Activity</a>
                         </li>
-                        <li id="profile-tabs-badges"><a href="#badges" data-toggle="tab">Badges</a>
+                        <li {{ 'class=active' if anchor == 'badges' }} id="profile-tabs-badges"><a href="#badges"
+                                                                                                   data-toggle="tab">Badges</a>
+                        </li>
+                        <li {{ 'class=active' if anchor == 'classgroup' }} id="profile-tabs-classgroup"><a
+                                href="#classgroup"
+                                data-toggle="tab">Group</a>
                         </li>
                         <li {{ 'class=active' if anchor == 'password' }} id="profile-tabs-password"><a href="#password"
                                                                                                        data-toggle="tab">Password</a>
@@ -234,7 +240,7 @@
                         <!-- /.tab-pane -->
 
                         <!-- tab pane Badges -->
-                        <div class="tab-pane" id="badges">
+                        <div class="tab-pane {{ 'active' if anchor == 'badges' }}" id="badges">
                             <div class="row">
                                 {% for badge in current_user.badges %}
                                     {{ show_badge(badge) }}
@@ -248,6 +254,24 @@
                                          data-content="{{ "SO SHINY!!<br/> MUCH AMAZING" if current_user.badges | count > 0
                                          else "SO EMPTY!!<br/> MUCH WORK TO DO" }}"/>
                                 </div>
+                            </div>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <!-- tab pane ClassGroup -->
+                        <div class="tab-pane {{ 'active' if anchor == 'classgroup' }}" id="classgroup">
+                            <div class="box-body no-padding">
+                                <ul class="classgroup-student-list users-list clearfix">
+                                    {% for student in current_user.classgroup.students %}
+                                        <li class="{{ '' if student == current_user else 'classgroup-student-other' }}">
+                                            <img src="{{ STATIC_PZ }}/{{ student.avatar }}" alt="User Image">
+                                            <a class="users-list-name"
+                                               href="#">{{ 'You!' if student == current_user else student.name }}</a>
+                                            <span class="users-list-date">{{ student.username }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <!-- /.users-list -->
                             </div>
                         </div>
                         <!-- /.tab-pane -->
@@ -348,6 +372,18 @@
             document.execCommand("Copy");
             textArea.remove();
         }
+    </script>
+
+    <script>
+        $("#profile-tabs li").click(function () {
+            if ($(this).attr('id') === 'profile-tabs-badges') {
+                setTimeout(function () {
+                    $('#doge-tooltip').popover('show')
+                }, 1000);
+            } else {
+                $('#doge-tooltip').popover('hide')
+            }
+        });
     </script>
 
 {% endblock %}
