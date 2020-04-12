@@ -58,7 +58,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
 
 - Requests
 
-![Request List!](/app/base/static/assets/pizarra/img/readme/request-list.png "Request List")
+![Request List!](/app/base/static/assets/pizarra/img/readme/requests-list.png "Request List")
 
 - Assignments
 
