@@ -1,12 +1,6 @@
 # Pizarra
 
-A web app to manage Parallel Programming Competitions based on [Tablón](https://trasgo.infor.uva.es/tablon/)
-
-Based on:
-
-- AdminLTE for Dashboard
-- RQ for a Task Scheduler
-
+A web app in Python 3.x to manage Parallel Programming Competitions based on [Tablón](https://trasgo.infor.uva.es/tablon/)
 
 ## Features
 
@@ -72,6 +66,11 @@ Based on:
 ![Assignment New!](/app/base/static/assets/pizarra/img/readme/assignment-new.png "Assignment")
 ![Assignment Submit!](/app/base/static/assets/pizarra/img/readme/assignment-submit-example.png "Assignment")
 
+- Task Scheduler
+
+![Task Scheduler!](/app/base/static/assets/pizarra/img/readme/rq-task-scheduler.png "Task Scheduler")
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
@@ -81,7 +80,7 @@ These instructions will get you a copy of the project up and running on your loc
 What things you need to install the software and how to install them
 
 ```
-TODO
+TODO Dockerfile
 ```
 
 ### Installing
@@ -89,7 +88,12 @@ TODO
 A step by step series of examples that tell you how to get a development env running
 
 ```
-TODO
+TODO full guide
+```
+
+```
+pip install -r requirements.txt 
+python run.py
 ```
 
 ## Deployment
@@ -100,7 +104,9 @@ TODO
 
 ## Built With
 
-* [Flask Dashboard AdminLTE](https://github.com/app-generator/flask-dashboard-adminlte) - The web framework used for the frontend
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/) - as micro framework for the web app
+* [Flask Dashboard AdminLTE](https://github.com/app-generator/flask-dashboard-adminlte) - for Dashboard template
+* [Redis Queue](https://python-rq.org/) - for Task Scheduling
 
 ## Contributing
 
