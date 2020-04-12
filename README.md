@@ -25,10 +25,12 @@ Based on:
     - [x] latest badge / no badges
     - [x] your team / no team
   - Admin
+    - [x] create assignment
     - [ ] summaries
     - [ ] requests 
     - [ ] status
     - [ ] manage students
+    - [ ] manage assignments
     - [ ] manage RQ task scheduler
 - Assignments
   - [ ] list
@@ -47,12 +49,28 @@ Based on:
   - [ ] info
 
 
-## Screenshot
+## Screenshots
 
-### Dashboard Student 
+- Dashboard Student
 
 ![Dashboard Student with Team and Latest Badge!](/app/base/static/assets/pizarra/img/readme/dashboard-full.png "Dashboard Student")
+![Dashboard Student with no Team and Badge!](/app/base/static/assets/pizarra/img/readme/dashboard-empty.png "Dashboard Student")
 
+- My Account
+
+![My Account Group!](/app/base/static/assets/pizarra/img/readme/my-account-group.png "My Account")
+![My Account Access Key!](/app/base/static/assets/pizarra/img/readme/my-account-access-key.png "My Account")
+![My Account Badges!](/app/base/static/assets/pizarra/img/readme/my-account-badges.png "My Account")
+
+- Requests
+
+![Request List!](/app/base/static/assets/pizarra/img/readme/request-list.png "Request List")
+
+- Assignments
+
+![Assignment Info!](/app/base/static/assets/pizarra/img/readme/assignment-info.png "Assignment")
+![Assignment New!](/app/base/static/assets/pizarra/img/readme/assignment-new.png "Assignment")
+![Assignment Submit!](/app/base/static/assets/pizarra/img/readme/assignment-submit-example.png "Assignment")
 
 ## Getting Started
 
