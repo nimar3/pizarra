@@ -15,7 +15,7 @@ from app.base.util import random_string, hash_pass
 @blueprint.route('/', defaults={'anchor': None})
 @blueprint.route('/<anchor>')
 def route_account_home(anchor):
-    anchors = ['badges', 'classgroup', 'password', 'access-key']
+    anchors = ['activity', 'badges', 'classgroup', 'password', 'access-key']
     if anchor is not None and anchor not in anchors:
         return redirect(url_for('account_blueprint.route_account_home', anchor=None))
 
@@ -35,7 +35,7 @@ def route_regenerate_key():
     db.session.commit()
     flash('New Access key has been generated!', 'success')
 
-    return render_template('account_profile.html', anchor="access-key", form=ChangePassword())
+    return redirect(url_for('account_blueprint.route_account_home', anchor='access-key'))
 
 
 @blueprint.route('/update-password', methods=['POST'])

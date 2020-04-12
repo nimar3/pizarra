@@ -28,8 +28,8 @@ class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
     email = Column(String, unique=True)
+    username = Column(String, unique=True)
     name = Column(String)
     password = Column(Binary)
     active = Column(Boolean(), default=True)
@@ -73,6 +73,9 @@ class User(db.Model, UserMixin):
 
         if 'password' not in kwargs:
             setattr(self, 'password', hash_pass('123'))
+
+        if 'username' not in kwargs or 'username' is None or 'username' is '':
+            setattr(self, 'username', kwargs['email'].split('@')[0])
 
         if 'access_key' not in kwargs:
             setattr(self, 'access_key', random_string())

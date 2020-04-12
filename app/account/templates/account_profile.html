@@ -45,8 +45,7 @@
 
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                                <b>Group Members</b> <a class="pull-right"
-                                                        href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}">
+                                <b>Group Members</b> <a class="pull-right">
                                 {{ current_user.classgroup.students | count }}</a>
                             </li>
                             <li class="list-group-item">
@@ -120,20 +119,25 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs" id="profile-tabs">
-                        <li {{ 'class=active' if anchor == None }} id="profile-tabs-activity"><a href="#activity"
-                                                                                                 data-toggle="tab">Activity</a>
+                        <li {{ 'class=active' if anchor == None }} id="profile-tabs-activity" data-url="activity"><a
+                                href="#activity"
+                                data-toggle="tab">Activity</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'badges' }} id="profile-tabs-badges"><a href="#badges"
-                                                                                                   data-toggle="tab">Badges</a>
+                        <li {{ 'class=active' if anchor == 'badges' }} id="profile-tabs-badges" data-url="badges"><a
+                                href="#badges"
+                                data-toggle="tab">Badges</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'classgroup' }} id="profile-tabs-classgroup"><a
+                        <li {{ 'class=active' if anchor == 'classgroup' }} id="profile-tabs-classgroup"
+                                                                           data-url="classgroup"><a
                                 href="#classgroup"
                                 data-toggle="tab">Group</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'password' }} id="profile-tabs-password"><a href="#password"
-                                                                                                       data-toggle="tab">Password</a>
+                        <li {{ 'class=active' if anchor == 'password' }} id="profile-tabs-password" data-url="password">
+                            <a href="#password"
+                               data-toggle="tab">Password</a>
                         </li>
-                        <li {{ 'class=active' if anchor == 'access-key' }} id="profile-tabs-access-key"><a
+                        <li {{ 'class=active' if anchor == 'access-key' }} id="profile-tabs-access-key"
+                                                                           data-url="access-key"><a
                                 href="#accesss-key"
                                 data-toggle="tab">Access Key</a>
                         </li>
@@ -383,6 +387,9 @@
             } else {
                 $('#doge-tooltip').popover('hide')
             }
+            history.pushState({
+                id: 'my-account'
+            }, 'Pizarra - Profile | UPV', {{ url_for('account_blueprint.route_account_home') }} + $(this)[0].dataset['url']);
         });
     </script>
 

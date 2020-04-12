@@ -44,6 +44,9 @@ def login():
         # Locate user
         user = User.query.filter_by(username=username).first()
 
+        if user is None:
+            user = User.query.filter_by(email=username).first()
+
         # Check the password
         if user and verify_pass(password, user.password):
             update_user_at_login(user)

@@ -246,7 +246,7 @@
 
 # BULK DATA
 - User:
-    - username: amet
+    - email: amet@amet.com
       name: Hamilton
       quota_used: 3411
       roles: [users]
