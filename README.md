@@ -2,6 +2,58 @@
 
 A web app to manage Parallel Programming Competitions based on [Tablón](https://trasgo.infor.uva.es/tablon/)
 
+Based on:
+
+- AdminLTE for Dashboard
+- RQ for a Task Scheduler
+
+
+## Features
+
+- Account
+  - [x] login / logout
+  - [x] register
+  - [x] change password
+  - [x] regenerate access key
+  - [x] your group
+  - [ ] activity
+  - [ ] join a new team 
+- Dashboard
+  - Student
+    - [x] summaries
+    - [x] latest requests
+    - [x] latest badge / no badges
+    - [x] your team / no team
+  - Admin
+    - [ ] summaries
+    - [ ] requests 
+    - [ ] status
+    - [ ] manage students
+    - [ ] manage RQ task scheduler
+- Assignments
+  - [ ] list
+  - [x] info
+  - [ ] submit
+  - [ ] badges to obtain
+- Requests
+  - [ ] list
+  - [ ] filter
+  - [ ] info
+- Leaderboard
+  - [ ] board
+- Calendar
+  - [ ] calendar info
+- FAQ
+  - [ ] info
+
+
+## Screenshot
+
+### Dashboard Student 
+
+![Dashboard Student with Team and Latest Badge!](/app/base/static/assets/pizarra/img/readme/dashboard-full.png "Dashboard Student")
+
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
