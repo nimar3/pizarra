@@ -46,6 +46,12 @@
     - __key__: assignment_openmpi_basic
       name: openmpi_basic
       title: "OpenMPI"
+    - __key__: assignment_other
+      name: assignment_other
+      title: "Other"
+    - __key__: assignment_other_again
+      name: assignment_other_again
+      title: "Other Again"
 
 - Team:
     - __key__: team_foo
@@ -80,7 +86,7 @@
     - __key__: class_a
       name: "G2019-A1"
       description: "Class from 2019 A1 group"
-      assignments: [assignment_hello_world, assignment_openmp_basic]
+      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic, assignment_other, assignment_other_again]
     - __key__: class_b
       name: "G2019-B1"
       description: "Class from 2019 B1 group"

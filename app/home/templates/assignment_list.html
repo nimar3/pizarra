@@ -1,0 +1,46 @@
+{% extends "base_site.html" %}
+
+{% from "macros/assignment.html" import assignment_summary with context %}
+
+{% block title %} Invoice {% endblock title %}
+
+{% block stylesheets %}
+    <!-- Specific CSS goes HERE -->
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Assignments
+            <small>All your homework</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Assignments</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Main row -->
+        <div class="row">
+            <div class="col-md-12">
+                {% for assignment in current_user.classgroup.assignments %}
+                    {{ assignment_summary(assignment) }}
+                {% endfor %}
+            </div>
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="/static/assets/js/demo.js"></script>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% macro assignment_summary(assignment) %}
+    <div class="col-md-6">
+        <div class="box box-widget">
+            <div class="box-header with-border">
+                <!-- /.user-block -->
+                <div class="box-tools">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <div class="user-block">
+                    <img class="img-circle" src="{{ STATIC_PZ }}/assignment.png" alt="Assignment image">
+                    <span class="username"><a
+                            href="{{ url_for('home_blueprint.route_assignments') + assignment.name }}">{{ assignment.title }}</a></span>
+                    <span class="description"><b>Due Date:</b> {{ assignment.due_date }}</span>
+                </div>
+
+                <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="truncate">{{ assignment.description | safe if assignment.description != None else 'No description available' }}
+                        </div>
+                        <p>...</p>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <!-- accepted payments column -->
+                    <div class="col-xs-4">
+                        <p class="lead">Badges</p>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-8">
+                        <p class="lead">Latest Requests</p>
+                        {% if assignment.requests | count > 0 %}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>User</th>
+                                        <th>Status</th>
+                                        <th>Time</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for request in assignment.requests[:3] %}
+                                        <tr>
+                                            <td>{{ request.timestamp }}</td>
+                                            <td>{{ request.user }}</td>
+                                            <td><span
+                                                    class="label {{ request.status.label }}">{{ request.status.name }}</span>
+                                            </td>
+                                            <td>{{ request.run_time }} s.</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div>
+                                <img id="doge-tooltip" class="pull-right" src="{{ STATIC_PZ }}/doge-tooltip.png"
+                                     alt="Doge"
+                                     data-container="body"
+                                     data-toggle="popover" data-placement="left"
+                                     data-content="<b>WOW!!</b><br/> MUCH EMPTY"/>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <!-- /.box-footer -->
+            <div class="box-footer">
+                <div class="row no-print">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-flag-checkered"></i> Leaderboard
+                        </button>
+                        <a href="{{ url_for('home_blueprint.route_assignments') + assignment.name }}"
+                           class="btn btn-default pull-right"><i class="fa fa-file-o"></i>
+                            Full Description</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-footer -->
+        </div>
+    </div>
+{% endmacro %}

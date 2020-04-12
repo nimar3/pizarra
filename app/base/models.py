@@ -175,7 +175,7 @@ class Assignment(db.Model):
     template = Column(UnicodeText)
     start_date = Column(DateTime())
     due_date = Column(DateTime())
-    requests = relationship('Request', back_populates='assignment')
+    requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)')
     attachments = relationship('Attachment')
     classgroup = relationship('ClassGroup', secondary='_classgroup_assignments', back_populates='assignments')
 

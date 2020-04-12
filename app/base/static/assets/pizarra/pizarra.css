@@ -22,3 +22,9 @@
     -webkit-filter: grayscale(70%);
     filter: grayscale(70%);
 }
+
+.truncate {
+  max-height: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

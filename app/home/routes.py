@@ -20,10 +20,16 @@ def index():
     return render_template('home.html')
 
 
-@blueprint.route('/assignments/', defaults={'id': None})
-@blueprint.route('/assignments/<id>')
-def route_assignments(id):
-    assignment = Assignment.query.filter_by(id=id).first()
+@blueprint.route('/assignments/', defaults={'name': None})
+@blueprint.route('/assignments/<name>')
+def route_assignments(name):
+    if name is None:
+        return render_template('assignment_list.html')
+
+    assignment = Assignment.query.filter_by(name=name).first()
+    if assignment is None:
+        return redirect(url_for('home_blueprint.route_assignments'))
+
     return render_template('assignment.html', assignment=assignment)
 
 
