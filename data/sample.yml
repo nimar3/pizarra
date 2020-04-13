@@ -42,14 +42,18 @@
        </pre>
     - __key__: assignment_openmp_basic
       name: openmp_basic
+      due_date: 2020-06-01 23:59:59
       title: "OpenMP"
     - __key__: assignment_openmpi_basic
       name: openmpi_basic
+      due_date: 2020-06-10 23:59:59
       title: "OpenMPI"
     - __key__: assignment_other
       name: assignment_other
+      due_date: 2020-06-20 23:59:59
       title: "Other"
     - __key__: assignment_other_again
+      due_date: 2020-06-25 23:59:59
       name: assignment_other_again
       title: "Other Again"
 

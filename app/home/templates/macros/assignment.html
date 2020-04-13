@@ -1,4 +1,5 @@
 {% macro assignment_summary(assignment) %}
+
     <div class="col-md-6">
         <div class="box box-widget">
             <div class="box-header with-border">
@@ -76,6 +77,12 @@
             <div class="box-footer">
                 <div class="row no-print">
                     <div class="col-xs-12">
+                        {% if assignment.id in current_user.passed_assignments %}
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <i class="icon fa fa-check"></i> You already passed this Assigment
+                            </div>
+                        {% endif %}
                         <button type="button" class="btn btn-primary">
                             <i class="fa fa-flag-checkered"></i> Leaderboard
                         </button>

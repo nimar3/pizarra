@@ -93,6 +93,11 @@ class User(db.Model, UserMixin):
         requests_finished = len(list(filter(lambda request: request.status is RequestStatus.FINISHED, self.requests)))
         return 0 if request_total == 0 else round((requests_finished * 100) / request_total, 2)
 
+    @property
+    def passed_assignments(self):
+        finished_requests = list(filter(lambda request: request.status is RequestStatus.FINISHED, self.requests))
+        return set(x.assignment.id for x in finished_requests)
+
 
 class Role(db.Model, RoleMixin):
     """
@@ -127,7 +132,7 @@ class ClassGroup(db.Model):
     description = Column(String(255))
     students = relationship('User', back_populates="classgroup")
     assignments = relationship('Assignment', secondary='_classgroup_assignments',
-                               backref=backref('classgroups', lazy='dynamic'))
+                               backref=backref('classgroups', lazy='dynamic', order_by='asc(Assignment.due_date)'))
 
 
 class Badge(db.Model):
