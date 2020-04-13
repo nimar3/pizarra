@@ -27,7 +27,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
     - [ ] manage assignments
     - [ ] manage RQ task scheduler
 - Assignments
-  - [ ] list
+  - [x] list
   - [x] info
   - [ ] submit
   - [ ] badges to obtain

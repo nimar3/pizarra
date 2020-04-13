@@ -15,8 +15,8 @@
             <small>#{{ assignment.id }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Assignments</a></li>
+            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="{{ url_for('home_blueprint.route_assignments') }}">Assignments</a></li>
             <li class="active">{{ assignment.name }}</li>
         </ol>
     </section>
