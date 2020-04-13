@@ -60,25 +60,36 @@
                                     <!-- /.form group -->
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 {{ form.title(placeholder="Title", class="form-control") }}
                             </div>
-                            <div class="for-group">
-                                <label for="editor">Description</label>
-                                <textarea id="editor" name="description" rows="10" cols="80"></textarea>
-                            </div>
 
                             <div class="form-group">
-                                <label for="groups">Groups</label>
-                                {{ form.classgroups(placeholder="Class Groups", class="form-control") }}
+                                <label for="editor">Description</label>
+                                {{ form.description(placeholder="Description", class="form-control") }}
                             </div>
 
-                        </div>
-                        <!-- /.box-body -->
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="groups">Header</label>
+                                        {{ form.header(placeholder="header", class="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="form-group">
+                                        <label for="groups">Groups</label>
+                                        {{ form.classgroups(placeholder="Class Groups", class="form-control") }}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
 
-                        <div class="box-footer">
-                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                            <div class="box-footer">
+                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -102,7 +113,7 @@
         $(function () {
             // Replace the <textarea id="editor"> with a CKEditor
             // instance, using default configuration.
-            CKEDITOR.replace('editor', {
+            CKEDITOR.replace('description', {
                 extraPlugins: 'codesnippet'
             });
         })
@@ -118,7 +129,7 @@
                 timePicker24Hour: true,
                 timePickerIncrement: 1,
                 locale: {
-                    format: 'DD/MM/YYYY HH:mm'
+                    format: 'YYYY/MM/DD HH:mm'
                 }
             })
         })

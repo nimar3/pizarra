@@ -3,7 +3,7 @@
 License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
-import time
+from datetime import datetime
 
 import redis
 from flask import render_template, request, jsonify, current_app
@@ -22,18 +22,18 @@ def route_admin_home():
 
 
 @blueprint.route('/assignment/new', methods=['GET', 'POST'])
-def login():
+def route_assignment_new():
     assignment_form = AssignmentForm(request.form)
     assignment_form.classgroups.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
     if 'submit' in request.form:
         # read form data
-        name = request.form['name']
+        name = assignment_form.data['name']
 
         # Locate assignment
         assignment = Assignment.query.filter_by(name=name).first()
 
         if assignment is None:
-            assignment = Assignment(**request.form)
+            assignment = create_assignment(assignment_form.data)
 
         db.session.add(assignment)
         db.session.commit()
@@ -42,6 +42,7 @@ def login():
         return render_template('assignment_new.html', msg='Wrong user or password', form=assignment_form)
 
     return render_template('assignment_new.html', form=assignment_form)
+
 
 @blueprint.route('/create-task')
 def create_task():
@@ -55,3 +56,17 @@ def create_task():
         }
     }
     return jsonify(response_object), 202
+
+
+def create_assignment(data):
+    assignment = Assignment()
+    assignment.name = data['name']
+    assignment.title = data['title']
+    assignment.description = data['description']
+    # start and due dates
+    date_start_due = [x.strip() for x in data['date'].split('-')]
+    assignment.start_date, assignment.due_date = list(
+        map(lambda x: datetime.strptime(x, '%Y/%m/%d %H:%M'), date_start_due))
+    # each class group must be fetched
+    assignment.classgroups = list(map(lambda x: ClassGroup.query.filter_by(id=x).first(), set(data['classgroups'])))
+    return assignment

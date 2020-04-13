@@ -6,19 +6,17 @@ Copyright (c) 2020 - nimar3
 from random import randint
 
 from flask_security import UserMixin, RoleMixin
-from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, Table, UnicodeText
+from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, UnicodeText, Table
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
 from app.base.util import hash_pass, random_string
 from app.tasks.models import RequestStatus
 
-classgroup_assignments = Table('_classgroup_assignments', db.Model.metadata,
-                               Column('classgroup_id', Integer, ForeignKey('classgroup.id')),
-                               Column('assignment_id', Integer, ForeignKey('assignment.id'))
-                               # TODO fix this problem with duplicated keys
-                               # PrimaryKeyConstraint('classgroup_id', 'assignment_id'),
-                               )
+classgroups_assignments = Table('_classgroups_assignments', db.Model.metadata,
+                                Column('classgroup_id', Integer, ForeignKey('classgroup.id')),
+                                Column('assignment_id', Integer, ForeignKey('assignment.id'))
+                                )
 
 
 class User(db.Model, UserMixin):
@@ -131,8 +129,7 @@ class ClassGroup(db.Model):
     name = Column(String(100), unique=True)
     description = Column(String(255))
     students = relationship('User', back_populates="classgroup")
-    assignments = relationship('Assignment', secondary='_classgroup_assignments',
-                               backref=backref('classgroups', lazy='dynamic', order_by='asc(Assignment.due_date)'))
+    assignments = relationship("Assignment", secondary=classgroups_assignments, back_populates="classgroups")
 
 
 class Badge(db.Model):
@@ -177,29 +174,10 @@ class Assignment(db.Model):
     title = Column(String(100))
     description = Column(UnicodeText)
     header = Column(UnicodeText)
-    template = Column(UnicodeText)
     start_date = Column(DateTime())
     due_date = Column(DateTime())
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)')
-    attachments = relationship('Attachment')
-    classgroup = relationship('ClassGroup', secondary='_classgroup_assignments', back_populates='assignments')
-
-    def __init__(self, **kwargs):
-        for property, value in kwargs.items():
-            if hasattr(value, '__iter__') and not isinstance(value, str):
-                value = value[0]
-
-            setattr(self, property, value)
-
-
-class Attachment(db.Model):
-    """
-    Represent an Attachment from an Assignment in the database
-    """
-    __tablename__ = 'attachment'
-    id = Column(Integer, primary_key=True)
-    file_location = Column(String(255))
-    assignment = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
+    classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
 
 
 # many-to-many relation tables
