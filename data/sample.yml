@@ -71,6 +71,7 @@
       description: "Earn when finishing an Assignment first of your Group"
       background_color: "bg-aqua-active"
       image: "badge-flash-128x128.png"
+      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic]
     - __key__: badge_first_place
       name: "first_place"
       title: "First Place"
@@ -78,6 +79,7 @@
       description: "Earn when a program is the fastest of the Assignment"
       background_color: "bg-maroon-active"
       image: "badge-number-one-128x128.png"
+      assignments: [assignment_hello_world, assignment_other, assignment_openmpi_basic]
     - __key__: badge_beat_the_machine
       name: "beat_the_machine"
       title: "Beat the machine"
@@ -85,6 +87,7 @@
       description: "Earn when your program runs below a certain threshold"
       background_color: "bg-navy-active"
       image: "badge-beat-the-machine-256x256.png"
+      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_other_again]
 
 - ClassGroup:
     - __key__: class_a

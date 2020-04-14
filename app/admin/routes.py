@@ -6,13 +6,13 @@ Copyright (c) 2019 - present AppSeed.us
 from datetime import datetime
 
 import redis
-from flask import render_template, request, jsonify, current_app
+from flask import render_template, request, jsonify, current_app, redirect, url_for
 from rq import Connection, Queue
 
 from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm
-from app.base.models import Assignment, ClassGroup
+from app.base.models import Assignment, ClassGroup, Badge
 from app.tasks.models import simple_task
 
 
@@ -24,7 +24,6 @@ def route_admin_home():
 @blueprint.route('/assignment/new', methods=['GET', 'POST'])
 def route_assignment_new():
     assignment_form = AssignmentForm(request.form)
-    assignment_form.classgroups.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
     if 'submit' in request.form:
         # read form data
         name = assignment_form.data['name']
@@ -38,9 +37,10 @@ def route_assignment_new():
         db.session.add(assignment)
         db.session.commit()
 
-        # Something (user or pass) is not ok
-        return render_template('assignment_new.html', msg='Wrong user or password', form=assignment_form)
+        return redirect(url_for('home_blueprint.route_assignments') + assignment.name)
 
+    assignment_form.classgroups.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
+    assignment_form.badges.choices = [(x.id, x.title + ': ' + x.description) for x in Badge.query.all()]
     return render_template('assignment_new.html', form=assignment_form)
 
 
@@ -69,4 +69,6 @@ def create_assignment(data):
         map(lambda x: datetime.strptime(x, '%Y/%m/%d %H:%M'), date_start_due))
     # each class group must be fetched
     assignment.classgroups = list(map(lambda x: ClassGroup.query.filter_by(id=x).first(), set(data['classgroups'])))
+    # each badge must be fetched
+    assignment.badges = list(map(lambda x: Badge.query.filter_by(id=x).first(), set(data['badges'])))
     return assignment

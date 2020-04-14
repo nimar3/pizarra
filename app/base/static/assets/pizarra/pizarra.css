@@ -23,8 +23,16 @@
     filter: grayscale(70%);
 }
 
+.badge-assignment-list li {
+    width: 33%;
+}
+
+.badge-assignment-list li img {
+    border-radius: unset;
+}
+
 .truncate {
-  max-height: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    max-height: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

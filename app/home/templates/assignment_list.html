@@ -27,7 +27,7 @@
         <!-- Main row -->
         <div class="row">
             <div class="col-md-12">
-                {% for assignment in current_user.classgroup.assignments %}
+                {% for assignment in assignments %}
                     {{ assignment_summary(assignment) }}
                 {% endfor %}
             </div>

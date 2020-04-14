@@ -31,6 +31,14 @@
                     <!-- accepted payments column -->
                     <div class="col-xs-4">
                         <p class="lead">Badges</p>
+                        <ul class="users-list clearfix badge-assignment-list">
+                            {% for badge in assignment.badges %}
+                                <li>
+                                    <img src="{{ STATIC_PZ }}/{{ badge.image }}" alt="Badge - {{ badge.title }}"
+                                         title="Badge - {{ badge.title }}">
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-8">

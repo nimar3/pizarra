@@ -13,10 +13,16 @@ from app import db, login_manager
 from app.base.util import hash_pass, random_string
 from app.tasks.models import RequestStatus
 
+# many-to-many relationships
 classgroups_assignments = Table('_classgroups_assignments', db.Model.metadata,
                                 Column('classgroup_id', Integer, ForeignKey('classgroup.id')),
                                 Column('assignment_id', Integer, ForeignKey('assignment.id'))
                                 )
+
+assignments_badges = Table('_assignments_badges', db.Model.metadata,
+                           Column('assignment_id', Integer, ForeignKey('assignment.id')),
+                           Column('badge_id', Integer, ForeignKey('badge.id'))
+                           )
 
 
 class User(db.Model, UserMixin):
@@ -52,7 +58,7 @@ class User(db.Model, UserMixin):
     badges = relationship('Badge', secondary='user_badges', backref=backref('users', lazy='dynamic'))
 
     def __init__(self, **kwargs):
-        for property, value in kwargs.items():
+        for key, value in kwargs.items():
             # depending on whether value is an iterable or not, we must
             # unpack it's value (when **kwargs is request.form, some values
             # will be a 1-element list)
@@ -60,10 +66,10 @@ class User(db.Model, UserMixin):
                 # the ,= unpack of a singleton fails PEP8 (travis flake8 test)
                 value = value[0]
 
-            if property == 'password':
+            if key == 'password':
                 value = hash_pass(value)  # we need bytes here (not plain str)
 
-            setattr(self, property, value)
+            setattr(self, key, value)
 
         # if avatar is not presnent when creating user we set one at random
         if 'avatar' not in kwargs:
@@ -95,6 +101,10 @@ class User(db.Model, UserMixin):
     def passed_assignments(self):
         finished_requests = list(filter(lambda request: request.status is RequestStatus.FINISHED, self.requests))
         return set(x.assignment.id for x in finished_requests)
+
+    @property
+    def is_admin(self):
+        return self.has_role('admins')
 
 
 class Role(db.Model, RoleMixin):
@@ -145,6 +155,7 @@ class Badge(db.Model):
     description = Column(String(255))
     background_color = Column(String(100))
     image = Column(String(255))
+    assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
 
 
 class Request(db.Model):
@@ -178,6 +189,7 @@ class Assignment(db.Model):
     due_date = Column(DateTime())
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
+    badges = relationship("Badge", secondary=assignments_badges, back_populates="assignments")
 
 
 # many-to-many relation tables

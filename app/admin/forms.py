@@ -19,4 +19,4 @@ class AssignmentForm(FlaskForm):
     header = StringField('Template', id='template', widget=TextArea(), render_kw={"rows": "10"},
                          validators=[DataRequired()])
     classgroups = SelectMultipleField('Class Groups', coerce=int, validators=[InputRequired()])
-    badges = SelectMultipleField('Badges', coerce=int, validators=[InputRequired()])
+    badges = SelectMultipleField('Badges', coerce=int)

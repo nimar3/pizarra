@@ -30,7 +30,7 @@ def route_errors(error):
     return render_template('errors/page_{}.html'.format(error))
 
 
-## Login & Registration
+# Login & Registration
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -107,7 +107,7 @@ def shutdown():
     return 'Server shutting down...'
 
 
-## Errors
+# Errors
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():

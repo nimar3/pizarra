@@ -11,6 +11,9 @@ import os
 import random
 import string
 
+from flask import url_for, redirect
+from flask_login import current_user
+
 
 def hash_pass(password):
     """Hash a password for storing."""
@@ -37,3 +40,9 @@ def verify_pass(provided_password, stored_password):
 def random_string(size=60):
     """Generates a random alphanumeric string for a given size"""
     return ''.join(random.choice(string.ascii_letters + string.digits) for i in range(size))
+
+
+def verify_logged_in():
+    """Redirects users that are not logged in"""
+    if not current_user.is_authenticated:
+        return redirect(url_for('base_blueprint.login'))
