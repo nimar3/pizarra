@@ -5,6 +5,15 @@
             <div class="box-header with-border">
                 <!-- /.user-block -->
                 <div class="box-tools">
+                    {% if assignment.id in current_user.passed_assignments %}
+                        <small class="label label-success"><i class="fa fa-check"></i> Passed</small>
+                    {% endif %}
+                    {% if assignment.expired %}
+                        <small class="label label-danger"><i class="fa fa-warning"></i> Closed</small>
+                    {% endif %}
+                    {% if assignment.expires_soon %}
+                        <small class="label label-warning"><i class="fa fa-clock-o"></i> Closes soon</small>
+                    {% endif %}
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>
@@ -28,17 +37,20 @@
 
                 </div>
                 <div class="row">
-                    <!-- accepted payments column -->
                     <div class="col-xs-4">
                         <p class="lead">Badges</p>
-                        <ul class="users-list clearfix badge-assignment-list">
-                            {% for badge in assignment.badges %}
-                                <li>
-                                    <img src="{{ STATIC_PZ }}/{{ badge.image }}" alt="Badge - {{ badge.title }}"
-                                         title="Badge - {{ badge.title }}">
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        {% if assignment.badges | count > 0 %}
+                            <ul class="users-list clearfix badge-assignment-list">
+                                {% for badge in assignment.badges %}
+                                    <li>
+                                        <img src="{{ STATIC_PZ }}/{{ badge.image }}" alt="Badge - {{ badge.title }}"
+                                             data-toggle="tooltip" data-placement="bottom" title="{{ badge.title }}">
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <span class="description"><i class="fa fa-fw fa-battery-1"></i> no badges</span>
+                        {% endif %}
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-8">
@@ -70,11 +82,9 @@
                             </div>
                         {% else %}
                             <div>
-                                <img id="doge-tooltip" class="pull-right" src="{{ STATIC_PZ }}/doge-tooltip.png"
-                                     alt="Doge"
-                                     data-container="body"
-                                     data-toggle="popover" data-placement="left"
-                                     data-content="<b>WOW!!</b><br/> MUCH EMPTY"/>
+                                <img class="pull-right" src="{{ STATIC_PZ }}/doge-tooltip.png"
+                                     alt="Doge Tooltip" data-toggle="tooltip" data-placement="left"
+                                     title="MUCH EMPTY!"/>
                             </div>
                         {% endif %}
                     </div>
@@ -85,12 +95,6 @@
             <div class="box-footer">
                 <div class="row no-print">
                     <div class="col-xs-12">
-                        {% if assignment.id in current_user.passed_assignments %}
-                            <div class="alert alert-success alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <i class="icon fa fa-check"></i> You already passed this Assigment
-                            </div>
-                        {% endif %}
                         <button type="button" class="btn btn-primary">
                             <i class="fa fa-flag-checkered"></i> Leaderboard
                         </button>

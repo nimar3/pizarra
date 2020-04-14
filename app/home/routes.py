@@ -5,6 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 from flask import render_template, redirect, url_for
 from flask_login import current_user
+from jinja2 import TemplateNotFound
 
 from app.base.models import Assignment
 from app.home import blueprint
@@ -23,8 +24,7 @@ def index():
 def route_assignments(name):
     # list of assignments
     if name is None:
-        assignments = Assignment.query.all() if current_user.is_admin else current_user.classgroup.assignments
-        return render_template('assignment_list.html', assignments=assignments)
+        return render_template('assignment_list.html', assignments=get_assignments_ordered())
 
     # search for assignment
     assignment = Assignment.query.filter_by(name=name).first()
@@ -37,3 +37,26 @@ def route_assignments(name):
 
     # assignment full description
     return render_template('assignment.html', assignment=assignment)
+
+
+@blueprint.route('/<template>')
+def route_template(template):
+    try:
+        return render_template(template + '.html')
+
+    except TemplateNotFound:
+        return render_template('page-404.html'), 404
+
+    except:
+        return render_template('page-500.html'), 500
+
+
+def get_assignments_ordered():
+    """
+    returns the list of all available Assignments for the user ordered first with the opened Assignments and
+    after that the ones the closed Assignments
+    """
+    assignments = Assignment.query.all() if current_user.is_admin else current_user.classgroup.assignments
+    open_assignments = [x for x in assignments if not x.expired]
+    closed_assignments = [x for x in assignments if x.expired]
+    return open_assignments + closed_assignments

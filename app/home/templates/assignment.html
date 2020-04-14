@@ -21,25 +21,26 @@
         </ol>
     </section>
 
-    <div class="pad margin no-print">
-        <div class="callout callout-danger" style="margin-bottom: 0!important;">
-            <div class="row">
-                <div class="col-xs-1">
-                    <h1>
-                        <i class="fa fa-battery-1"></i>
-                    </h1>
+    {% if assignment.expires_soon %}
+        <div class="pad margin no-print">
+            <div class="callout callout-danger" style="margin-bottom: 0!important;">
+                <div class="row">
+                    <div class="col-xs-1">
+                        <h1>
+                            <i class="fa fa-battery-1"></i>
+                        </h1>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-11">
+                        <h4>Note:</h4>
+                        This Assignment is going to close in less than 24 hours!
+                        <!-- title row -->
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.col -->
-                <div class="col-xs-11">
-                    <h4>Note:</h4>
-                    This Assignment is going to close in less than 24 hours!
-                    <!-- title row -->
-                </div>
-                <!-- /.col -->
             </div>
         </div>
-
-    </div>
+    {% endif %}
 
     <!-- Main content -->
     <section class="invoice">

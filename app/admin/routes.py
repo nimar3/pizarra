@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 from datetime import datetime
 
 import redis
-from flask import render_template, request, jsonify, current_app, redirect, url_for
+from flask import render_template, request, jsonify, current_app, redirect, url_for, flash
 from rq import Connection, Queue
 
 from app import db
@@ -36,6 +36,7 @@ def route_assignment_new():
 
         db.session.add(assignment)
         db.session.commit()
+        flash('New Assignment has been created!', 'success')
 
         return redirect(url_for('home_blueprint.route_assignments') + assignment.name)
 

@@ -3,6 +3,7 @@
 License: MIT
 Copyright (c) 2020 - nimar3
 """
+from datetime import datetime
 from random import randint
 
 from flask_security import UserMixin, RoleMixin
@@ -138,8 +139,9 @@ class ClassGroup(db.Model):
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
     description = Column(String(255))
-    students = relationship('User', back_populates="classgroup")
-    assignments = relationship("Assignment", secondary=classgroups_assignments, back_populates="classgroups")
+    students = relationship('User', back_populates='classgroup')
+    assignments = relationship('Assignment', secondary=classgroups_assignments, back_populates='classgroups',
+                               order_by='asc(Assignment.due_date)')
 
 
 class Badge(db.Model):
@@ -190,6 +192,18 @@ class Assignment(db.Model):
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
     badges = relationship("Badge", secondary=assignments_badges, back_populates="assignments")
+
+    @property
+    def expires_soon(self):
+        """returns True is an assignments is expiring in less than 24 hours"""
+        difference = self.due_date - datetime.utcnow()
+        return difference.days == 0
+
+    @property
+    def expired(self):
+        difference = self.due_date - datetime.utcnow()
+        """returns True is an assignments is expired"""
+        return difference.days < 0
 
 
 # many-to-many relation tables
