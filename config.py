@@ -28,8 +28,12 @@ class Config(object):
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
 
+    SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}
+    BABEL_DEFAULT_LOCALE = 'es'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
+
     #rq
-    REDIS_URL = "redis://localhost:6379/0"
+    RQ_DASHBOARD_REDIS_URL = "redis://localhost:6379/0"
     QUEUES = ["default"]
 
 

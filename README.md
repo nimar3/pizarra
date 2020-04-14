@@ -42,6 +42,11 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
 - FAQ
   - [ ] info
 
+## Other features
+
+- Localization
+  - [X] English
+  - [ ] Spanis (WIP)
 
 ## Screenshots
 

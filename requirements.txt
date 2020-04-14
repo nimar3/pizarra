@@ -10,3 +10,4 @@ sqla-yaml-fixtures
 redis
 rq
 rq-dashboard
+flask-babel

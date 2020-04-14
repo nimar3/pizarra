@@ -6,6 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 from os import environ
 from sys import exit
 
+from flask_babel import Babel
 from flask_migrate import Migrate
 
 from app import create_app, db
@@ -22,6 +23,7 @@ except KeyError:
 app = create_app(config_mode)
 Migrate(app, db)
 Sample(app, db)
+babel = Babel(app)
 
 if __name__ == "__main__":
     app.run(debug=True)

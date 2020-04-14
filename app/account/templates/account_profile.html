@@ -13,13 +13,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Profile
-            <small>everything about you</small>
+            {{ _('Profile') }}
+            <small>{{ _('everything about you') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('account_blueprint.route_account_home') }}"><i class="fa fa-user"></i> Account</a>
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}"><i
+                    class="fa fa-user"></i> {{ _('Account') }}</a>
             </li>
-            <li><a href="{{ url_for('account_blueprint.route_account_home') }}">Profile</a></li>
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}">{{ _('Profile') }}</a></li>
         </ol>
     </section>
 
@@ -33,7 +34,7 @@
                 <div class="box box-primary">
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle"
-                             src="{{ STATIC_PZ }}/{{ current_user.avatar }}" alt="User profile picture">
+                             src="{{ STATIC_PZ }}/{{ current_user.avatar }}" alt="{{ _('User Profile Picture') }}">
 
                         <h3 class="profile-username text-center">
                             {{ current_user.username }}
@@ -45,19 +46,19 @@
 
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                                <b>Group Members</b> <a class="pull-right">
+                                <b>{{ _('Group Members') }}</b> <a class="pull-right">
                                 {{ current_user.classgroup.students | count }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Badges</b> <a class="pull-right">{{ current_user.badges | count }}</a>
+                                <b>{{ _('Badges') }}</b> <a class="pull-right">{{ current_user.badges | count }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Requests</b> <a class="pull-right"
-                                                   href="{{ url_for('account_blueprint.route_account_requests') }}">
+                                <b>{{ _('Requests') }}</b> <a class="pull-right"
+                                                              href="{{ url_for('account_blueprint.route_account_requests') }}">
                                 {{ current_user.requests | count }}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Quota</b> <a class="pull-right">{{ current_user.quota_used }}
+                                <b>{{ _('Quota') }}</b> <a class="pull-right">{{ current_user.quota_used }}
                                 / {{ current_user.quota }}</a>
                             </li>
                         </ul>
@@ -69,44 +70,45 @@
                 <!-- About Me Box -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">About Me</h3>
+                        <h3 class="box-title">{{ _('About Me') }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+                        <strong><i class="fa fa-book margin-r-5"></i> {{ _('Education') }}</strong>
 
                         <p class="text-muted">
-                            You are enroled in <a
+                            {{ _('You are enroled in') }} <a
                                 href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"
                         ><b>{{ current_user.classgroup.description }}</b></a>
                         </p>
 
                         <hr>
 
-                        <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                        <strong><i class="fa fa-map-marker margin-r-5"></i> {{ _('Location') }}</strong>
 
-                        <p class="text-muted">Space <i class="fa fa-fw fa-rocket"></i></p>
+                        <p class="text-muted">{{ _('Space') }} <i class="fa fa-fw fa-rocket"></i></p>
 
                         <hr>
 
-                        <strong><i class="fa fa-group margin-r-5"></i> Team</strong>
+                        <strong><i class="fa fa-group margin-r-5"></i> {{ _('Team') }}</strong>
                         <!-- /.box-header -->
                         <div class="box-body no-padding">
                             {% if current_user.team != None %}
                                 <ul class="users-list clearfix">
                                     {% for member in current_user.team.members %}
                                         <li>
-                                            <img src="{{ STATIC_PZ }}/{{ member.avatar }}" alt="User Image">
+                                            <img src="{{ STATIC_PZ }}/{{ member.avatar }}"
+                                                 alt="{{ _('User Profile Picture') }}">
                                             <a class="users-list-name"
-                                               href="#">{{ 'You!' if member == current_user else member.name }} </a>
+                                               href="#">{{ _('You!') if member == current_user else member.name }} </a>
                                             <span class="users-list-date">{{ member.username }}</span>
                                         </li>
                                     {% endfor %}
                                 </ul>
                             {% else %}
-                                <p class="text-muted">Seems like you are not part of a team</p>
+                                <p class="text-muted">{{ _('Seems like you are not part of a team') }}</p>
                                 <a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"
-                                   class="btn btn-primary btn-block"><b>Join a new Team</b></a>
+                                   class="btn btn-primary btn-block"><b>{{ _('Join a new Team') }}</b></a>
                             {% endif %}
                             <!-- /.users-list -->
                         </div>
@@ -119,18 +121,19 @@
             <div class="col-md-9">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs" id="profile-tabs">
-                        <li {{ 'class=active' if anchor == None }} id="profile-tabs-activity" data-url="activity"><a
+                        <li {{ 'class=active' if anchor == None or anchor == 'activity' }} id="profile-tabs-activity"
+                                                                                           data-url="activity"><a
                                 href="#activity"
-                                data-toggle="tab">Activity</a>
+                                data-toggle="tab">{{ _('Activity') }}</a>
                         </li>
                         <li {{ 'class=active' if anchor == 'badges' }} id="profile-tabs-badges" data-url="badges"><a
                                 href="#badges"
-                                data-toggle="tab">Badges</a>
+                                data-toggle="tab">{{ _('Badges') }}</a>
                         </li>
                         <li {{ 'class=active' if anchor == 'classgroup' }} id="profile-tabs-classgroup"
                                                                            data-url="classgroup"><a
                                 href="#classgroup"
-                                data-toggle="tab">Group</a>
+                                data-toggle="tab">{{ _('Group') }}</a>
                         </li>
                         <li {{ 'class=active' if anchor == 'password' }} id="profile-tabs-password" data-url="password">
                             <a href="#password"
@@ -139,20 +142,20 @@
                         <li {{ 'class=active' if anchor == 'access-key' }} id="profile-tabs-access-key"
                                                                            data-url="access-key"><a
                                 href="#accesss-key"
-                                data-toggle="tab">Access Key</a>
+                                data-toggle="tab">{{ _('Access Key') }}</a>
                         </li>
                     </ul>
                     <!-- tabs -->
                     <div class="tab-content">
                         <!-- tab pane Activity -->
-                        <div class="tab-pane {{ 'active' if anchor == None }}" id="activity">
+                        <div class="tab-pane {{ 'active' if anchor == None or anchor == 'activity' }}" id="activity">
                             <!-- The timeline -->
                             <ul class="timeline timeline-inverse">
                                 <!-- timeline time label -->
                                 <li class="time-label">
-                        <span class="bg-red">
-                          10 Feb. 2014
-                        </span>
+                                    <span class="bg-red">
+                                      10 Feb. 2014
+                                    </span>
                                 </li>
                                 <!-- /.timeline-label -->
                                 <!-- timeline item -->
@@ -268,9 +271,10 @@
                                 <ul class="classgroup-student-list users-list clearfix">
                                     {% for student in current_user.classgroup.students %}
                                         <li class="{{ '' if student == current_user else 'classgroup-student-other' }}">
-                                            <img src="{{ STATIC_PZ }}/{{ student.avatar }}" alt="User Image">
+                                            <img src="{{ STATIC_PZ }}/{{ student.avatar }}"
+                                                 alt="{{ _('User Profile Picture') }}">
                                             <a class="users-list-name"
-                                               href="#">{{ 'You!' if student == current_user else student.name }}</a>
+                                               href="#">{{ _('You!') if student == current_user else student.name }}</a>
                                             <span class="users-list-date">{{ student.username }}</span>
                                         </li>
                                     {% endfor %}
@@ -296,13 +300,14 @@
                                 {{ form.hidden_tag() }}
 
                                 <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Password</label>
+                                    <label for="inputName" class="col-sm-2 control-label">{{ _('Password') }}</label>
                                     <div class="col-sm-10">
                                         {{ form.password(placeholder="Password", class="form-control", type="password") }}
                                     </div>
                                 </div>
                                 <div class="form-group {{ 'has-error' if 'password' in form.errors.keys() }}">
-                                    <label for="inputSkills" class="col-sm-2 control-label">Repeat Password</label>
+                                    <label for="inputSkills"
+                                           class="col-sm-2 control-label">{{ _('Repeat Password') }}</label>
                                     <div class="col-sm-10">
                                         {{ form.confirm(placeholder="Repeat Password", class="form-control", type="password") }}
                                         {{ errors(form.errors, 'password') }}
@@ -310,7 +315,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" id="submit" class="btn btn-danger">Submit</button>
+                                        <button type="submit" id="submit"
+                                                class="btn btn-danger">{{ _('Submit') }}</button>
                                     </div>
                                 </div>
                             </form>
@@ -320,9 +326,9 @@
                         <!-- tab pane Access Key -->
                         <div class="tab-pane {{ 'active' if anchor == 'access-key' }}" id="accesss-key">
                             <div class="callout callout-warning">
-                                <h5><i class="icon fa fa-warning"></i> This key is for <b>personal</b> use and should
-                                    not be
-                                    shared! Use it wisely.</h5>
+                                <h5>
+                                    <i class="icon fa fa-warning"></i> {{ _('This key is for personal use and should not be shared! Use it wisely.') }}
+                                </h5>
                             </div>
                             <div class="row">
                                 <div class="col-md-10 col-md-offset-1 text-center" id="code"><i
@@ -333,12 +339,12 @@
                                 <div class="col-xs-12">
                                     <a href="{{ url_for('account_blueprint.route_regenerate_key') }}">
                                         <button type="button" class="btn btn-primary pull-right">
-                                            <i class="fa fa-refresh"></i> Regenerate Key
+                                            <i class="fa fa-refresh"></i> {{ _('Regenerate Key') }}
                                         </button>
                                     </a>
                                     <button type="button" class="btn btn-success pull-right" onclick="copyText()"
                                             style="margin-right: 5px;"><i
-                                            class="fa fa-copy"></i> Copy Key
+                                            class="fa fa-copy"></i> {{ _('Copy Key') }}
                                     </button>
 
                                 </div>
@@ -389,7 +395,7 @@
             }
             history.pushState({
                 id: 'my-account'
-            }, 'Pizarra - Profile | UPV', {{ url_for('account_blueprint.route_account_home') }} + $(this)[0].dataset['url']);
+            }, 'Pizarra - Profile | UPV', {{ url_for('account_blueprint.route_account_home') }} +$(this)[0].dataset['url']);
         });
     </script>
 
