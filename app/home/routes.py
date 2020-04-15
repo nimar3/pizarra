@@ -3,13 +3,18 @@
 License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
+import os
+
 from flask import render_template, redirect, url_for, request
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
+from werkzeug.utils import secure_filename
 
 from app.base.models import Assignment, User
+from app.base.util import random_string
 from app.home import blueprint
+from run import app
 
 
 @blueprint.route('/home')
@@ -59,6 +64,16 @@ def route_send_assignment(name):
             return _('Assignment is closed and not accepting any more requests'), 400
         if user.quota <= 0:
             return _('You have used all your Quota for sending Requests. Please contact an administrator'), 400
+
+    # check if file was sent with request
+    if 'file' not in request.files:
+        return _('There is no file in this Request'), 400
+
+    file = request.files['file']
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], random_string(20) + secure_filename(file.filename)))
+
+    #create the request
+
 
     return 'OK'
 

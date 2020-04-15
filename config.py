@@ -28,13 +28,20 @@ class Config(object):
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
 
+    # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}
     BABEL_DEFAULT_LOCALE = 'es'
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
+    # Uploaded files
+    UPLOAD_FOLDER = 'app/uploads'
+    ALLOWED_EXTENSIONS = {'c', 'cpp'}
+
     #rq
     RQ_DASHBOARD_REDIS_URL = "redis://localhost:6379/0"
     QUEUES = ["default"]
+
+
 
 
 class ProductionConfig(Config):

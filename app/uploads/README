@@ -1,4 +1,4 @@
 
-# In this directory all files sent by requests are stored
+# All files sent by client Requests are stored here
 #
-# this directory content is not tracked
+# .. this directory content is not tracked
