@@ -19,8 +19,8 @@ def index():
     return render_template('home.html')
 
 
-@blueprint.route('/assignments/', defaults={'name': None})
-@blueprint.route('/assignments/<name>')
+@blueprint.route('/assignments/', defaults={'name': None}, methods=['GET'])
+@blueprint.route('/assignments/<name>', methods=['GET'])
 def route_assignments(name):
     # list of assignments
     if name is None:
@@ -37,6 +37,11 @@ def route_assignments(name):
 
     # assignment full description
     return render_template('assignment.html', assignment=assignment)
+
+
+@blueprint.route('/assignments/<name>', methods=['POST'])
+def route_send_assignment(name):
+    return name
 
 
 @blueprint.route('/<template>')

@@ -1,5 +1,7 @@
 {% extends "base_site.html" %}
 
+{% from "macros/callout.html" import callout %}
+
 {% block title %} Assignment {% endblock title %}
 
 {% block stylesheets %}
@@ -11,35 +13,28 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Assignment
+            {{ _('Assignment') }}
             <small>#{{ assignment.id }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="{{ url_for('home_blueprint.route_assignments') }}">Assignments</a></li>
+            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a></li>
+            <li><a href="{{ url_for('home_blueprint.route_assignments') }}">{{ _('Assignments') }}</a></li>
             <li class="active">{{ assignment.name }}</li>
         </ol>
     </section>
 
-    {% if assignment.expires_soon %}
-        <div class="pad margin no-print">
-            <div class="callout callout-danger" style="margin-bottom: 0!important;">
-                <div class="row">
-                    <div class="col-xs-1">
-                        <h1>
-                            <i class="fa fa-battery-1"></i>
-                        </h1>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-xs-11">
-                        <h4>Note:</h4>
-                        This Assignment is going to close in less than 24 hours!
-                        <!-- title row -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </div>
-        </div>
+    {% set assignment_passed = assignment.id in current_user.passed_assignments %}
+
+    {% if assignment.expires_soon and not assignment_passed %}
+        {{ callout('warning', _('Hurry up!'), _('This Assignment is closing in less than 24 hours!'), 'fa-clock-o') }}
+    {% endif %}
+
+    {% if assignment.expired %}
+        {{ callout('danger', _('Times up!'), _('This Assignment is closed and not receiving any more requests'), 'fa-hourglass-o') }}
+    {% endif %}
+
+    {% if assignment_passed %}
+        {{ callout('success', _('Completed'), _('You already submitted a request that passed. You can keep trying to improve your results!'), 'fa-check') }}
     {% endif %}
 
     <!-- Main content -->
@@ -49,13 +44,12 @@
             <div class="col-xs-10">
                 <h2 class="page-header">
                     <i class="fa fa-file-text-o"></i> {{ assignment.title }}
-                    <small class="pull-right"><b>Due date:</b> {{ assignment.due_date }}</small>
+                    <small class="pull-right"><b>{{ _('Due date:') }}</b> {{ assignment.due_date }}</small>
                 </h2>
             </div>
             <div class="col-xs-2 no-print">
                 <button type="button" class="btn btn-success pull-right" data-toggle="modal"
-                        data-target="#modal-default"><i class="fa fa-upload"></i> Submit
-                    Assignment
+                        data-target="#modal-default"><i class="fa fa-upload"></i> {{ _('Submit Assignment') }}
                 </button>
             </div>
             <!-- /.col -->
@@ -74,10 +68,12 @@
         <div class="row no-print">
             <div class="col-xs-12">
                 <a href="#" target="_blank" class="btn btn-default" onclick="window.print()"><i class="fa fa-print"></i>
-                    Print</a>
+                    {{ _('Print') }}</a>
                 <button type="button" class="btn btn-success pull-right" data-toggle="modal"
-                        data-target="#modal-default"><i class="fa fa-upload"></i> Submit
-                    Assignment
+                        data-target="#modal-default"><i class="fa fa-upload"></i> {{ _('Submit Assignment') }}
+                </button>
+                <button type="button" class="btn btn-primary pull-right" style="margin-right: 10px;">
+                    <i class="fa fa-flag-checkered"></i> {{ _('Leaderboard') }}
                 </button>
             </div>
         </div>
@@ -89,21 +85,24 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('Close') }}">
                         <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Submit Task</h4>
+                    <h4 class="modal-title">{{ _('Submit Assignment') }}</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Copy the following code in your console to submit your Assignment</p>
+                    <p>{{ _('Copy the following code in your console to submit your Assignment') }}</p>
                     <div class="row">
                         <div class="col-xs-10">
-                            <p id="code"><code>curl -F 'files[]=@/path/to/fileX' -F 'files[]=@/path/to/fileY' ...
-                                http://localhost/upload</code></p>
+                            <p id="code"><code>curl -k -X POST -F 'file=@path/to/local/file'
+                                -u {{ current_user.username }}
+                                -K- {{ current_user.access_key }}
+                                {{ request.base_url }}</code>
+                            </p>
                         </div>
                         <!-- /.col -->
                         <div class="col-xs-2" onclick="copyText()">
                             <a class="btn btn-app">
-                                <i class="fa fa-copy"></i> Copy
+                                <i class="fa fa-copy"></i> {{ _('Copy') }}
                             </a>
                         </div>
                         <!-- /.col -->

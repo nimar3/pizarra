@@ -1,0 +1,9 @@
+{% macro callout(type, title, message, icon) %}
+    <div class="pad margin no-print">
+        <div class="alert alert-{{ type }} alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa {{ icon }}"></i> {{ title }}</h4>
+            {{ message }}
+        </div>
+    </div>
+{% endmacro %}
