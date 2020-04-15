@@ -30,7 +30,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] list
   - [x] info
   - [ ] submit
-  - [ ] badges to obtain
+  - [x] badges to obtain
 - Requests
   - [ ] list
   - [ ] filter
@@ -46,7 +46,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
 
 - Localization
   - [X] English
-  - [ ] Spanis (WIP)
+  - [ ] Spanish (WIP)
 
 ## Screenshots
 

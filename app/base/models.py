@@ -45,7 +45,7 @@ class User(db.Model, UserMixin):
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime())
     avatar = Column(String)
-    access_key = Column(String)
+    access_token = Column(String)
     # Relations
     # one-to-many
     requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)')
@@ -82,8 +82,8 @@ class User(db.Model, UserMixin):
         if 'username' not in kwargs or 'username' is None or 'username' is '':
             setattr(self, 'username', kwargs['email'].split('@')[0])
 
-        if 'access_key' not in kwargs:
-            setattr(self, 'access_key', random_string())
+        if 'access_token' not in kwargs:
+            setattr(self, 'access_token', random_string())
 
     def __repr__(self):
         return str(self.username)

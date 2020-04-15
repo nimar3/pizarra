@@ -30,7 +30,7 @@ def route_account_requests():
 @blueprint.route('/regenerate-key')
 def route_regenerate_key():
     user = current_user
-    user.access_key = random_string()
+    user.access_token = random_string()
     db.session.add(user)
     db.session.commit()
     flash('New Access key has been generated!', 'success')

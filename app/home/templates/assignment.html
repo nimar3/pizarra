@@ -95,7 +95,7 @@
                         <div class="col-xs-10">
                             <p id="code"><code>curl -k -X POST -F 'file=@path/to/local/file'
                                 -u {{ current_user.username }}
-                                -K- {{ current_user.access_key }}
+                                -K- {{ current_user.access_token }}
                                 {{ request.base_url }}</code>
                             </p>
                         </div>

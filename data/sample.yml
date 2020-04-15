@@ -125,6 +125,7 @@
       email: "foo@test.test"
       name: "Diego Velázquez"
       password: "foo"
+      access_token: "123"
       quota_used: 3540
       roles: [users]
       classgroup: class_a

@@ -9,9 +9,10 @@ import hashlib
 import os
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 import random
+import re
 import string
 
-from flask import url_for, redirect
+from flask import url_for, redirect, request
 from flask_login import current_user
 
 
@@ -43,6 +44,18 @@ def random_string(size=60):
 
 
 def verify_logged_in():
-    """Redirects users that are not logged in"""
-    if not current_user.is_authenticated:
+    """Redirects users that are trying to access private areas"""
+    if not current_user.is_authenticated and not is_allowed_anonymous_path(request.path, request.method):
         return redirect(url_for('base_blueprint.login'))
+
+
+def is_allowed_anonymous_path(path, method):
+    """Checks if a given path and method is allowed for accessing without being authenticated"""
+    allowed_regex_paths = [['/assignments/.*', ['POST']]]
+    for item in allowed_regex_paths:
+        regex_path, allowed_methods = item[0], item[1]
+        pattern = re.compile(regex_path)
+        if pattern.match(path) and method in allowed_methods:
+            return True
+
+    return False

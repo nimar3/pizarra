@@ -3,11 +3,12 @@
 License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask_login import current_user
+from flask_security.utils import _
 from jinja2 import TemplateNotFound
 
-from app.base.models import Assignment
+from app.base.models import Assignment, User
 from app.home import blueprint
 
 
@@ -41,7 +42,25 @@ def route_assignments(name):
 
 @blueprint.route('/assignments/<name>', methods=['POST'])
 def route_send_assignment(name):
-    return name
+    # auth the user
+    username, access_token = request.authorization['username'], request.authorization['password']
+    user = User.query.filter_by(username=username, access_token=access_token).first()
+    if user is None:
+        return _('Authentication failed'), 400
+
+    # search the assignment
+    assignment = Assignment.query.filter_by(name=name).first()
+    if assignment is None:
+        return _('Unable to find Assignment'), 400
+
+    # check if user is able to queue a request
+    if not user.is_admin:
+        if assignment.expired:
+            return _('Assignment is closed and not accepting any more requests'), 400
+        if user.quota <= 0:
+            return _('You have used all your Quota for sending Requests. Please contact an administrator'), 400
+
+    return 'OK'
 
 
 @blueprint.route('/<template>')
