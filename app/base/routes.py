@@ -5,7 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 from datetime import datetime
 
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, session, current_app
 from flask_login import (
     current_user,
     login_required,
@@ -23,11 +23,6 @@ from app.base.util import verify_pass
 @blueprint.route('/')
 def route_default():
     return redirect(url_for('base_blueprint.login'))
-
-
-@blueprint.route('/page_<error>')
-def route_errors(error):
-    return render_template('errors/page_{}.html'.format(error))
 
 
 # Login & Registration
@@ -80,7 +75,6 @@ def create_user():
 
         # else we can create the user
         user = User(**request.form)
-        user.registered_at = datetime.utcnow()
         db.session.add(user)
         db.session.commit()
 
@@ -98,17 +92,14 @@ def logout():
     return redirect(url_for('base_blueprint.login'))
 
 
-@blueprint.route('/shutdown')
-def shutdown():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    return 'Server shutting down...'
+@blueprint.route('/language/<language>')
+def set_language(language=None):
+    if language is not None and language in current_app.config['SUPPORTED_LANGUAGES']:
+        session['language'] = language
+    return redirect(request.args.get('path'))
 
 
 # Errors
-
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return render_template('errors/page_403.html'), 403

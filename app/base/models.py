@@ -43,7 +43,7 @@ class User(db.Model, UserMixin):
     last_login_at = Column(DateTime())
     last_login_ip = Column(String(100))
     login_count = Column(Integer, default=0)
-    registered_at = Column(DateTime())
+    registered_at = Column(DateTime(), default=datetime.utcnow)
     avatar = Column(String)
     access_token = Column(String)
     # Relations

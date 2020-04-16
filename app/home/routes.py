@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 from datetime import datetime
 
-from flask import render_template, redirect, url_for, request, json
+from flask import render_template, redirect, url_for, request, json, current_app
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
@@ -17,7 +17,6 @@ from app.base.models import Assignment, User, Request
 from app.base.util import random_string
 from app.home import blueprint
 from app.tasks.models import RequestStatus
-from run import app
 
 
 @blueprint.route('/home')
@@ -84,7 +83,7 @@ def route_send_assignment(name):
     file = request.files['file']
     filename = '-'.join(
         [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(10), secure_filename(file.filename)])
-    file_location = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file_location = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
     file.save(os.path.join(file_location))
 
     # create the request
@@ -135,7 +134,7 @@ def build_response(message, status_code):
     """
     returns a response in JSON format with the message and status code provided
     """
-    response = app.response_class(
+    response = current_app.response_class(
         response=json.dumps({
             'code': status_code,
             'message': message
