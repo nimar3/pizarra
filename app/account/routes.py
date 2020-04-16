@@ -22,11 +22,6 @@ def route_account_home(anchor):
     return render_template('account_profile.html', anchor=anchor, form=ChangePassword())
 
 
-@blueprint.route('/requests')
-def route_account_requests():
-    return render_template('requests.html')
-
-
 @blueprint.route('/regenerate-key')
 def route_regenerate_key():
     user = current_user

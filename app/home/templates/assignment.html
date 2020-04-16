@@ -1,6 +1,7 @@
 {% extends "base_site.html" %}
 
 {% from "macros/callout.html" import callout %}
+{% from "macros/badges.html" import badge %}
 
 {% block title %} Assignment {% endblock title %}
 
@@ -76,6 +77,19 @@
                     <i class="fa fa-flag-checkered"></i> {{ _('Leaderboard') }}
                 </button>
             </div>
+        </div>
+    </section>
+
+    <section class="assignment-badges">
+        <h2 class="page-header">
+            <i class="fa fa-trophy"></i> Badges
+        </h2>
+        <div class="row">
+            {% for item in assignment.badges %}
+                <div class="col-md-4">
+                    {{ badge(item) }}
+                </div>
+            {% endfor %}
         </div>
     </section>
     <!-- /.content -->

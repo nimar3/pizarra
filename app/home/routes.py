@@ -27,6 +27,11 @@ def index():
     return render_template('home.html')
 
 
+@blueprint.route('/requests')
+def route_account_requests():
+    return render_template('requests.html')
+
+
 @blueprint.route('/assignments/', defaults={'name': None}, methods=['GET'])
 @blueprint.route('/assignments/<name>', methods=['GET'])
 def route_assignments(name):

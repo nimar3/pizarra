@@ -31,7 +31,7 @@
     border-radius: unset;
 }
 
-.navbar-nav>.notifications-menu>.dropdown-menu,.navbar-nav>.messages-menu>.dropdown-menu,.navbar-nav>.tasks-menu>.dropdown-menu {
+.navbar-nav > .notifications-menu > .dropdown-menu, .navbar-nav > .messages-menu > .dropdown-menu, .navbar-nav > .tasks-menu > .dropdown-menu {
     width: unset;
 }
 
@@ -39,4 +39,10 @@
     max-height: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.assignment-badges {
+    position: relative;
+    padding: 20px;
+    margin: 10px 25px
 }

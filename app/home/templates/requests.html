@@ -1,6 +1,6 @@
 {% extends "base_site.html" %}
 
-{% block title %} My Requests {% endblock title %}
+{% block title %} {{ _('My Requests') }} {% endblock title %}
 
 {% block stylesheets %}
     <!-- Specific CSS goes HERE -->
@@ -11,14 +11,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            My Requests
-            <small>preview of results of all my task jobs</small>
+            {{ _('My Requests') }}
+            <small>{{ _('preview of results of all my task jobs') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('account_blueprint.route_account_home') }}"><i class="fa fa-user"></i> Account</a>
+            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a>
             </li>
-            <li><a href="{{ url_for('account_blueprint.route_account_home') }}">Profile</a></li>
-            <li class="active">Requests</li>
+            <li class="active">{{ _('Assignments') }}</li>
         </ol>
     </section>
 
@@ -33,7 +32,7 @@
                         <div class="box-tools">
                             <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
                                 <input type="text" name="table_search" class="form-control pull-right"
-                                       placeholder="Search">
+                                       placeholder="{{ _('Search') }}">
 
                                 <div class="input-group-btn">
                                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -45,19 +44,23 @@
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <tr>
-                                <th>ID</th>
-                                <th>Date</th>
-                                <th>Assignment</th>
-                                <th>Status</th>
-                                <th>Time</th>
-                                <th>Output</th>
+                                <th>{{ _('ID') }}</th>
+                                <th>{{ _('Date') }}</th>
+                                <th>{{ _('Assignment') }}</th>
+                                <th>{{ _('Status') }}</th>
+                                <th>{{ _('Time') }}</th>
+                                <th>{{ _('Output') }}</th>
                             </tr>
                             {% for request in current_user.requests %}
                                 <tr>
-                                    <td>{{ request.id }}</td>
+                                    <td>#{{ request.id }}</td>
                                     <td>{{ request.timestamp }}</td>
-                                    <td><a href="{{ url_for('home_blueprint.route_assignments')}}{{ request.assignment.id }}">{{ request.assignment.title }}</a></td>
-                                    <td><span class="label {{ request.status.label }}">{{ request.status.name }}</span></td>
+                                    <td>
+                                        <a href="{{ url_for('home_blueprint.route_assignments', name=request.assignment.name ) }}">
+                                            {{ request.assignment.title }}</a>
+                                    </td>
+                                    <td><span class="label {{ request.status.label }}">{{ request.status.name }}</span>
+                                    </td>
                                     <td>{{ request.run_time }} s.</td>
                                     <td>{{ request.output }}</td>
                                 </tr>
