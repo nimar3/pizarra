@@ -64,12 +64,25 @@ def create_assignment(data):
     assignment.name = data['name']
     assignment.title = data['title']
     assignment.description = data['description']
+    assignment.start_date = process_date(data['start_date'])
+    assignment.due_date = process_date(data['due_date'])
     # start and due dates
-    date_start_due = [x.strip() for x in data['date'].split('-')]
-    assignment.start_date, assignment.due_date = list(
-        map(lambda x: datetime.strptime(x, '%Y/%m/%d %H:%M'), date_start_due))
+    # date_start_due = [x.strip() for x in data['date'].split('-')]
+    # assignment.start_date, assignment.due_date = list(
+    #    map(lambda x: datetime.strptime(x, '%Y/%m/%d %H:%M'), date_start_due))
     # each class group must be fetched
     assignment.classgroups = list(map(lambda x: ClassGroup.query.filter_by(id=x).first(), set(data['classgroups'])))
     # each badge must be fetched
     assignment.badges = list(map(lambda x: Badge.query.filter_by(id=x).first(), set(data['badges'])))
     return assignment
+
+
+def process_date(string_date):
+    if string_date is not None and string_date != '':
+        try:
+            date = datetime.strptime(string_date, '%Y-%m-%d %H:%M')
+            return date
+        except ValueError:
+            pass
+
+    return None

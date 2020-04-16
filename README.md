@@ -32,7 +32,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [ ] submit
   - [x] badges to obtain
 - Requests
-  - [ ] list
+  - [x] list
   - [ ] filter
   - [ ] info
 - Leaderboard

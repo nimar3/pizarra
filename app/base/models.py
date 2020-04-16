@@ -196,8 +196,11 @@ class Assignment(db.Model):
     @property
     def expires_soon(self):
         """returns True is an assignments is expiring in less than 24 hours"""
-        difference = self.due_date - datetime.utcnow()
-        return self.due_date is not None and self.due_date > datetime.utcnow() and difference.days == 0
+        if self.due_date is None:
+            return False
+        else:
+            difference = self.due_date - datetime.utcnow()
+            return self.due_date > datetime.utcnow() and difference.days == 0
 
     @property
     def expired(self):

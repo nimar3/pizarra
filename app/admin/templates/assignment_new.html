@@ -3,7 +3,7 @@
 {% block title %} {{ _('New Assignment') }} {% endblock title %}
 
 {% block stylesheets %}
-    <!-- Specific CSS goes HERE -->
+    <link rel="stylesheet" href="/static/assets/css/bootstrap-datetimepicker.min.css">
 {% endblock %}
 
 {% block content %}
@@ -11,11 +11,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Assignment
-            <small>new</small>
+            {{ _('Assignment') }}
+            <small>{{ _('new') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> {{ _('Admin') }}</a></li>
+            <li><a href="{{ url_for('admin_blueprint.route_admin_home') }}"><i
+                    class="fa fa-dashboard"></i> {{ _('Admin') }}</a></li>
             <li><a href="#">{{ _('Assignments') }}</a></li>
             <li class="active">{{ _('New') }}</li>
         </ol>
@@ -40,20 +41,35 @@
                             <div class="row">
                                 <div class="col-xs-6">
                                     <div class="form-group">
-                                        <label for="name">Unique Name</label>
-                                        {{ form.name(placeholder="Name", class="form-control") }}
+                                        <label for="name">{{ _('Name') }}</label>
+                                        {{ form.name(placeholder=_('Name'), class="form-control text-lowercase") }}
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-3">
                                     <!-- Date and time range -->
                                     <div class="form-group">
-                                        <label>Date and time range:</label>
+                                        <label>{{ _('Start Date') }}</label>
 
                                         <div class="input-group">
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
-                                            {{ form.date(placeholder="Date", class="form-control pull-right") }}
+                                            {{ form.start_date(class="form-control pull-right") }}
+                                        </div>
+                                        <!-- /.input group -->
+                                    </div>
+                                    <!-- /.form group -->
+                                </div>
+                                <div class="col-xs-3">
+                                    <!-- Date and time range -->
+                                    <div class="form-group">
+                                        <label>{{ ('Due Date') }}</label>
+
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                            {{ form.due_date(class="form-control pull-right") }}
                                         </div>
                                         <!-- /.input group -->
                                     </div>
@@ -63,12 +79,12 @@
 
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                {{ form.title(placeholder="Title", class="form-control") }}
+                                {{ form.title(placeholder=_('Title'), class="form-control") }}
                             </div>
 
                             <div class="form-group">
                                 <label for="editor">Description</label>
-                                {{ form.description(placeholder="Description", class="form-control") }}
+                                {{ form.description(placeholder=_('Description'), class="form-control") }}
                             </div>
 
                             <div class="row">
@@ -93,7 +109,8 @@
                             <!-- /.box-body -->
 
                             <div class="box-footer">
-                                <button type="submit" name="submit" class="btn btn-primary">{{ _('Submit') }}</button>
+                                <button type="submit" name="submit"
+                                        class="btn btn-primary btn-success pull-right">{{ _('Create Assignment') }}</button>
                             </div>
                         </div>
                     </form>
@@ -130,19 +147,14 @@
             //Initialize Select2 Elements
             $('.select2').select2();
             //Date range picker with time picker
-            $('#date').daterangepicker({
-                timePicker: true,
-                timePicker24Hour: true,
-                timePickerIncrement: 1,
-                locale: {
-                    format: 'YYYY/MM/DD HH:mm'
-                }
-            })
+            $('#start-date').datetimepicker({autoclose: true});
+            $('#due-date').datetimepicker({autoclose: true});
         })
     </script>
 
     <!-- Select2 -->
     <script src="/static/assets/select2/js/select2.js"></script>
+    <script src="/static/assets/js/jquery.charReplacer.js"></script>
     <script src="/static/assets/js/jquery.inputmask.js"></script>
 
 {% endblock %}
