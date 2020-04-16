@@ -72,7 +72,7 @@ class User(db.Model, UserMixin):
 
             setattr(self, key, value)
 
-        # if avatar is not presnent when creating user we set one at random
+        # default values
         if 'avatar' not in kwargs:
             setattr(self, 'avatar', 'avatar-' + str(randint(1, 18)) + '-256x256.png')
 
@@ -166,7 +166,7 @@ class Request(db.Model):
     """
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True)
-    timestamp = Column(DateTime())
+    timestamp = Column(DateTime(), default=datetime.utcnow)
     status = Column(Enum(RequestStatus))
     run_time = Column(Integer)
     file_location = Column(String(255))
@@ -197,13 +197,17 @@ class Assignment(db.Model):
     def expires_soon(self):
         """returns True is an assignments is expiring in less than 24 hours"""
         difference = self.due_date - datetime.utcnow()
-        return difference.days == 0
+        return self.due_date > datetime.utcnow() and difference.days == 0
 
     @property
     def expired(self):
-        difference = self.due_date - datetime.utcnow()
-        """returns True is an assignments is expired"""
-        return difference.days < 0
+        """returns True if an assignment is expired"""
+        return self.due_date < datetime.utcnow()
+
+    @property
+    def started(self):
+        """returns True if an assignment started"""
+        return self.start_date < datetime.utcnow()
 
 
 # many-to-many relation tables

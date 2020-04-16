@@ -93,10 +93,7 @@
                     <p>{{ _('Copy the following code in your console to submit your Assignment') }}</p>
                     <div class="row">
                         <div class="col-xs-10">
-                            <p id="code"><code>curl -k -X POST -F 'file=@path/to/local/file'
-                                -u {{ current_user.username }}
-                                -K- {{ current_user.access_token }}
-                                {{ request.base_url }}</code>
+                            <p id="code"><code>curl -k -X POST -F 'file=@path/to/local/file' {{ submit_url }}</code>
                             </p>
                         </div>
                         <!-- /.col -->
@@ -127,13 +124,12 @@
 
     <script>
         function copyText() {
-            /* Get the text field */
             const copyText = document.getElementById("code");
             const textArea = document.createElement("textarea");
             textArea.value = copyText.textContent;
             document.body.appendChild(textArea);
             textArea.select();
-            textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+            textArea.setSelectionRange(0, 99999); /* mobile devices */
             document.execCommand("Copy");
             textArea.remove();
         }

@@ -1,4 +1,7 @@
-#Pycharm
+# Pizarra
+app/uploads/*
+
+# Pycharm
 .idea
 
 # byte-compiled / optimized / DLL files

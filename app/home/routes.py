@@ -4,6 +4,7 @@ License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
 import os
+from datetime import datetime
 
 from flask import render_template, redirect, url_for, request
 from flask_login import current_user
@@ -11,7 +12,7 @@ from flask_security.utils import _
 from jinja2 import TemplateNotFound
 from werkzeug.utils import secure_filename
 
-from app.base.models import Assignment, User
+from app.base.models import Assignment, User, Request
 from app.base.util import random_string
 from app.home import blueprint
 from run import app
@@ -41,8 +42,12 @@ def route_assignments(name):
     if assignment not in current_user.classgroup.assignments and not current_user.has_role('admin'):
         return render_template('page-404.html'), 404
 
+    # build url to submit assignment
+    protocol, path = request.base_url.split('//')
+    submit_url = protocol + '//' + current_user.username + ':' + current_user.access_token + '@' + path
+
     # assignment full description
-    return render_template('assignment.html', assignment=assignment)
+    return render_template('assignment.html', assignment=assignment, submit_url=submit_url)
 
 
 @blueprint.route('/assignments/<name>', methods=['POST'])
@@ -70,10 +75,16 @@ def route_send_assignment(name):
         return _('There is no file in this Request'), 400
 
     file = request.files['file']
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], random_string(20) + secure_filename(file.filename)))
+    filename = '-'.join(
+        [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(10), secure_filename(file.filename)])
+    file_location = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(os.path.join(file_location))
 
-    #create the request
-
+    # create the request
+    user_request = Request()
+    user_request.assignment = assignment
+    user_request.user = user
+    user_request.file_location = file_location
 
     return 'OK'
 
