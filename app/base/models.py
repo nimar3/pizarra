@@ -197,17 +197,17 @@ class Assignment(db.Model):
     def expires_soon(self):
         """returns True is an assignments is expiring in less than 24 hours"""
         difference = self.due_date - datetime.utcnow()
-        return self.due_date > datetime.utcnow() and difference.days == 0
+        return self.due_date is not None and self.due_date > datetime.utcnow() and difference.days == 0
 
     @property
     def expired(self):
         """returns True if an assignment is expired"""
-        return self.due_date < datetime.utcnow()
+        return self.due_date is not None and self.due_date < datetime.utcnow()
 
     @property
     def started(self):
         """returns True if an assignment started"""
-        return self.start_date < datetime.utcnow()
+        return self.start_date is None or self.start_date < datetime.utcnow()
 
 
 # many-to-many relation tables

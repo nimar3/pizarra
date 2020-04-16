@@ -14,6 +14,7 @@ def simple_task():
 
 
 class RequestStatus(enum.Enum):
+    CREATED = 0
     QUEUED = 1
     COMPILING = 2
     DEPLOYING = 3
@@ -29,9 +30,8 @@ class RequestStatus(enum.Enum):
         """
         Dictionary to map enum to Bootstrap labels
         """
-        label_dict = {RequestStatus.QUEUED: 'label-default', RequestStatus.COMPILING: 'label-info',
-                      RequestStatus.DEPLOYING: 'label-info', RequestStatus.WAITING: 'label-info',
-                      RequestStatus.RUNNING: 'label-primary', RequestStatus.FINISHED: 'label-success',
-                      RequestStatus.CANCELED: 'label-warning', RequestStatus.ERROR: 'label-danger',
-                      RequestStatus.TIMEWALL: 'label-warning'}
+        label_dict = {RequestStatus.COMPILING: 'label-info', RequestStatus.DEPLOYING: 'label-info',
+                      RequestStatus.WAITING: 'label-info', RequestStatus.RUNNING: 'label-primary',
+                      RequestStatus.FINISHED: 'label-success', RequestStatus.CANCELED: 'label-warning',
+                      RequestStatus.ERROR: 'label-danger', RequestStatus.TIMEWALL: 'label-warning'}
         return label_dict[self] if self in label_dict else 'label-default'

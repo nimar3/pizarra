@@ -6,13 +6,13 @@
                 <!-- /.user-block -->
                 <div class="box-tools">
                     {% if assignment.id in current_user.passed_assignments %}
-                        <small class="label label-success"><i class="fa fa-check"></i> Passed</small>
+                        <small class="label label-success"><i class="fa fa-check"></i> {{ _('Passed') }}</small>
                     {% endif %}
                     {% if assignment.expired %}
-                        <small class="label label-danger"><i class="fa fa-warning"></i> Closed</small>
+                        <small class="label label-danger"><i class="fa fa-warning"></i> {{ _('Closed') }}</small>
                     {% endif %}
                     {% if assignment.expires_soon %}
-                        <small class="label label-warning"><i class="fa fa-clock-o"></i> Closes soon</small>
+                        <small class="label label-warning"><i class="fa fa-clock-o"></i> {{ _('Closes soon') }}</small>
                     {% endif %}
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
@@ -21,7 +21,7 @@
                     <img class="img-circle" src="{{ STATIC_PZ }}/assignment.png" alt="Assignment image">
                     <span class="username"><a
                             href="{{ url_for('home_blueprint.route_assignments') + assignment.name }}">{{ assignment.title }}</a></span>
-                    <span class="description"><b>Due Date:</b> {{ assignment.due_date }}</span>
+                    <span class="description"><b>{{ _('Due Date:') }}</b> {{ assignment.due_date }}</span>
                 </div>
 
                 <!-- /.box-tools -->
@@ -30,7 +30,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="truncate">{{ assignment.description | safe if assignment.description != None else 'No description available' }}
+                        <div class="truncate">{{ assignment.description | safe if assignment.description != None else _('No description available') }}
                         </div>
                         <p>...</p>
                     </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-4">
-                        <p class="lead">Badges</p>
+                        <p class="lead">{{ _('Badges') }}</p>
                         {% if assignment.badges | count > 0 %}
                             <ul class="users-list clearfix badge-assignment-list">
                                 {% for badge in assignment.badges %}
@@ -54,16 +54,16 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-8">
-                        <p class="lead">Latest Requests</p>
+                        <p class="lead">{{ _('Latest Requests') }}</p>
                         {% if assignment.requests | count > 0 %}
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>User</th>
-                                        <th>Status</th>
-                                        <th>Time</th>
+                                        <th>{{ _('Date') }}</th>
+                                        <th>{{ _('User') }}</th>
+                                        <th>{{ _('Status') }}</th>
+                                        <th>{{ _('Time') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -96,11 +96,11 @@
                 <div class="row no-print">
                     <div class="col-xs-12">
                         <button type="button" class="btn btn-primary">
-                            <i class="fa fa-flag-checkered"></i> Leaderboard
+                            <i class="fa fa-flag-checkered"></i> {{ _('Leaderboard') }}
                         </button>
                         <a href="{{ url_for('home_blueprint.route_assignments') + assignment.name }}"
                            class="btn btn-default pull-right"><i class="fa fa-file-o"></i>
-                            Full Description</a>
+                            {{ _('Full Description') }}</a>
                     </div>
                 </div>
             </div>
