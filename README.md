@@ -35,8 +35,8 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] badges to obtain
 - Requests
   - [x] list
-  - [ ] filter
-  - [ ] info
+  - [x] filter
+  - [x] info
 - Leaderboard
   - [ ] board
 - FAQ
