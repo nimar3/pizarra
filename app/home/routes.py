@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 from datetime import datetime
 
-from flask import render_template, redirect, url_for, request, json, current_app
+from flask import render_template, redirect, url_for, request, json, current_app, abort
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
@@ -27,9 +27,20 @@ def index():
     return render_template('home.html')
 
 
-@blueprint.route('/requests')
-def route_account_requests():
-    return render_template('requests.html')
+@blueprint.route('/requests', defaults={'id': None})
+@blueprint.route('/requests/<id>')
+def route_requests(id):
+    if id is None:
+        return render_template('requests.html')
+    user_request = Request.query.filter_by(id=id).first()
+
+    if user_request is None:
+        return redirect(url_for('route_requests'))
+
+    if user_request.user != current_user and not current_user.is_admin:
+        return abort(403)
+
+    return 'OK'
 
 
 @blueprint.route('/assignments/', defaults={'name': None}, methods=['GET'])
@@ -104,12 +115,6 @@ def route_send_assignment(name):
     request_url = request.host_url[:-1] + url_for('home_blueprint.route_requests', id=user_request.id)
 
     return build_response(_('Request created, please navigate to  {} to check the results'.format(request_url)), 201)
-
-
-@blueprint.route('/requests/', defaults={'id': None})
-@blueprint.route('/requests/<id>')
-def route_requests(id):
-    return 'OK'
 
 
 @blueprint.route('/<template>')
