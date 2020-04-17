@@ -24,6 +24,11 @@ def index():
     return render_template('home.html')
 
 
+@blueprint.route('/faq')
+def route_faq():
+    return render_template('faq.html')
+
+
 @blueprint.route('/requests', defaults={'id': None})
 @blueprint.route('/requests/<id>')
 def route_requests(id):

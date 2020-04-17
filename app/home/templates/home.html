@@ -60,24 +60,22 @@
                                     <th>Assignment</th>
                                     <th>Status</th>
                                     <th>Time</th>
-                                    <th>Output</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for request in current_user.requests[0:5] %}
                                     <tr>
-                                        <td>{{ request.id }}</td>
+                                        <td>
+                                            <a href="{{ url_for('home_blueprint.route_requests', id=request.id) }}">#{{ request.id }}</a>
+                                        </td>
                                         <td>{{ request.timestamp }}</td>
                                         <td>
-                                            <a href="
-
-                                                    {{ url_for('home_blueprint.route_assignments') }}{{ request.assignment.name }}">{{ request.assignment.title }}</a>
+                                            <a href="{{ url_for('home_blueprint.route_assignments') }}{{ request.assignment.name }}">{{ request.assignment.title }}</a>
                                         </td>
                                         <td><span
                                                 class="label {{ request.status.label }}">{{ request.status.name }}</span>
                                         </td>
                                         <td>{{ request.run_time }} s.</td>
-                                        <td>{{ request.output }}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

@@ -1,0 +1,41 @@
+{% extends "base_site.html" %}
+
+{% block title %} {{ _('FAQ') }} {% endblock title %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ _('FAQ') }}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('home_blueprint.index') }}"> {{ _('Home') }}</a>
+            </li>
+            <li class="active">{{ _('FAQ') }}</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="invoice">
+        <div class="row">
+            <div class="col-xs-12">
+
+            </div>
+        </div>
+        <!-- /.row -->
+    </section>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="/static/assets/js/demo.js"></script>
+
+{% endblock %}
