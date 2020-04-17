@@ -1,0 +1,48 @@
+<!-- User Info -->
+<li class="dropdown user user-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}"
+             class="user-image"
+             alt="{{ _('User Image') }}">
+        <span class="hidden-xs">{{ current_user.username }}</span>
+    </a>
+    <ul class="dropdown-menu">
+        <!-- User Avatar -->
+        <li class="user-header">
+            <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}"
+                 class="img-circle"
+                 alt="{{ _('User Avatar') }}">
+            <p>
+                {{ current_user.name }}
+                <small>{{ current_user.email }}</small>
+            </p>
+        </li>
+        <!-- Menu Body -->
+        <li class="user-body">
+            <div class="row">
+                <div class="col-xs-4 text-center">
+                    <a href="{{ url_for('home_blueprint.requests') }}">{{ _('Requests') }}</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="{{ url_for('home_blueprint.assignments') }}">{{ _('Assignments') }}</a>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <a href="{{ url_for('account_blueprint.route_account_home', anchor='badges') }}">{{ _('Badges') }}</a>
+                </div>
+            </div>
+            <!-- /.row -->
+        </li>
+        <!-- Menu Footer-->
+        <li class="user-footer">
+            <div class="pull-left">
+                <a href="{{ url_for('account_blueprint.route_account_home') }}"
+                   class="btn btn-default btn-flat">{{ _('Profile') }}</a>
+            </div>
+            <div class="pull-right">
+                <a href="{{ url_for('base_blueprint.logout') }}"
+                   class="btn btn-default btn-flat">{{ _('Logout') }}</a>
+            </div>
+        </li>
+    </ul>
+</li>
+<!-- ./ User Info -->

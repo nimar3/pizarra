@@ -25,6 +25,17 @@ assignments_badges = Table('_assignments_badges', db.Model.metadata,
                            Column('badge_id', Integer, ForeignKey('badge.id'))
                            )
 
+users_badges = Table('_users_badges', db.Model.metadata,
+                     Column('user_id', Integer, ForeignKey('user.id')),
+                     Column('badge_id', Integer, ForeignKey('badge.id')),
+                     Column('timestamp', DateTime(), default=datetime.now)
+                     )
+
+users_roles = Table('_users_roles', db.Model.metadata,
+                    Column('user_id', Integer(), ForeignKey('user.id')),
+                    Column('role_id', Integer(), ForeignKey('role.id'))
+                    )
+
 
 class User(db.Model, UserMixin):
     """
@@ -55,8 +66,8 @@ class User(db.Model, UserMixin):
     team_id = Column(Integer, ForeignKey('team.id'))
     team = relationship('Team', back_populates='members')
     # many-to-many
-    roles = relationship('Role', secondary='user_roles', backref=backref('users', lazy='dynamic'))
-    badges = relationship('Badge', secondary='user_badges', backref=backref('users', lazy='dynamic'))
+    roles = relationship('Role', secondary='_users_roles', backref=backref('users', lazy='dynamic'))
+    badges = relationship('Badge', secondary='_users_badges', backref=backref('users', lazy='dynamic'))
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
@@ -211,22 +222,6 @@ class Assignment(db.Model):
     def started(self):
         """returns True if an assignment started"""
         return self.start_date is None or self.start_date < datetime.utcnow()
-
-
-# many-to-many relation tables
-
-class UserRole(db.Model):
-    __tablename__ = 'user_roles'
-    id = Column(Integer(), primary_key=True)
-    user = Column('user_id', Integer(), ForeignKey('user.id'))
-    role = Column('role_id', Integer(), ForeignKey('role.id'))
-
-
-class UserBadge(db.Model):
-    __tablename__ = 'user_badges'
-    id = Column(Integer(), primary_key=True)
-    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
-    badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
 
 
 @login_manager.user_loader

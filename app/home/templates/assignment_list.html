@@ -2,7 +2,7 @@
 
 {% from "macros/assignment.html" import assignment_summary with context %}
 
-{% block title %} Assignments {% endblock title %}
+{% block title %} {{ _('Assignments') }} {% endblock title %}
 
 {% block stylesheets %}
     <!-- Specific CSS goes HERE -->
@@ -13,12 +13,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Assignments
-            <small>All your homework</small>
+            {{ _('Assignments') }}
+            <small>{{ _('All your homework') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li>Assignments</li>
+            <li><a href="{{ url_for('.home') }}">{{ _('Home') }}</a></li>
+            <li>{{ _('Assignments') }}</li>
         </ol>
     </section>
 
@@ -39,8 +39,5 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/assets/js/demo.js"></script>
 
 {% endblock %}

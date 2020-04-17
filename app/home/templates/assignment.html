@@ -18,7 +18,7 @@
             <small>#{{ assignment.id }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a></li>
+            <li><a href="{{ url_for('.home') }}">{{ _('Home') }}</a></li>
             <li><a href="{{ url_for('.assignments') }}">{{ _('Assignments') }}</a></li>
             <li class="active">{{ assignment.name }}</li>
         </ol>
@@ -132,9 +132,6 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/assets/js/demo.js"></script>
 
     <script>
         function copyText() {

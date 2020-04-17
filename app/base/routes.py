@@ -55,7 +55,7 @@ def login():
     if not current_user.is_authenticated:
         return render_template('login/login.html',
                                form=login_form)
-    return redirect(url_for('.home'))
+    return redirect(url_for('home_blueprint.home'))
 
 
 @blueprint.route('/create_user', methods=['GET', 'POST'])

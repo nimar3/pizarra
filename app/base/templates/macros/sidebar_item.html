@@ -1,0 +1,7 @@
+{% macro item(url, message, icon) %}
+    <li class="{{ 'active' if url in request.path else '' }}">
+        <a href="{{ url }}">
+            <i class="fa {{ icon }}"></i> <span>{{ message }}</span>
+        </a>
+    </li>
+{% endmacro %}

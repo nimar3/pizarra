@@ -31,7 +31,7 @@ def faq():
 
 @blueprint.route('/leaderboard')
 def leaderboard():
-    return 'OK'
+    return render_template('leaderboard.html')
 
 
 @blueprint.route('/requests', defaults={'id': None})
@@ -68,7 +68,7 @@ def assignments(name):
         return redirect(url_for('.assignments'))
 
     # only students with the assignment or admins can see
-    if assignment not in current_user.classgroup.assignments and not current_user.has_role('admin'):
+    if not current_user.has_role('admins') and assignment not in current_user.classgroup.assignments:
         return render_template('page-404.html'), 404
 
     # build url to submit assignment
