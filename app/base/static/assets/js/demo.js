@@ -21,7 +21,7 @@ $(function () {
         $pushMenu = $('[data-toggle="push-menu"]').data('lte.pushmenu')
         $controlSidebar = $('[data-toggle="control-sidebar"]').data('lte.controlsidebar')
         $layout = $('body').data('lte.layout')
-    })
+    });
 
     /**
      * List of all the available skins
@@ -41,7 +41,7 @@ $(function () {
         'skin-yellow-light',
         'skin-purple-light',
         'skin-green-light'
-    ]
+    ];
 
     /**
      * Get a prestored setting
@@ -111,20 +111,20 @@ $(function () {
     function setup() {
         var tmp = get('skin')
         if (tmp && $.inArray(tmp, mySkins))
-            changeSkin(tmp)
+            changeSkin(tmp);
 
         // Add the change skin listener
         $('[data-skin]').on('click', function (e) {
             if ($(this).hasClass('knob'))
                 return
-            e.preventDefault()
+            e.preventDefault();
             changeSkin($(this).data('skin'))
-        })
+        });
 
         // Add the layout manager
         $('[data-layout]').on('click', function () {
             changeLayout($(this).data('layout'))
-        })
+        });
 
         $('[data-controlsidebar]').on('click', function () {
             changeLayout($(this).data('controlsidebar'))
@@ -133,7 +133,7 @@ $(function () {
             $controlSidebar.options.slide = slide
             if (!slide)
                 $('.control-sidebar').removeClass('control-sidebar-open')
-        })
+        });
 
         $('[data-sidebarskin="toggle"]').on('click', function () {
             var $sidebar = $('.control-sidebar')
@@ -144,14 +144,14 @@ $(function () {
                 $sidebar.removeClass('control-sidebar-light')
                 $sidebar.addClass('control-sidebar-dark')
             }
-        })
+        });
 
         $('[data-enable="expandOnHover"]').on('click', function () {
             $(this).attr('disabled', true)
             $pushMenu.expandOnHover()
             if (!$('body').hasClass('sidebar-collapse'))
                 $('[data-layout="sidebar-collapse"]').click()
-        })
+        });
 
         //  Reset options
         if ($('body').hasClass('fixed')) {

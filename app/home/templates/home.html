@@ -3,19 +3,21 @@
 {% from "macros/badges.html" import badge, no_badge with context %}
 {% from "macros/summaries.html" import summary with context %}
 {% from "macros/teams.html" import team, no_team with context %}
-{% block title %} Dashboard {% endblock title %}
+{% from "macros/latest_requests.html" import latest_requests %}
+
+{% block title %} {{ _('Dashboard') }} {% endblock title %}
 
 {% block content %}
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dashboard
-            <small>Home</small>
+            {{ _('Dashboard') }}
+            <small>{{ _('Home') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Dashboard</li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a></li>
+            <li class="active">{{ _('Dashboard') }}</li>
         </ol>
     </section>
 
@@ -25,73 +27,20 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
             {{ summary(current_user.requests | count, 'Total Requests', 'Your Requests',
-            url_for('home_blueprint.route_requests') ,'fa fa-upload', 'bg-aqua') }}
+            url_for('.requests') ,'fa fa-upload', 'bg-aqua') }}
             {{ summary(current_user.quota_percentage_used, 'Quota Used', 'More info',
             url_for('account_blueprint.route_account_home'), 'fa fa-hourglass-3', 'bg-green', true) }}
             {{ summary(current_user.request_percentage_passed, 'Success Rate', 'More info',
-            url_for('home_blueprint.route_requests'), 'fa fa-star', 'bg-yellow', true) }}
+            url_for('.requests'), 'fa fa-star', 'bg-yellow', true) }}
             {{ summary(current_user.classgroup.assignments | count, 'Assignments', 'More info',
-            url_for('home_blueprint.route_assignments'), 'fa fa-file-text-o', 'bg-red') }}
+            url_for('.assignments'), 'fa fa-file-text-o', 'bg-red') }}
         </div>
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
             <!-- Left col -->
             <div class="col-md-8">
-                <!-- TABLE: LATEST REQUESTS -->
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">{{ _('Your Latest Requests') }}</h3>
-
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
-                                    class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Date</th>
-                                    <th>Assignment</th>
-                                    <th>Status</th>
-                                    <th>Time</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for request in current_user.requests[0:5] %}
-                                    <tr>
-                                        <td>
-                                            <a href="{{ url_for('home_blueprint.route_requests', id=request.id) }}">#{{ request.id }}</a>
-                                        </td>
-                                        <td>{{ request.timestamp }}</td>
-                                        <td>
-                                            <a href="{{ url_for('home_blueprint.route_assignments') }}{{ request.assignment.name }}">{{ request.assignment.title }}</a>
-                                        </td>
-                                        <td><span
-                                                class="label {{ request.status.label }}">{{ request.status.name }}</span>
-                                        </td>
-                                        <td>{{ request.run_time }} s.</td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer clearfix">
-                        <a href="{{ url_for('home_blueprint.route_requests') }}"
-                           class="btn btn-sm btn-default btn-flat pull-right">View All
-                            Requests</a>
-                    </div>
-                    <!-- /.box-footer -->
-                </div>
-                <!-- /.box -->
+                {{ latest_requests(current_user.requests[0:5]) }}
             </div>
             <!-- /.col -->
 
@@ -115,8 +64,5 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/assets/js/demo.js"></script>
 
 {% endblock %}

@@ -15,7 +15,7 @@
             <small>{{ _('preview of results of all your Assignments') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a>
+            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a>
             </li>
             <li class="active">{{ _('Assignments') }}</li>
         </ol>
@@ -55,11 +55,11 @@
                             <tbody>
                             {% for request in current_user.requests %}
                                 <tr>
-                                    <td><a href="{{ url_for('home_blueprint.route_requests',id=request.id) }}">
+                                    <td><a href="{{ url_for('.requests',id=request.id) }}">
                                         #{{ request.id }} </a></td>
                                     <td>{{ request.timestamp }}</td>
                                     <td>
-                                        <a href="{{ url_for('home_blueprint.route_assignments', name=request.assignment.name ) }}">
+                                        <a href="{{ url_for('.assignments', name=request.assignment.name ) }}">
                                             {{ request.assignment.title }}</a>
                                     </td>
                                     <td><span class="label {{ request.status.label }}">{{ request.status.name }}</span>
@@ -81,9 +81,6 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/assets/js/demo.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>

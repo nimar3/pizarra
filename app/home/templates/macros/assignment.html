@@ -20,7 +20,7 @@
                 <div class="user-block">
                     <img class="img-circle" src="{{ STATIC_PZ }}/assignment.png" alt="Assignment image">
                     <span class="username"><a
-                            href="{{ url_for('home_blueprint.route_assignments') + assignment.name }}">{{ assignment.title }}</a></span>
+                            href="{{ url_for('.assignments') + assignment.name }}">{{ assignment.title }}</a></span>
                     <span class="description"><b>{{ _('Due Date:') }}</b> {{ assignment.due_date }}</span>
                 </div>
 
@@ -98,7 +98,7 @@
                         <button type="button" class="btn btn-primary">
                             <i class="fa fa-flag-checkered"></i> {{ _('Leaderboard') }}
                         </button>
-                        <a href="{{ url_for('home_blueprint.route_assignments') + assignment.name }}"
+                        <a href="{{ url_for('.assignments') + assignment.name }}"
                            class="btn btn-default pull-right"><i class="fa fa-file-o"></i>
                             {{ _('Full Description') }}</a>
                     </div>

@@ -20,24 +20,29 @@ from app.tasks.models import RequestStatus
 
 
 @blueprint.route('/home')
-def index():
+def home():
     return render_template('home.html')
 
 
 @blueprint.route('/faq')
-def route_faq():
+def faq():
     return render_template('faq.html')
+
+
+@blueprint.route('/leaderboard')
+def leaderboard():
+    return 'OK'
 
 
 @blueprint.route('/requests', defaults={'id': None})
 @blueprint.route('/requests/<id>')
-def route_requests(id):
+def requests(id):
     if id is None:
         return render_template('request_list.html')
     user_request = Request.query.filter_by(id=id).first()
 
     if user_request is None:
-        return redirect(url_for('route_requests'))
+        return redirect(url_for('requests'))
 
     if user_request.user != current_user and not current_user.is_admin:
         return abort(403)
@@ -52,7 +57,7 @@ def route_requests(id):
 
 @blueprint.route('/assignments/', defaults={'name': None}, methods=['GET'])
 @blueprint.route('/assignments/<name>', methods=['GET'])
-def route_assignments(name):
+def assignments(name):
     # list of assignments
     if name is None:
         return render_template('assignment_list.html', assignments=get_assignments_ordered())
@@ -60,7 +65,7 @@ def route_assignments(name):
     # search for assignment
     assignment = Assignment.query.filter_by(name=name).first()
     if assignment is None:
-        return redirect(url_for('home_blueprint.route_assignments'))
+        return redirect(url_for('.assignments'))
 
     # only students with the assignment or admins can see
     if assignment not in current_user.classgroup.assignments and not current_user.has_role('admin'):
@@ -75,7 +80,7 @@ def route_assignments(name):
 
 
 @blueprint.route('/assignments/<name>', methods=['POST'])
-def route_send_assignment(name):
+def send_assignment(name):
     # auth the user
     username, access_token = request.authorization['username'], request.authorization['password']
     user = User.query.filter_by(username=username, access_token=access_token).first()
@@ -119,7 +124,7 @@ def route_send_assignment(name):
     db.session.add(user_request)
     db.session.commit()
 
-    request_url = request.host_url[:-1] + url_for('home_blueprint.route_requests', id=user_request.id)
+    request_url = request.host_url[:-1] + url_for('.requests', id=user_request.id)
 
     return build_response(_('Request created, please navigate to  {} to check the results'.format(request_url)), 201)
 

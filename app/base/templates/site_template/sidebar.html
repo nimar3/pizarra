@@ -6,7 +6,7 @@
         <div class="user-panel">
             <div class="pull-left image">
                 <img src="{{ STATIC_PZ }}/{{ current_user.avatar }}" class="img-circle"
-                     alt="User Image">
+                     alt="{{ _('User Image') }}">
             </div>
             <div class="pull-left info">
                 <p>
@@ -20,28 +20,28 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">{{ _('MAIN NAVIGATION') }}</li>
-            <li class="active">
-                <a href="{{ url_for('home_blueprint.index') }}">
+            <li class="{{ 'active' if url_for('.home') in request.path else '' }}">
+                <a href="{{ url_for('.home') }}">
                     <i class="fa fa-dashboard"></i> <span>{{ _('Dashboard') }}</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ url_for('home_blueprint.route_assignments') }}">
+            <li class="{{ 'active' if url_for('.assignments') in request.path else '' }}">
+                <a href="{{ url_for('.assignments') }}">
                     <i class="fa fa-file-text-o"></i> <span>{{ _('Assignments') }}</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ url_for('home_blueprint.route_requests') }}">
+            <li class="{{ 'active' if '/requests' in request.path else '' }}">
+                <a href="{{ url_for('.requests') }}">
                     <i class="fa fa-upload"></i> <span>{{ _('My Requests') }}</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ 'active' if '/leaderboard' in request.path else '' }}">
                 <a href="#">
                     <i class="fa fa-flag-checkered"></i> <span>{{ _('Leaderboard') }}</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ url_for('home_blueprint.route_faq') }}">
+            <li class="{{ 'active' if '/faq' in request.path else '' }}">
+                <a href="{{ url_for('.faq') }}">
                     <i class="fa fa-question"></i> <span>{{ _('FAQ') }}</span>
                 </a>
             </li>

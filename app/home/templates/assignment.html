@@ -18,8 +18,8 @@
             <small>#{{ assignment.id }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a></li>
-            <li><a href="{{ url_for('home_blueprint.route_assignments') }}">{{ _('Assignments') }}</a></li>
+            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a></li>
+            <li><a href="{{ url_for('.assignments') }}">{{ _('Assignments') }}</a></li>
             <li class="active">{{ assignment.name }}</li>
         </ol>
     </section>

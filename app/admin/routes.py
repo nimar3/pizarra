@@ -38,7 +38,7 @@ def route_assignment_new():
         db.session.commit()
         flash('New Assignment has been created!', 'success')
 
-        return redirect(url_for('home_blueprint.route_assignments') + assignment.name)
+        return redirect(url_for('.assignments') + assignment.name)
 
     assignment_form.classgroups.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
     assignment_form.badges.choices = [(x.id, x.title + ': ' + x.description) for x in Badge.query.all()]
