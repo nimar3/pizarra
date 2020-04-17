@@ -21,9 +21,6 @@ from app.tasks.models import RequestStatus
 
 @blueprint.route('/home')
 def index():
-    if not current_user.is_authenticated:
-        return redirect(url_for('base_blueprint.login'))
-
     return render_template('home.html')
 
 
@@ -31,7 +28,7 @@ def index():
 @blueprint.route('/requests/<id>')
 def route_requests(id):
     if id is None:
-        return render_template('requests.html')
+        return render_template('request_list.html')
     user_request = Request.query.filter_by(id=id).first()
 
     if user_request is None:
@@ -40,7 +37,12 @@ def route_requests(id):
     if user_request.user != current_user and not current_user.is_admin:
         return abort(403)
 
-    return 'OK'
+    contents = None
+    if user_request.file_location is not None:
+        with current_app.open_resource(user_request.file_location, mode='r') as f:
+            contents = f.read()
+
+    return render_template('request.html', user_request=user_request, contents=contents)
 
 
 @blueprint.route('/assignments/', defaults={'name': None}, methods=['GET'])

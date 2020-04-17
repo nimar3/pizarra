@@ -50,7 +50,6 @@
                                 <th>{{ _('Assignment') }}</th>
                                 <th>{{ _('Status') }}</th>
                                 <th>{{ _('Time') }}</th>
-                                <th>{{ _('Output') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,7 +65,6 @@
                                     <td><span class="label {{ request.status.label }}">{{ request.status.name }}</span>
                                     </td>
                                     <td>{{ request.run_time }} s.</td>
-                                    <td>{{ request.output }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -103,7 +101,7 @@
                 'aaSorting': [[1, 'desc']],
                 'columnDefs': [{
                     'orderable': false,
-                    'targets': [0, 5]
+                    'targets': [0]
                 }, {'searchable': false, 'targets': [1, 4]}]
             });
 

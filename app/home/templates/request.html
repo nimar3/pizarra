@@ -1,0 +1,81 @@
+{% extends "base_site.html" %}
+
+{% block title %} {{ _('My Requests') }} {% endblock title %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/static/assets/prism/prism.css">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ _('Request') }}
+            <small>#{{ user_request.id }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('home_blueprint.index') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a>
+            </li>
+            <li><a href="{{ url_for('home_blueprint.route_requests') }}">{{ _('My Requests') }}</a>
+            </li>
+            <li class="active">#{{ user_request.id }}</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-11">
+                <h2 class="page-header">
+                    <i class="fa fa-file-text-o"></i> {{ _('Assignment') }}: <a
+                        href="{{ url_for('home_blueprint.route_assignments', name=user_request.assignment.name) }}">
+                    {{ user_request.assignment.name }}</a>
+                    <small class="pull-right"><b>{{ _('Date') }}:</b> {{ user_request.timestamp }}</small>
+                </h2>
+            </div>
+            <div class="col-xs-1">
+                <p class="lead pull-right"><span
+                        class="label {{ user_request.status.label }}">{{ user_request.status.name }}</span></p>
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="col-xs-7">
+                <p class="lead">{{ _('Request Input') }}</p>
+                <pre><code class="language-c">{{ contents | safe }}</code></pre>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-5">
+                <p class="lead">{{ _('Output') }}</p>
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    {{ user_request.output | safe }}
+                </p>
+                <p class="pull-right">{{ _('Run Time') }}: <i>{{ user_request.run_time }} s.</i></p>
+            </div>
+            <!-- /.col -->
+
+        </div>
+        <!-- /.row -->
+    </section>
+    <section class="content">
+        <div class="row no-print">
+            <div class="col-xs-12">
+                <a href="{{ url_for('home_blueprint.route_requests') }}" class="btn btn-default"><i
+                        class="fa fa-angle-left"></i>
+                    {{ _('Back') }}</a>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="/static/assets/js/demo.js"></script>
+
+    <script src="/static/assets/prism/prism.js"></script>
+{% endblock %}
