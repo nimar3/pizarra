@@ -54,7 +54,7 @@
                             </li>
                             <li class="list-group-item">
                                 <b>{{ _('Requests') }}</b> <a class="pull-right"
-                                                              href="{{ url_for('.requests') }}">
+                                                              href="{{ url_for('home_blueprint.requests') }}">
                                 {{ current_user.requests | count }}</a>
                             </li>
                             <li class="list-group-item">
@@ -366,9 +366,6 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/assets/js/demo.js"></script>
 
     <script>
         function copyText() {

@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="{{ url_for('.home') }}" class="logo">
+    <a href="{{ url_for('home_blueprint.home') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>Pz</b></span>
         <!-- logo for regular state and mobile devices -->
@@ -38,14 +38,14 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ STATIC_PZ }}/{{ current_user.avatar }}" class="user-image"
+                        <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}" class="user-image"
                              alt="{{ _('User Image') }}">
                         <span class="hidden-xs">{{ current_user.username }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="{{ STATIC_PZ }}/{{ current_user.avatar }}" class="img-circle"
+                            <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}" class="img-circle"
                                  alt="{{ _('User Image') }}">
                             <p>
                                 {{ current_user.name }}
@@ -56,10 +56,10 @@
                         <li class="user-body">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
-                                    <a href="{{ url_for('.requests') }}">{{ _('Requests') }}</a>
+                                    <a href="{{ url_for('home_blueprint.requests') }}">{{ _('Requests') }}</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="{{ url_for('.assignments') }}">{{ _('Assignments') }}</a>
+                                    <a href="{{ url_for('home_blueprint.assignments') }}">{{ _('Assignments') }}</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
                                     <a href="{{ url_for('account_blueprint.route_account_home', anchor='badges') }}">{{ _('Badges') }}</a>

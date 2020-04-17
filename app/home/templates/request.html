@@ -16,7 +16,7 @@
             <small>#{{ user_request.id }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a>
+            <li><a href="{{ url_for('.home') }}">{{ _('Home') }}</a>
             </li>
             <li><a href="{{ url_for('.requests') }}">{{ _('My Requests') }}</a>
             </li>
@@ -56,7 +56,6 @@
                 <p class="pull-right">{{ _('Run Time') }}: <i>{{ user_request.run_time }} s.</i></p>
             </div>
             <!-- /.col -->
-
         </div>
         <!-- /.row -->
     </section>

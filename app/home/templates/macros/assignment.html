@@ -18,7 +18,8 @@
                     </button>
                 </div>
                 <div class="user-block">
-                    <img class="img-circle" src="{{ STATIC_PZ }}/assignment.png" alt="Assignment image">
+                    <img class="img-circle" src="{{ url_for('.static', filename='assets/pizarra/img/assignment.png') }}"
+                         alt="{{ _('Assignment image') }}">
                     <span class="username"><a
                             href="{{ url_for('.assignments') + assignment.name }}">{{ assignment.title }}</a></span>
                     <span class="description"><b>{{ _('Due Date:') }}</b> {{ assignment.due_date }}</span>
@@ -43,7 +44,8 @@
                             <ul class="users-list clearfix badge-assignment-list">
                                 {% for badge in assignment.badges %}
                                     <li>
-                                        <img src="{{ STATIC_PZ }}/{{ badge.image }}" alt="Badge - {{ badge.title }}"
+                                        <img src="{{ url_for('.static', filename='assets/pizarra/img/' + badge.image) }}"
+                                             alt="{{ _('Badge') }} - {{ badge.title }}"
                                              data-toggle="tooltip" data-placement="bottom" title="{{ badge.title }}">
                                     </li>
                                 {% endfor %}
@@ -82,7 +84,8 @@
                             </div>
                         {% else %}
                             <div>
-                                <img class="pull-right" src="{{ STATIC_PZ }}/doge-tooltip.png"
+                                <img class="pull-right"
+                                     src="{{ url_for('.static', filename='assets/pizarra/img/doge-tooltip.png') }}"
                                      alt="Doge Tooltip" data-toggle="tooltip" data-placement="left"
                                      title="MUCH EMPTY!"/>
                             </div>

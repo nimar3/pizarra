@@ -5,8 +5,8 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{ STATIC_PZ }}/{{ current_user.avatar }}" class="img-circle"
-                     alt="{{ _('User Image') }}">
+                <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}" class="img-circle"
+                     alt="{{ _('User Avatar') }}">
             </div>
             <div class="pull-left info">
                 <p>
@@ -20,18 +20,18 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">{{ _('MAIN NAVIGATION') }}</li>
-            <li class="{{ 'active' if url_for('.home') in request.path else '' }}">
-                <a href="{{ url_for('.home') }}">
+            <li class="{{ 'active' if url_for('home_blueprint.home') in request.path else '' }}">
+                <a href="{{ url_for('home_blueprint.home') }}">
                     <i class="fa fa-dashboard"></i> <span>{{ _('Dashboard') }}</span>
                 </a>
             </li>
-            <li class="{{ 'active' if url_for('.assignments') in request.path else '' }}">
-                <a href="{{ url_for('.assignments') }}">
+            <li class="{{ 'active' if url_for('home_blueprint.assignments') in request.path else '' }}">
+                <a href="{{ url_for('home_blueprint.assignments') }}">
                     <i class="fa fa-file-text-o"></i> <span>{{ _('Assignments') }}</span>
                 </a>
             </li>
-            <li class="{{ 'active' if '/requests' in request.path else '' }}">
-                <a href="{{ url_for('.requests') }}">
+            <li class="{{ 'active' if url_for('home_blueprint.requests') in request.path else '' }}">
+                <a href="{{ url_for('home_blueprint.requests') }}">
                     <i class="fa fa-upload"></i> <span>{{ _('My Requests') }}</span>
                 </a>
             </li>
@@ -40,8 +40,8 @@
                     <i class="fa fa-flag-checkered"></i> <span>{{ _('Leaderboard') }}</span>
                 </a>
             </li>
-            <li class="{{ 'active' if '/faq' in request.path else '' }}">
-                <a href="{{ url_for('.faq') }}">
+            <li class="{{ 'active' if url_for('home_blueprint.faq') in request.path else '' }}">
+                <a href="{{ url_for('home_blueprint.faq') }}">
                     <i class="fa fa-question"></i> <span>{{ _('FAQ') }}</span>
                 </a>
             </li>

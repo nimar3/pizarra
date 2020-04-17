@@ -3,7 +3,8 @@
 {% block title %} {{ _('My Requests') }} {% endblock title %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet"
+          href="{{ url_for('base_blueprint.static', filename='assets/css/dataTables.bootstrap.min.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -15,7 +16,7 @@
             <small>{{ _('preview of results of all your Assignments') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> {{ _('Home') }}</a>
+            <li><a href="{{ url_for('.home') }}">{{ _('Home') }}</a>
             </li>
             <li class="active">{{ _('Assignments') }}</li>
         </ol>
@@ -82,11 +83,10 @@
 
 {% block javascripts %}
 
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{ url_for('.static', filename='assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('.static', filename='assets/js/dataTables.bootstrap.min.js') }}"></script>
 
     <script>
-
         $(document).ready(function () {
             let table = $('#table').DataTable({
                 'paging': true,

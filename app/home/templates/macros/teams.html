@@ -2,11 +2,10 @@
     <!-- USERS LIST -->
     <div class="box box-danger">
         <div class="box-header with-border">
-            <h3 class="box-title">Team {{ current_user.team.name }}</h3>
+            <h3 class="box-title">{{ _('Team') }} {{ current_user.team.name }}</h3>
 
             <div class="box-tools pull-right">
-                <span class="label label-danger">{{ current_user.team.members | count }} Members</span>
-                </button>
+                <span class="label label-danger">{{ current_user.team.members | count }} {{ _('Members') }}</span>
             </div>
         </div>
         <!-- /.box-header -->
@@ -14,8 +13,10 @@
             <ul class="users-list clearfix">
                 {% for member in current_user.team.members %}
                     <li>
-                        <img src="{{ STATIC_PZ }}/{{ member.avatar }}" alt="User Image">
-                        <a class="users-list-name" href="#">{{ 'You!' if member == current_user else member.name }} </a>
+                        <img src="{{ url_for('.static', filename='assets/pizarra/img/' + member.avatar) }}"
+                             alt="{{ _('User Avatar') }}">
+                        <a class="users-list-name"
+                           href="#">{{ _('You!') if member == current_user else member.name }} </a>
                         <span class="users-list-date">{{ member.username }}</span>
                     </li>
                 {% endfor %}
@@ -24,8 +25,8 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer text-center">
-            <a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}" class="uppercase">View all group
-                members</a>
+            <a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"
+               class="uppercase">{{ _('View all group members') }}</a>
         </div>
         <!-- /.box-footer -->
     </div>
@@ -37,11 +38,12 @@
     <div class="box box-widget widget-user">
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-navy">
-            <h3 class="widget-user-username">Team Solo</h3>
-            <h5 class="widget-user-desc">You don't have a team</h5>
+            <h3 class="widget-user-username">{{ _('Team Solo') }}</h3>
+            <h5 class="widget-user-desc">{{ _("You don't have a team") }}</h5>
         </div>
         <div class="widget-user-image">
-            <img class="img-circle" src="{{ STATIC_PZ }}/team-solo.png" alt="User Avatar">
+            <img class="img-circle" src="{{ url_for('.static', filename='assets/pizarra/img/team-solo.png') }}"
+                 alt="{{ _('User Avatar') }}">
         </div>
         <div class="box-footer">
             <div class="row">
@@ -58,7 +60,7 @@
             {% if footer_message != None %}
                 <ul class="nav nav-stacked">
                     <li><a href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"><i
-                            class="fa fa-fw fa-info"></i> Go to your Class to find teammates!</a></li>
+                            class="fa fa-fw fa-info"></i> {{ _('Go to your Class to find teammates!') }}</a></li>
                 </ul>
             {% endif %}
         </div>
