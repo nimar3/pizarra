@@ -20,7 +20,7 @@ def route_account_home(anchor):
     if anchor is not None and anchor not in anchors:
         return redirect(url_for('account_blueprint.route_account_home', anchor=None))
 
-    return render_template('profile.html', anchor=anchor, form=ChangePassword())
+    return render_template('profile.html', anchor=anchor, activity_stream=activity_stream(), form=ChangePassword())
 
 
 @blueprint.route('/regenerate-key')
@@ -46,3 +46,27 @@ def route_update_password():
         flash(_('Password has been updated!'), 'success')
 
     return render_template('profile.html', anchor="password", form=form)
+
+
+def activity_stream():
+    """builds the dict for showing the activity of the user in his profile"""
+
+    # first entrance is the user registered time
+    stream = {current_user.registered_at.strftime('%Y-%m-%d'): [
+        {'time': current_user.registered_at.strftime('%X'),
+         'type': 'registered'}
+    ]}
+
+    # add all requests
+    for user_request in current_user.requests:
+        request_date = user_request.timestamp.strftime('%Y-%m-%d')
+        item = {'time': user_request.timestamp.strftime('%X'),
+                'type': 'request',
+                'object': user_request}
+
+        if request_date not in stream:
+            stream[request_date] = [item]
+        else:
+            stream[request_date].append(item)
+
+    return stream

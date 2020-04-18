@@ -3,7 +3,7 @@
 {% from "macros/callout.html" import callout %}
 {% from "macros/badges.html" import badge %}
 
-{% block title %} Assignment {% endblock title %}
+{% block title %} Assignment - {{ assignment.name }} {% endblock title %}
 
 {% block stylesheets %}
     <!-- Specific CSS goes HERE -->
@@ -80,7 +80,7 @@
         </div>
     </section>
 
-    <section class="assignment-badges">
+    <section class="assignment-badges no-print">
         <h2 class="page-header">
             <i class="fa fa-trophy"></i> Badges
         </h2>
