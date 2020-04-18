@@ -23,7 +23,7 @@ def register_rq_dashboard(app):
 
 
 def register_global_variables(app):
-    app.jinja_env.globals['STATIC_PZ'] = '/static/assets/pizarra/img'
+    app.jinja_env.globals['STATIC_PZ'] = 'assets/pizarra/img/'
 
 
 def register_extensions(app):

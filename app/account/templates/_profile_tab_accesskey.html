@@ -1,0 +1,28 @@
+<!-- tab pane Access Key -->
+<div class="tab-pane {{ 'active' if anchor == 'access-key' }}" id="access-key">
+    <div class="callout callout-warning">
+        <h5>
+            <i class="icon fa fa-warning"></i> {{ _('This key is for personal use and should not be shared! Use it wisely.') }}
+        </h5>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center" id="code"><i
+                class="fa fa-fw fa-key"></i> <code>{{ current_user.access_token }}</code>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="{{ url_for('account_blueprint.route_regenerate_key') }}">
+                <button type="button" class="btn btn-primary pull-right">
+                    <i class="fa fa-refresh"></i> {{ _('Regenerate Key') }}
+                </button>
+            </a>
+            <button type="button" class="btn btn-success pull-right" onclick="copyText()"
+                    style="margin-right: 5px;"><i
+                    class="fa fa-copy"></i> {{ _('Copy Key') }}
+            </button>
+
+        </div>
+    </div>
+</div>
+<!-- /.tab-pane -->

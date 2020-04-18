@@ -1,0 +1,48 @@
+<!-- About Me Box -->
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{ _('About Me') }}</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <strong><i class="fa fa-book margin-r-5"></i> {{ _('Education') }}</strong>
+
+        <p class="text-muted">
+            {{ _('You are enroled in') }} <a
+                href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}"><b>{{ current_user.classgroup.description }}</b></a>
+        </p>
+
+        <hr>
+
+        <strong><i class="fa fa-map-marker margin-r-5"></i> {{ _('Location') }}</strong>
+
+        <p class="text-muted">{{ _('Space') }} <i class="fa fa-fw fa-rocket"></i></p>
+
+        <hr>
+
+        <strong><i class="fa fa-group margin-r-5"></i> {{ _('Team') }}</strong>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            {% if current_user.team != None %}
+                <ul class="users-list clearfix">
+                    {% for member in current_user.team.members %}
+                        <li>
+                            <img src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + member.avatar) }}"
+                                 alt="{{ _('User Avatar') }}">
+                            <a class="users-list-name"
+                               href="#">{{ _('You!') if member == current_user else member.name }} </a>
+                            <span class="users-list-date">{{ member.username }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">{{ _('Seems like you are not part of a team') }}</p>
+                <a href="#"
+                   class="btn btn-primary btn-block"><b>{{ _('Join a new Team') }}</b></a>
+            {% endif %}
+            <!-- /.users-list -->
+        </div>
+    </div>
+    <!-- /.box-body -->
+</div>
+<!-- /.box -->

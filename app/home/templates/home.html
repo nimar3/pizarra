@@ -26,13 +26,13 @@
 
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            {{ summary(current_user.requests | count, 'Total Requests', 'Your Requests',
+            {{ summary(current_user.requests | count, _('Total Requests'), _('Your Requests'),
             url_for('.requests') ,'fa fa-upload', 'bg-aqua') }}
-            {{ summary(current_user.quota_percentage_used, 'Quota Used', 'More info',
+            {{ summary(current_user.quota_percentage_used, _('Quota Used'), _('More info'),
             url_for('account_blueprint.route_account_home'), 'fa fa-hourglass-3', 'bg-green', true) }}
-            {{ summary(current_user.request_percentage_passed, 'Success Rate', 'More info',
+            {{ summary(current_user.request_percentage_passed, _('Success Rate'), _('More info'),
             url_for('.requests'), 'fa fa-star', 'bg-yellow', true) }}
-            {{ summary(current_user.classgroup.assignments | count, 'Assignments', 'More info',
+            {{ summary(current_user.classgroup.assignments | count, _('Assignments'), _('More info'),
             url_for('.assignments'), 'fa fa-file-text-o', 'bg-red') }}
         </div>
         <!-- /.row -->
@@ -47,7 +47,7 @@
             <div class="col-md-4">
                 <!-- User latest badge -->
                 {% if current_user.badges | count > 0 %}
-                    {{ badge(current_user.badges[0], 'Latest Badge') }}
+                    {{ badge(current_user.badges[0], _('Latest Badge')) }}
                 {% else %}
                     {{ no_badge() }}
                 {% endif %}

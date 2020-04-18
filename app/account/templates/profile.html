@@ -1,0 +1,112 @@
+{% extends "base_site.html" %}
+
+{% from 'macros.html' import show_badge, errors, tab with context %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block stylesheets %}
+    <!-- Specific CSS goes HERE -->
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ _('Profile') }}
+            <small>{{ _('everything about you') }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}"><i
+                    class="fa fa-user"></i> {{ _('Account') }}</a>
+            </li>
+            <li><a href="{{ url_for('account_blueprint.route_account_home') }}">{{ _('Profile') }}</a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-3">
+
+                {% include '_profile_resume.html' %}
+
+                {% include '_profile_about_me.html' %}
+
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs" id="profile-tabs">
+
+                        {{ tab('activity', _('Activity')) }}
+
+                        {{ tab('badges', _('Badges')) }}
+
+                        {{ tab('classgroup', _('Group')) }}
+
+                        {{ tab('password', _('Password')) }}
+
+                        {{ tab('access-key', _('Access Key')) }}
+
+                    </ul>
+                    <!-- tabs -->
+                    <div class="tab-content">
+
+                        {% include '_profile_tab_activity.html' %}
+
+                        {% include '_profile_tab_badges.html' %}
+
+                        {% include '_profile_tab_classgroup.html' %}
+
+                        {% include '_profile_tab_password.html' %}
+
+                        {% include '_profile_tab_accesskey.html' %}
+
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+    </section>
+    <!-- /.content -->
+
+{% endblock content %}
+
+{% block javascripts %}
+
+    <script>
+        function copyText() {
+            /* Get the text field */
+            const copyText = document.getElementById("code");
+            const textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); /*For mobile devices*/
+            document.execCommand("Copy");
+            textArea.remove();
+        }
+    </script>
+
+    <script>
+        $("#profile-tabs li").click(function () {
+            if ($(this).attr('id') === 'profile-tabs-badges') {
+                setTimeout(function () {
+                    $('#doge-tooltip').popover('show')
+                }, 1000);
+            } else {
+                $('#doge-tooltip').popover('hide')
+            }
+            history.pushState({
+                id: 'my-account'
+            }, 'Pizarra - Profile | UPV', {{ url_for('account_blueprint.route_account_home') }} +$(this)[0].dataset['url']);
+        });
+    </script>
+
+{% endblock %}

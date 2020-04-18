@@ -4,6 +4,13 @@
     {% endif %}
 {% endmacro %}
 
+{% macro tab(name, description) %}
+    <li id="profile-tabs-{{ name }}" data-url="{{ name }}"
+            {{ 'class=active' if anchor == None or anchor == name }}>
+        <a href="#{{ name }}" data-toggle="tab">{{ description }}</a>
+    </li>
+{% endmacro %}
+
 {% macro show_badge(badge) %}
     <div class="col-md-4">
         <!-- Widget: Badge -->
@@ -15,7 +22,7 @@
             </div>
 
             <div class="widget-user-image">
-                <img class="img-circle" src="{{ STATIC_PZ }}/{{ badge.image }}"
+                <img class="img-circle" src="{{ url_for('base_blueprint.static',filename=STATIC_PZ + badge.image) }}"
                      alt="User Avatar">
             </div>
             <div class="box-footer">

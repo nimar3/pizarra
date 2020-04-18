@@ -1,0 +1,18 @@
+<!-- tab pane Badges -->
+<div class="tab-pane {{ 'active' if anchor == 'badges' }}" id="badges">
+    <div class="row">
+        {% for badge in current_user.badges %}
+            {{ show_badge(badge) }}
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <img id="doge-tooltip" class="pull-right" src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + 'doge-tooltip.png') }}"
+                 data-container="body"
+                 data-toggle="popover" data-placement="left"
+                 data-content="{{ "SO SHINY!!<br/> MUCH AMAZING" if current_user.badges | count > 0
+                                         else "SO EMPTY!!<br/> MUCH WORK TO DO" }}"/>
+        </div>
+    </div>
+</div>
+<!-- /.tab-pane -->

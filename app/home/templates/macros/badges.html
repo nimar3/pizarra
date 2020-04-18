@@ -8,7 +8,7 @@
         </div>
 
         <div class="widget-user-image">
-            <img class="img-circle" src="{{ STATIC_PZ }}/{{ badge.image }}"
+            <img class="img-circle" src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + badge.image) }}"
                  alt="User Avatar">
         </div>
         <div class="box-footer">
@@ -34,20 +34,23 @@
 {% endmacro %}
 
 {% macro no_badge() %}
-    <!-- Widget: No BADGE -->
+    <!-- Widget: No Badge -->
     <div class="box box-widget widget-user-2">
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header bg-light-blue">
             <div class="widget-user-image">
-                <img class="img-circle" src="{{ STATIC_PZ }}/badge-crying-128x128.png" alt="No Badge">
+                <img class="img-circle"
+                     src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + 'badge-crying-128x128.png') }}"
+                     alt="No Badge">
             </div>
             <!-- /.widget-user-image -->
-            <h3 class="widget-user-username">No Badges found</h3>
-            <h5 class="widget-user-desc">Keep fightning!</h5>
+            <h3 class="widget-user-username">{{ _('No Badges found') }}</h3>
+            <h5 class="widget-user-desc">{{ _('Keep fightning!') }}</h5>
         </div>
         <div class="box-footer no-padding">
             <ul class="nav nav-stacked">
-                <li><a href="/assignments">Check your assignments to earn some badges</a>
+                <li>
+                    <a href="{{ url_for('home_blueprint.assignments') }}">{{ _('Check your assignments to earn some badges') }}</a>
                 </li>
             </ul>
         </div>

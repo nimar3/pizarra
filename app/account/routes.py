@@ -5,6 +5,7 @@ Copyright (c) 2020 - Pizarra
 """
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import current_user
+from flask_security.utils import _
 
 from app import db
 from app.account import blueprint
@@ -19,7 +20,7 @@ def route_account_home(anchor):
     if anchor is not None and anchor not in anchors:
         return redirect(url_for('account_blueprint.route_account_home', anchor=None))
 
-    return render_template('account_profile.html', anchor=anchor, form=ChangePassword())
+    return render_template('profile.html', anchor=anchor, form=ChangePassword())
 
 
 @blueprint.route('/regenerate-key')
@@ -28,7 +29,7 @@ def route_regenerate_key():
     user.access_token = random_string()
     db.session.add(user)
     db.session.commit()
-    flash('New Access key has been generated!', 'success')
+    flash(_('New Access key has been generated!'), 'success')
 
     return redirect(url_for('account_blueprint.route_account_home', anchor='access-key'))
 
@@ -42,6 +43,6 @@ def route_update_password():
         user.password = hash_pass(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Password has been updated!', 'success')
+        flash(_('Password has been updated!'), 'success')
 
-    return render_template('account_profile.html', anchor="password", form=form)
+    return render_template('profile.html', anchor="password", form=form)

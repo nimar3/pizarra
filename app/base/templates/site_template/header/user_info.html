@@ -1,15 +1,15 @@
 <!-- User Info -->
 <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}"
+        <img src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + current_user.avatar) }}"
              class="user-image"
-             alt="{{ _('User Image') }}">
+             alt="{{ _('User Avatar') }}">
         <span class="hidden-xs">{{ current_user.username }}</span>
     </a>
     <ul class="dropdown-menu">
         <!-- User Avatar -->
         <li class="user-header">
-            <img src="{{ url_for('base_blueprint.static', filename='assets/pizarra/img/' + current_user.avatar) }}"
+            <img src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + current_user.avatar) }}"
                  class="img-circle"
                  alt="{{ _('User Avatar') }}">
             <p>

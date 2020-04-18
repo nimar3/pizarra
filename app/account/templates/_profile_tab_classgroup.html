@@ -1,0 +1,18 @@
+<!-- tab pane ClassGroup -->
+<div class="tab-pane {{ 'active' if anchor == 'classgroup' }}" id="classgroup">
+    <div class="box-body no-padding">
+        <ul class="classgroup-student-list users-list clearfix">
+            {% for student in current_user.classgroup.students %}
+                <li class="{{ '' if student == current_user else 'classgroup-student-other' }}">
+                    <img src="{{ url_for('base_blueprint.static',filename=STATIC_PZ + student.avatar) }}"
+                         alt="{{ _('User Profile Picture') }}">
+                    <a class="users-list-name"
+                       href="#">{{ _('You!') if student == current_user else student.name }}</a>
+                    <span class="users-list-date">{{ student.username }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- /.users-list -->
+    </div>
+</div>
+<!-- /.tab-pane -->
