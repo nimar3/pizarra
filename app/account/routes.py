@@ -58,6 +58,7 @@ def activity_stream():
          'type': 'registered'}
     ]}
 
+    # TODO move to smaller functions and reuse code
     # add all requests
     for user_request in current_user.requests:
         request_date = user_request.timestamp.strftime('%Y-%m-%d')

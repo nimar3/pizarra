@@ -12,13 +12,43 @@ from rq import Connection, Queue
 from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm
-from app.base.models import Assignment, ClassGroup, Badge
+from app.base.models import Assignment, ClassGroup, Badge, Request, User
 from app.tasks.models import simple_task
 
 
 @blueprint.route('/')
+def index():
+    return redirect(url_for('.route_admin_home'))
+
+
+@blueprint.route('/dashboard')
 def route_admin_home():
-    return render_template('admin_home.html')
+    request_list = Request.query.all()
+    return render_template('admin_home.html', request_list=request_list)
+
+
+@blueprint.route('/classgroups')
+def classgroups():
+    classgroup_list = ClassGroup.query.all()
+    return render_template('admin_classgroups.html', classgroup_list=classgroup_list)
+
+
+@blueprint.route('/students')
+def students():
+    # TODO change to SQL Query
+    student_list = [x for x in User.query.all() if not x.is_admin]
+    return render_template('admin_students.html', student_list=student_list)
+
+
+@blueprint.route('/assignments')
+def assignments():
+    assignment_list = Assignment.query.all()
+    return render_template('admin_assignments.html', assignment_list=assignment_list)
+
+
+@blueprint.route('/settings')
+def settings():
+    return render_template('admin_settings.html')
 
 
 @blueprint.route('/assignment/new', methods=['GET', 'POST'])
@@ -74,6 +104,7 @@ def create_assignment(data):
 
 
 def process_date(string_date):
+    """ transforms a string date to datetime """
     if string_date is not None and string_date != '':
         try:
             date = datetime.strptime(string_date, '%Y-%m-%d %H:%M')

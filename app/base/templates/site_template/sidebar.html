@@ -1,4 +1,10 @@
-{% from 'macros/sidebar_item.html' import item with context %}
+{% macro item(url, message, icon) %}
+    <li class="{{ 'active' if url in request.path else '' }}">
+        <a href="{{ url }}">
+            <i class="fa {{ icon }}"></i> <span>{{ message }}</span>
+        </a>
+    </li>
+{% endmacro %}
 
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
@@ -22,11 +28,21 @@
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
+            {% if current_user.is_admin %}
+            <li class="header">{{ _('ADMINISTRATION') }}</li>
+                {{ item(url_for('admin_blueprint.route_admin_home'), _('Requests'), 'fa-upload') }}
+                {{ item(url_for('rq_dashboard.overview'), _('Task Scheduler'), 'fa-tasks' ) }}
+                {{ item(url_for('admin_blueprint.classgroups'), _('Groups'), 'fa-users') }}
+                {{ item(url_for('admin_blueprint.students'), _('Students'), 'fa-user') }}
+                {{ item(url_for('admin_blueprint.assignments'), _('Assignments'), 'fa-files-o') }}
+                {{ item(url_for('admin_blueprint.settings'), _('System Settings'), 'fa-gears') }}
+            {% endif %}
+
             <li class="header">{{ _('MAIN NAVIGATION') }}</li>
 
             {{ item(url_for('home_blueprint.home'), _('Dashboard'), 'fa-dashboard') }}
 
-            {{ item(url_for('home_blueprint.assignments'), _('Assignments'), 'fa-file-text-o') }}
+            {{ item(url_for('home_blueprint.assignments'), _('My Assignments'), 'fa-file-text-o') }}
 
             {{ item(url_for('home_blueprint.requests'), _('My Requests'), 'fa-upload') }}
 

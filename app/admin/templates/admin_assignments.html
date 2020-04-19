@@ -2,7 +2,7 @@
 
 {% block admin_header %}
 
-    <li class="active">{{ _('Dashboard') }}</li>
+    <li class="active">{{ _('Assignments') }}</li>
 
 {% endblock admin_header %}
 
@@ -14,7 +14,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">{{ _('All Requests') }}</h3>
+                        <h3 class="box-title">{{ _('All Assignments') }}</h3>
                         <div class="box-tools">
                             <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
                                 <input type="text" name="table-search" id="table-search" class="form-control pull-right"
@@ -32,30 +32,24 @@
                             <thead>
                             <tr>
                                 <th>{{ _('ID') }}</th>
-                                <th>{{ _('Date') }}</th>
-                                <th>{{ _('User') }}</th>
-                                <th>{{ _('Group') }}</th>
-                                <th>{{ _('Assignment') }}</th>
-                                <th>{{ _('Status') }}</th>
-                                <th>{{ _('Time') }}</th>
+                                <th>{{ _('Name') }}</th>
+                                <th>{{ _('Title') }}</th>
+                                <th>{{ _('Requests') }}</th>
+                                <th>{{ _('Start Date') }}</th>
+                                <th>{{ _('Due Date') }}</th>
+                                <th>{{ _('Groups') }}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for user_request in request_list %}
+                            {% for assignment in assignment_list %}
                                 <tr>
-                                    <td><a href="{{ url_for('home_blueprint.requests',id=user_request.id) }}">
-                                        #{{ user_request.id }} </a></td>
-                                    <td>{{ user_request.timestamp }}</td>
-                                    <td>{{ user_request.user.name }} ({{ user_request.user.email }})</td>
-                                    <td>{{ user_request.user.classgroup.name }}</td>
-                                    <td>
-                                        <a href="{{ url_for('home_blueprint.assignments', name=user_request.assignment.name ) }}">
-                                            {{ user_request.assignment.title }}</a>
-                                    </td>
-                                    <td><span
-                                            class="label {{ user_request.status.label }}">{{ user_request.status.name }}</span>
-                                    </td>
-                                    <td>{{ user_request.run_time }} s.</td>
+                                    <td><a href="#"> #{{ assignment.id }} </a></td>
+                                    <td>{{ assignment.name }}</td>
+                                    <td>{{ assignment.title }}</td>
+                                    <td>{{ assignment.requests | count }}</td>
+                                    <td>{{ assignment.start_date }}</td>
+                                    <td>{{ assignment.due_date }}</td>
+                                    <td>{{ assignment.classgroups | count }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

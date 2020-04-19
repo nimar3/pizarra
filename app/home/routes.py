@@ -21,6 +21,8 @@ from app.tasks.models import RequestStatus
 
 @blueprint.route('/home')
 def home():
+    if current_user.is_admin:
+        return redirect(url_for('admin_blueprint.route_admin_home'))
     return render_template('home.html')
 
 
@@ -144,11 +146,11 @@ def route_template(template):
 def get_assignments_ordered():
     """
     returns the list of all available Assignments for the user ordered first with the opened Assignments and
-    after that the ones the closed Assignments
+    after that the closed Assignments
     """
-    assignments = Assignment.query.all() if current_user.is_admin else current_user.classgroup.assignments
-    open_assignments = [x for x in assignments if not x.expired]
-    closed_assignments = [x for x in assignments if x.expired]
+    user_assignments = Assignment.query.all() if current_user.is_admin else current_user.classgroup.assignments
+    open_assignments = [x for x in user_assignments if not x.expired]
+    closed_assignments = [x for x in user_assignments if x.expired]
     return open_assignments + closed_assignments
 
 

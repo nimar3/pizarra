@@ -1,0 +1,51 @@
+{% extends "base_site.html" %}
+
+{% block title %} {{ _('Admin') }} {% endblock title %}
+
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="{{ url_for('base_blueprint.static', filename='assets/css/dataTables.bootstrap.min.css') }}">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            {{ _('Admin') }}
+            <small>{{ _('administration of Pizarra App') }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>{{ _('Admin') }}</li>
+            {% block admin_header %}{% endblock admin_header %}
+        </ol>
+    </section>
+
+    {% include '_header.html' %}
+
+    {% block admin_content %}{% endblock admin_content %}
+
+{% endblock content %}
+
+{% block javascripts %}
+    <script src="{{ url_for('base_blueprint.static', filename='assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('base_blueprint.static', filename='assets/js/dataTables.bootstrap.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            let table = $('#table').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'sDom': 'ltipr',
+                'aaSorting': [[1, 'desc']]
+            });
+
+            $("#table-search").keyup(function () {
+                table.search($('#table-search').val()).draw();
+            });
+        });
+    </script>
+{% endblock %}

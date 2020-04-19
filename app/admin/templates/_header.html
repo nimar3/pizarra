@@ -1,0 +1,26 @@
+{% macro header_item(url, title, icon) %}
+    <a class="btn btn-app {{ 'admin-header-active-item' if url in request.path else '' }}" href="{{ url }}">
+        <i class="fa {{ icon }}"></i> {{ title }}
+    </a>
+{% endmacro %}
+
+<!-- Header links -->
+<section class="content" style="min-height: unset;">
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-xs-12">
+            {{ header_item(url_for('admin_blueprint.route_admin_home'), _('Requests'), 'fa-upload') }}
+
+            {{ header_item(url_for('rq_dashboard.overview'), _('Task Scheduler'), 'fa-tasks') }}
+
+            {{ header_item(url_for('admin_blueprint.classgroups'), _('Groups'), 'fa-users') }}
+
+            {{ header_item(url_for('admin_blueprint.students'), _('Students'), 'fa-user') }}
+
+            {{ header_item(url_for('admin_blueprint.assignments'), _('Assignments'), 'fa-files-o') }}
+
+            {{ header_item(url_for('admin_blueprint.settings'), _('System Settings'), 'fa-gears') }}
+        </div>
+    </div>
+</section>
+<!-- /. Header links -->

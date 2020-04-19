@@ -51,3 +51,8 @@
     -webkit-filter: grayscale(90%);
     filter: grayscale(90%);
 }
+
+.admin-header-active-item {
+    background-color: green;
+    color: white;
+}
