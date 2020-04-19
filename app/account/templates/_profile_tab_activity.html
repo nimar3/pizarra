@@ -1,59 +1,26 @@
+{% from 'macros.html' import activity_registered, activity_request, activity_badge %}
+
 <!-- tab pane Activity -->
 <div class="tab-pane {{ 'active' if anchor == None or anchor == 'activity' }}" id="activity">
     <!-- The timeline -->
     <ul class="timeline timeline-inverse">
 
-        {% set colors = ['red','yellow','blue','light-blue','green','navy','teal','olive','purple','maroon','black'] %}
-
-        {% for date, items in activity_stream.items() %}
+        {% for date, items in ( activity_stream.items() | sort(reverse=true)) %}
             <!-- timeline time label -->
             <li class="time-label"><span class="bg-maroon">{{ date }}</span></li>
             {% for item in items %}
                 {% if item.type == 'registered' %}
-                    <!-- timeline item -->
-                    <li>
-                        <i class="fa fa-user bg-green"></i>
-
-                        <div class="timeline-item">
-                            <span class="time"><i class="fa fa-clock-o"></i> {{ item.time }}</span>
-
-                            <h3 class="timeline-header no-border"><a
-                                    href="#">{{ _('Registered') }}</a> {{ _('you joined Pizarra') }}
-                            </h3>
-                        </div>
-                    </li>
-                    <!-- END timeline item -->
+                    {{ activity_registered(item.time) }}
                 {% endif %}
                 {% if item.type == 'request' %}
-                    <!-- timeline item -->
-                    <li>
-                        <i class="fa fa-upload bg-orange"></i>
-
-                        <div class="timeline-item">
-                            <span class="time"><i class="fa fa-clock-o"></i> {{ item.time }}</span>
-
-                            <h3 class="timeline-header"><a href="
-                                    {{ url_for('home_blueprint.assignments', name=item.object.assignment.name) }}">Request</a>
-                                sent to {{ item.object.assignment.title }}</h3>
-
-                            <div class="timeline-body">
-                                You sent a Request with ID <a
-                                    href="{{ url_for('home_blueprint.requests', id=item.object.id) }}">#{{ item.object.id }}</a>
-                                for the Assignment <b>{{ item.object.assignment.title }}</b>
-                            </div>
-                            <div class="timeline-footer">
-                                Status for this request is <span class="label {{ item.object.status.label }}">{{ item.object.status.name }}</span>
-                            </div>
-                        </div>
-                    </li>
+                    {{ activity_request(item.time, item.object) }}
                 {% endif %}
-
-                <!-- END timeline item -->
+                {% if item.type == 'badge' %}
+                    {{ activity_badge(item.time, item.object) }}
+                {% endif %}
             {% endfor %}
             <!-- /.timeline-label -->
         {% endfor %}
-
-
 
         <li>
             <i class="fa fa-clock-o bg-gray"></i>

@@ -10,10 +10,11 @@ from flask_security.utils import _
 from app import db
 from app.account import blueprint
 from app.account.forms import ChangePassword
+from app.base.models import UserBadge, Badge
 from app.base.util import random_string, hash_pass
 
 
-@blueprint.route('/', defaults={'anchor': None})
+@blueprint.route('/', defaults={'anchor': 'activity'})
 @blueprint.route('/<anchor>')
 def route_account_home(anchor):
     anchors = ['activity', 'badges', 'classgroup', 'password', 'access-key']
@@ -62,11 +63,26 @@ def activity_stream():
         request_date = user_request.timestamp.strftime('%Y-%m-%d')
         item = {'time': user_request.timestamp.strftime('%X'),
                 'type': 'request',
-                'object': user_request}
+                'object': user_request
+                }
 
         if request_date not in stream:
             stream[request_date] = [item]
         else:
             stream[request_date].append(item)
+
+    # add all badges
+    user_badges = UserBadge.query.filter_by(user_id=current_user.id).all()
+    for user_badge in user_badges:
+        item_date = user_badge.timestamp.strftime('%Y-%m-%d')
+        item = {'time': user_badge.timestamp.strftime('%X'),
+                'type': 'badge',
+                'object': Badge.query.filter_by(id=user_badge.badge_id).first()
+                }
+
+        if item_date not in stream:
+            stream[item_date] = [item]
+        else:
+            stream[item_date].append(item)
 
     return stream

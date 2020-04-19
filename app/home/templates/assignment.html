@@ -82,12 +82,16 @@
 
     <section class="assignment-badges no-print">
         <h2 class="page-header">
-            <i class="fa fa-trophy"></i> Badges
+            <i class="fa fa-trophy"></i> {{ _('Badges') }}
         </h2>
         <div class="row">
             {% for item in assignment.badges %}
                 <div class="col-md-4">
-                    {{ badge(item) }}
+                {% if item in current_user.badges  %}
+                    {{ badge(item, _('You earned this Badge'), false) }}
+                {% else %}
+                    {{ badge(item, _('Complete the Badge mission to earn it'), true) }}
+                {% endif %}
                 </div>
             {% endfor %}
         </div>

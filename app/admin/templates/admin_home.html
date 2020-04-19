@@ -11,12 +11,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Admin
-            <small>configuration of Pizarra settings</small>
+            {{ _('Admin') }}
+            <small>{{ _('configuration of Pizarra settings') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('.home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="/admin">Admin</a></li>
+            <li><a href="{{ url_for('home_blueprint.home') }}">{{ _('Home') }}</a></li>
+            <li><a href="{{ url_for('admin_blueprint.route_admin_home') }}">{{ _('Admin') }}</a></li>
         </ol>
     </section>
 
@@ -25,11 +25,11 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-xs-12">
-                <a class="btn btn-app" href="/admin/assignment/new">
-                    <i class="fa fa-edit"></i> New Assignment
+                <a class="btn btn-app" href="{{ url_for('admin_blueprint.route_assignment_new') }}">
+                    <i class="fa fa-edit"></i> {{ _('New Assignment') }}
                 </a>
                 <a class="btn btn-app" href="{{ url_for('rq_dashboard.overview') }}">
-                    <i class="fa fa-tasks"></i> Task Scheduler
+                    <i class="fa fa-tasks"></i> {{ _('Task Scheduler') }}
                 </a>
             </div>
         </div>
@@ -39,8 +39,5 @@
 {% endblock content %}
 
 {% block javascripts %}
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="/static/assets/js/demo.js"></script>
 
 {% endblock %}

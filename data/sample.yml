@@ -130,7 +130,8 @@
       roles: [users]
       classgroup: class_a
       team: team_foo
-      badges: [badge_flash, badge_first_place, badge_beat_the_machine]
+      registered_at: 2020-01-01 09:00:00
+      badges: [badge_flash, badge_first_place]
     - __key__: user_bar
       username: "bar"
       email: "bar@test.test"

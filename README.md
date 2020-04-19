@@ -10,7 +10,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] change password
   - [x] regenerate access key
   - [x] your group
-  - [ ] activity
+  - [x] activity
   - [ ] join a new team 
   - [x] switch language
 - Dashboard

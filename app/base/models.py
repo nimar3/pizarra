@@ -25,16 +25,18 @@ assignments_badges = Table('_assignments_badges', db.Model.metadata,
                            Column('badge_id', Integer, ForeignKey('badge.id'))
                            )
 
-users_badges = Table('_users_badges', db.Model.metadata,
-                     Column('user_id', Integer, ForeignKey('user.id')),
-                     Column('badge_id', Integer, ForeignKey('badge.id')),
-                     Column('timestamp', DateTime(), default=datetime.now)
-                     )
-
 users_roles = Table('_users_roles', db.Model.metadata,
                     Column('user_id', Integer(), ForeignKey('user.id')),
                     Column('role_id', Integer(), ForeignKey('role.id'))
                     )
+
+
+class UserBadge(db.Model):
+    __tablename__ = '_users_badges'
+    id = Column(Integer, primary_key=True)
+    user_id = Column('user_id', Integer(), ForeignKey('user.id'))
+    badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
+    timestamp = Column('timestamp', DateTime(), default=datetime.now)
 
 
 class User(db.Model, UserMixin):
@@ -169,6 +171,9 @@ class Badge(db.Model):
     background_color = Column(String(100))
     image = Column(String(255))
     assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
+
+    def __repr__(self):
+        return ', '.join([str(self.id), self.name, self.title])
 
 
 class Request(db.Model):

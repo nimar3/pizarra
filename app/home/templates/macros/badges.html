@@ -1,6 +1,6 @@
-{% macro badge(badge, footer_message=None) %}
+{% macro badge(badge, footer_message=None, grayscale=false) %}
     <!-- Widget: Badge -->
-    <div class="box box-widget widget-user">
+    <div class="box box-widget widget-user {{ 'badge-grayscale' if grayscale else '' }}">
         <!-- Add the bg color to the header using any of the bg-* classes -->
         <div class="widget-user-header {{ badge.background_color }}">
             <h3 class="widget-user-username">{{ badge.title }}</h3>

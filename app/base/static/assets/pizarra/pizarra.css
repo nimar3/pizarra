@@ -46,3 +46,8 @@
     padding: 20px;
     margin: 10px 25px
 }
+
+.badge-grayscale {
+    -webkit-filter: grayscale(90%);
+    filter: grayscale(90%);
+}

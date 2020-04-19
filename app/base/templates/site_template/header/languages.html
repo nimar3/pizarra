@@ -8,7 +8,7 @@
             <ul class="menu">
                 {% for key, value in config['SUPPORTED_LANGUAGES'].items() %}
                     <li>
-                        <a href="{{ url_for('base_blueprint.set_language', language=key) + '?path=' + request.path }}">
+                        <a href="{{ url_for('base_blueprint.set_language', language=key, path=request.path) }}">
                             {{ _(value) }}
                         </a>
                     </li>
