@@ -34,7 +34,7 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = 'UTC'
 
     # Uploaded files
-    UPLOAD_FOLDER = 'app/uploads'
+    UPLOAD_FOLDER = 'uploads'
     ALLOWED_EXTENSIONS = {'c', 'cpp'}
 
     #rq

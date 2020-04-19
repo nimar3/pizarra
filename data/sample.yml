@@ -118,6 +118,7 @@
       email: "nmartini@upv.es"
       name: "Joan Miró"
       password: "123"
+      access_token: "123"
       quota: 9999
       roles: [users, admins]
     - __key__: user_foo

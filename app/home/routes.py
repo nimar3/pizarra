@@ -114,7 +114,7 @@ def send_assignment(name):
     filename = '-'.join(
         [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(10), secure_filename(file.filename)])
     file_location = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-    file.save(os.path.join(file_location))
+    file.save(os.path.join('app', file_location))
 
     # create the request
     user_request = Request()
