@@ -42,18 +42,20 @@ def join_team(key):
         # try to find team with key
         team = Team.query.filter_by(key=key).first()
         if team is not None:
-            # check if team is not full
-            if len(team.members) < current_app.config['TEAM_MAX_SIZE']:
-                # set new team to user
-                user = current_user
-                user_old_team = user.team
-                user.team = team
-                db.session.add(user)
-                db.session.commit()
-                check_for_empty_team(user_old_team)
-                flash(_('You joined Team {}').format(team.name), 'success')
+            if team != current_user.team:
+                # check if team is not full
+                if len(team.members) < current_app.config['TEAM_MAX_SIZE']:
+                    # set new team to user
+                    user_old_team = current_user.team
+                    current_user.team = team
+                    db.session.add(current_user)
+                    db.session.commit()
+                    check_for_empty_team(user_old_team)
+                    flash(_('You joined Team {}').format(team.name), 'success')
+                else:
+                    flash(_('You are unable to join team {} because is full').format(team.name), 'error')
             else:
-                flash(_('You are unable to join team {} because is full').format(team.name), 'error')
+                flash(_('You already belong to team {}').format(team.name), 'error')
         else:
             flash(_('Team with key {} was not found').format(key), 'error')
 

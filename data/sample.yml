@@ -156,6 +156,7 @@
       name: "Joan Miró"
       password: "123"
       access_token: "123"
+      avatar: "avatar-default-128x128.jpg"
       quota: 9999
       roles: [users, admins]
     - __key__: user_foo

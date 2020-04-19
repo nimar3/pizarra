@@ -11,7 +11,7 @@ from os import environ
 class Config(object):
     basedir = os.path.abspath(os.path.dirname(__file__))
 
-    SECRET_KEY = 'key'
+    SECRET_KEY = environ.get('SECRET_KEY', 'pUdos1KbNyLYUvb4P7MvHWmuWSGH0AuYbryi045al9upVyFbyUBys5Xq5s3y')
 
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
@@ -30,18 +30,21 @@ class Config(object):
 
     # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}
-    BABEL_DEFAULT_LOCALE = 'es'
-    BABEL_DEFAULT_TIMEZONE = 'UTC'
+    BABEL_DEFAULT_LOCALE = environ.get('BABEL_DEFAULT_LOCALE', 'en')
+    BABEL_DEFAULT_TIMEZONE = environ.get('BABEL_DEFAULT_TIMEZONE', 'UTC')
 
     # Uploaded files
     UPLOAD_FOLDER = 'uploads'
     ALLOWED_EXTENSIONS = {'c', 'cpp'}
 
     # Teams
-    TEAM_MAX_SIZE = 3
+    TEAM_MAX_SIZE = environ.get('TEAM_MAX_SIZE', 3)
+
+    # Registration
+    REGISTRATION_ENABLED = environ.get('REGISTRATION_ENABLED', True)
 
     # rq
-    RQ_DASHBOARD_REDIS_URL = "redis://localhost:6379/0"
+    RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
     QUEUES = ["default"]
 
 
