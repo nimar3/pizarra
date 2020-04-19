@@ -6,6 +6,8 @@ Copyright (c) 2020 - present nimar3
 
 from flask import Blueprint
 
+from app.base.util import verify_is_admin
+
 blueprint = Blueprint(
     'admin_blueprint',
     __name__,
@@ -13,3 +15,5 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static'
 )
+
+blueprint.before_request(verify_is_admin)

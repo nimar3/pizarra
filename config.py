@@ -40,11 +40,9 @@ class Config(object):
     # Teams
     TEAM_MAX_SIZE = 3
 
-    #rq
+    # rq
     RQ_DASHBOARD_REDIS_URL = "redis://localhost:6379/0"
     QUEUES = ["default"]
-
-
 
 
 class ProductionConfig(Config):

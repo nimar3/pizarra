@@ -12,7 +12,7 @@ import random
 import re
 import string
 
-from flask import url_for, redirect, request
+from flask import url_for, redirect, request, abort
 from flask_login import current_user
 
 
@@ -47,6 +47,12 @@ def verify_logged_in():
     """Redirects users that are trying to access private areas"""
     if not current_user.is_authenticated and not is_allowed_anonymous_path(request.path, request.method):
         return redirect(url_for('base_blueprint.login'))
+
+
+def verify_is_admin():
+    """Redirects users that are not admin"""
+    if not current_user.is_authenticated or not current_user.is_admin:
+        return abort(403)
 
 
 def is_allowed_anonymous_path(path, method):

@@ -3,7 +3,8 @@
 {% block title %} {{ _('New Assignment') }} {% endblock title %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/static/assets/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet"
+          href="{{ url_for('base_blueprint.static', filename='assets/css/bootstrap-datetimepicker.min.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -15,9 +16,8 @@
             <small>{{ _('new') }}</small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="{{ url_for('admin_blueprint.route_admin_home') }}"><i
-                    class="fa fa-dashboard"></i> {{ _('Admin') }}</a></li>
-            <li><a href="#">{{ _('Assignments') }}</a></li>
+            <li><a href="{{ url_for('admin_blueprint.route_admin_home') }}">{{ _('Admin') }}</a></li>
+            <li><a href="{{ url_for('admin_blueprint.assignments') }}">{{ _('Assignments') }}</a></li>
             <li class="active">{{ _('New') }}</li>
         </ol>
     </section>
@@ -110,7 +110,8 @@
 
                             <div class="box-footer">
                                 <button type="submit" name="submit"
-                                        class="btn btn-primary btn-success pull-right">{{ _('Create Assignment') }}</button>
+                                        class="btn btn-primary btn-success pull-right"><i
+                                        class="fa fa-save"></i> {{ _('Save') }}</button>
                             </div>
                         </div>
                     </form>
@@ -128,10 +129,12 @@
 {% block javascripts %}
 
     <!-- CK Editor -->
-    <script src="/static/assets/ckeditor/ckeditor.js"></script>
-
+    <script src="{{ url_for('base_blueprint.static', filename='assets/ckeditor/ckeditor.js') }}"></script>
     <!-- Select2 -->
-    <script src="/static/assets/select2/js/select2.js"></script>
+    <script src="{{ url_for('base_blueprint.static', filename='assets/select2/js/select2.js') }}"></script>
+
+    <script src="{{ url_for('base_blueprint.static', filename='assets/js/moment.min.js') }}"></script>
+    <script src="{{ url_for('base_blueprint.static', filename='assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 
     <script>
         $(function () {

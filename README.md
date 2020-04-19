@@ -11,7 +11,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] regenerate access key
   - [x] your group
   - [x] activity
-  - [ ] join a new team 
+  - [x] join a new team 
   - [x] switch language
 - Dashboard
   - Student
@@ -20,15 +20,20 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
     - [x] latest badge / no badges
     - [x] your team / no team
   - Admin
-    - [x] create assignment
-    - [ ] summaries
-    - [x] requests 
-    - [ ] status
-    - [ ] manage students
-    - [ ] manage assignments
-    - [ ] import students
+    - requests
+      - [x] list
+      - [x] view
+    - [ ] summaries ? 
+    - [ ] global status ?
+    - students
+      - [x] view
+      - [ ] edit
+      - [ ] import csv
+    - assignments
+      - [x] view
+      - [x] create
+      - [ ] edit
     - [ ] manage RQ task scheduler
-    - [ ] create badges
 - Assignments
   - [x] list
   - [x] info
@@ -39,7 +44,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] filter
   - [x] info
 - Leaderboard
-  - [ ] board
+  - [ ] view
 - FAQ
   - [ ] info
 - RQ
