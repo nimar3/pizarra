@@ -7,11 +7,45 @@
 {% endblock admin_header %}
 
 {% block  admin_content %}
+
     <!-- Main content -->
-    <section class="content">
-        <!-- /.row -->
+    <section class="invoice">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="page-header">
+                    <i class="fa fa-globe"></i> Config Properties
+                </h2>
+            </div>
+            <!-- /.col -->
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for dict_item in config %}
+                        <tr>
+                            <td>{{ dict_item }}</td>
+                            <td>{{ config[dict_item] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.col -->
+        </div>
 
     </section>
     <!-- /.content -->
+    <div class="clearfix"></div>
+
+
 
 {% endblock %}

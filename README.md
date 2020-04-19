@@ -22,7 +22,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - Admin
     - [x] create assignment
     - [ ] summaries
-    - [ ] requests 
+    - [x] requests 
     - [ ] status
     - [ ] manage students
     - [ ] manage assignments
