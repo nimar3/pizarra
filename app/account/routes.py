@@ -3,14 +3,14 @@
 License: MIT
 Copyright (c) 2020 - Pizarra
 """
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, current_app
 from flask_login import current_user
 from flask_security.utils import _
 
 from app import db
 from app.account import blueprint
-from app.account.forms import ChangePassword
-from app.base.models import UserBadge, Badge
+from app.account.forms import ChangePassword, CreateTeam
+from app.base.models import UserBadge, Badge, Team
 from app.base.util import random_string, hash_pass
 
 
@@ -21,7 +21,8 @@ def route_account_home(anchor):
     if anchor is not None and anchor not in anchors:
         return redirect(url_for('account_blueprint.route_account_home', anchor=None))
 
-    return render_template('profile.html', anchor=anchor, activity_stream=activity_stream(), form=ChangePassword())
+    return render_template('profile.html', anchor=anchor, activity_stream=activity_stream(), form=ChangePassword(),
+                           form_team=CreateTeam())
 
 
 @blueprint.route('/regenerate-key')
@@ -33,6 +34,66 @@ def route_regenerate_key():
     flash(_('New Access key has been generated!'), 'success')
 
     return redirect(url_for('account_blueprint.route_account_home', anchor='access-key'))
+
+
+@blueprint.route('/team/join/<key>')
+def join_team(key):
+    if key is not None:
+        # try to find team with key
+        team = Team.query.filter_by(key=key).first()
+        # key does not exist
+        if team is not None:
+            # check if team is not full
+            if len(team.members) < current_app.config['TEAM_MAX_SIZE']:
+                # set new team to user
+                user = current_user
+                user_old_team = user.team
+                user.team = team
+                db.session.add(user)
+                db.session.commit()
+                check_for_empty_team(user_old_team)
+                flash(_('You joined Team {}').format(team.name), 'success')
+            else:
+                flash(_('You are unable to join team {} because is full').format(team.name), 'error')
+        else:
+            flash(_('Team with key {} was not found').format(key), 'error')
+
+    return redirect(url_for('account_blueprint.route_account_home', anchor='activity'))
+
+
+@blueprint.route('/team/leave')
+def leave_team():
+    if current_user.team is not None:
+        user_old_team = current_user.team
+        current_user.team = None
+        db.session.add(current_user)
+        db.session.commit()
+        check_for_empty_team(user_old_team)
+        flash(_('You left the team successfully'), 'success')
+
+    return redirect(url_for('account_blueprint.route_account_home', anchor='activity'))
+
+
+@blueprint.route('/team/create', methods=['POST'])
+def create_team():
+    if current_user.team is not None:
+        flash(_('You cannot create a new Team until you leave your current one'), 'error')
+    else:
+        team_name = request.form['name']
+        team = Team.query.filter_by(name=team_name).first()
+        if team is not None:
+            flash(_('Team with name {} already exist, please pick another one').format(team.name), 'error')
+        else:
+            team = Team()
+            team.name = team_name
+            db.session.add(team)
+            db.session.commit()
+            current_user.team = team
+            db.session.add(current_user)
+            db.session.commit()
+            flash(_('You created and joined the team {}').format(team.name), 'success')
+
+    return redirect(url_for('account_blueprint.route_account_home', anchor='activity'))
 
 
 @blueprint.route('/update-password', methods=['POST'])
@@ -87,3 +148,9 @@ def activity_stream():
             stream[item_date].append(item)
 
     return stream
+
+
+def check_for_empty_team(team):
+    if team is not None and len(team.members) == 0:
+        db.session.delete(team)
+        db.session.commit()

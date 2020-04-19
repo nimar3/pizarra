@@ -20,12 +20,20 @@
 
         <hr>
 
-        <strong><i class="fa fa-group margin-r-5"></i> {{ _('Team') }}</strong>
-        <!-- /.box-header -->
+        {% set team = current_user.team %}
+        <strong><i class="fa fa-group margin-r-5"></i> {{ _('Team') }} </strong>{{ team.name }}
+        {% if team != None %}
+            <!-- /.box-header -->
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modal-leave-team">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        {% endif %}
         <div class="box-body no-padding">
-            {% if current_user.team != None %}
+            {% if team != None %}
                 <ul class="users-list clearfix">
-                    {% for member in current_user.team.members %}
+                    {% for member in team.members %}
                         <li>
                             <img src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + member.avatar) }}"
                                  alt="{{ _('User Avatar') }}">
@@ -37,12 +45,62 @@
                 </ul>
             {% else %}
                 <p class="text-muted">{{ _('Seems like you are not part of a team') }}</p>
-                <a href="#"
-                   class="btn btn-primary btn-block"><b>{{ _('Join a new Team') }}</b></a>
+                <form class="form-horizontal" action="{{ url_for('account_blueprint.create_team') }}" method="POST"
+                      name="create_team_form">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            {{ form_team.name(placeholder="new team name", class="form-control", class="form-control text-lowercase") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit"
+                                    class="btn btn-primary btn-block">{{ _('Create a new Team') }}</button>
+                        </div>
+                    </div>
+                </form>
             {% endif %}
             <!-- /.users-list -->
         </div>
+        {% if team != None %}
+            <div class="box-body no-padding">
+                <p>
+                    <button type="button" data-toggle="tooltip"
+                            data-original-title="{{ _('Share Team URL for others to join') }}"
+                            class="btn btn-box-tool"><i
+                            class="fa fa-share" onclick="copyTextToClipboard(document.getElementById('team-code'))"></i>
+                    </button>
+                    <code id="team-code">{{ request.host_url[:-1] + url_for('account_blueprint.join_team', key=team.key) }}</code>
+                </p>
+            </div>
+        {% endif %}
     </div>
     <!-- /.box-body -->
 </div>
 <!-- /.box -->
+
+{% if team != None %}
+    <div class="modal modal-danger fade" id="modal-leave-team">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('Close') }}">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{ _('Leaving Team') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ _('Are you sure you want to leave this team?') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline pull-left"
+                            data-dismiss="modal">{{ _('Close') }}</button>
+                    <a href="{{ url_for('account_blueprint.leave_team') }}" class="btn btn-outline">
+                        {{ _('Leave') }}</a>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+{% endif %}

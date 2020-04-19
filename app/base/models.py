@@ -61,7 +61,8 @@ class User(db.Model, UserMixin):
     access_token = Column(String)
     # Relations
     # one-to-many
-    requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)')
+    requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)',
+                            cascade='all, delete, delete-orphan')
     # many-to-one (bidirectional relationship)
     classgroup_id = Column(Integer, ForeignKey('classgroup.id'))
     classgroup = relationship('ClassGroup', back_populates='students')
@@ -139,9 +140,16 @@ class Team(db.Model):
     """
     __tablename__ = 'team'
     id = Column(Integer(), primary_key=True)
-    name = Column(String(100), unique=True)
+    name = Column(String(), unique=True)
+    key = Column(String())
     members = relationship('User', back_populates='team')
 
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if 'key' not in kwargs:
+            setattr(self, 'key', random_string(10))
 
 class ClassGroup(db.Model):
     """

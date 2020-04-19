@@ -19,6 +19,18 @@
 <!-- Pizarra -->
 <script src="{{ url_for('base_blueprint.static', filename='assets/pizarra/pizarra.js') }}"></script>
 
+<script>
+    function copyTextToClipboard(element) {
+        const textArea = document.createElement("textarea");
+        textArea.value = element.textContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        textArea.setSelectionRange(0, 99999); /* mobile devices */
+        document.execCommand("Copy");
+        textArea.remove();
+    }
+</script>
+
 
 
 

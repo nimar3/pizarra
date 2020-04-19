@@ -17,11 +17,10 @@
                     <i class="fa fa-refresh"></i> {{ _('Regenerate Key') }}
                 </button>
             </a>
-            <button type="button" class="btn btn-success pull-right" onclick="copyText()"
-                    style="margin-right: 5px;"><i
-                    class="fa fa-copy"></i> {{ _('Copy Key') }}
+            <button type="button" class="btn btn-success pull-right"
+                    onclick="copyTextToClipboard(document.getElementById('code'))"
+                    style="margin-right: 5px;"><i class="fa fa-copy"></i> {{ _('Copy Key') }}
             </button>
-
         </div>
     </div>
 </div>
