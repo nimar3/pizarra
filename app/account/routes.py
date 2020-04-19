@@ -41,7 +41,6 @@ def join_team(key):
     if key is not None:
         # try to find team with key
         team = Team.query.filter_by(key=key).first()
-        # key does not exist
         if team is not None:
             # check if team is not full
             if len(team.members) < current_app.config['TEAM_MAX_SIZE']:
@@ -106,8 +105,11 @@ def route_update_password():
         db.session.add(user)
         db.session.commit()
         flash(_('Password has been updated!'), 'success')
+    else:
+        flash(_('Unable to update password'), 'error')
 
-    return render_template('profile.html', anchor="password", form=form)
+    return render_template('profile.html', anchor='password', activity_stream=activity_stream(), form=form,
+                           form_team=CreateTeam())
 
 
 def activity_stream():
