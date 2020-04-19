@@ -38,7 +38,6 @@
                                 <th>{{ _('Group') }}</th>
                                 <th>{{ _('Quota') }}</th>
                                 <th>{{ _('Last Login') }}</th>
-                                <th>{{ _('Actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,16 +50,6 @@
                                     <td>{{ student.classgroup.description }}</td>
                                     <td>{{ student.quota_used }} / {{ student.quota }}</td>
                                     <td>{{ student.last_login_at }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-danger"><i class="fa fa-trash-o"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-warning"><i
-                                                    class="fa fa-key"></i></button>
-                                            <button type="button" class="btn btn-default"><i class="fa fa-edit"></i>
-                                            </button>
-                                        </div>
-                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
