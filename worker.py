@@ -16,7 +16,7 @@ except KeyError:
 
 app = create_worker_app(config_mode)
 app.app_context().push()
-redis_url = app.config["REDIS_URL"]
+redis_url = app.config["RQ_DASHBOARD_REDIS_URL"]
 redis_connection = redis.from_url(redis_url)
 with Connection(redis_connection):
         worker = Worker(app.config["QUEUES"])

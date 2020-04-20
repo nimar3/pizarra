@@ -7,10 +7,12 @@ Copyright (c) 2020 - nimar3
 import enum
 import time
 
+import redis
+from flask import current_app
+from rq import Connection, Queue
 
-def simple_task():
-    time.sleep(10)
-    return True
+
+
 
 
 class RequestStatus(enum.Enum):
@@ -35,3 +37,8 @@ class RequestStatus(enum.Enum):
                       RequestStatus.FINISHED: 'label-success', RequestStatus.CANCELED: 'label-warning',
                       RequestStatus.ERROR: 'label-danger', RequestStatus.TIMEWALL: 'label-warning'}
         return label_dict[self] if self in label_dict else 'label-default'
+
+
+def pizarra_task(id):
+    time.sleep(10)
+    return True

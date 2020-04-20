@@ -7,17 +7,19 @@ import os
 from datetime import datetime
 
 import lizard
+import redis
 from flask import render_template, redirect, url_for, request, json, current_app, abort
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
+from rq import Connection, Queue
 from werkzeug.utils import secure_filename
 
 from app import db
 from app.base.models import Assignment, User, Request
 from app.base.util import random_string
 from app.home import blueprint
-from app.tasks.models import RequestStatus
+from app.tasks.models import RequestStatus, pizarra_task
 
 
 @blueprint.route('/home')
@@ -133,6 +135,7 @@ def send_assignment(name):
     user_request.assignment = assignment
     user_request.user = user
     user_request.file_location = file_location_relative
+    user_request.ip_address = request.remote_addr
     user_request.status = RequestStatus.CREATED
 
     # analyze code with lizard
@@ -140,6 +143,18 @@ def send_assignment(name):
     if len(code_analysis.function_list) > 0:
         user_request.code_analysis = code_analysis.function_list[0].__dict__
 
+    # commit user request to DB
+    db.session.add(user_request)
+    db.session.commit()
+
+    # update user latest request time
+    user.last_request_sent_at = user_request.timestamp
+    db.session.add(user)
+    db.session.commit()
+
+    # create and enqueue task
+    task_id = create_task(user_request.id)
+    user_request.task_id = task_id
     db.session.add(user_request)
     db.session.commit()
 
@@ -187,5 +202,18 @@ def build_response(message, status_code):
 
 
 def allowed_file(filename):
+    """
+    returns if a file is allowed to be uploaded to the server
+    """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['FILE_ALLOWED_EXTENSIONS']
+
+
+def create_task(id):
+    """
+    creates and enqueues a task from pizarra to be executed by a worker
+    """
+    with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
+        q = Queue()
+        task = q.enqueue(pizarra_task, id)
+        return task.get_id()

@@ -5,15 +5,12 @@ Copyright (c) 2019 - present AppSeed.us
 """
 from datetime import datetime
 
-import redis
-from flask import render_template, request, jsonify, current_app, redirect, url_for, flash
-from rq import Connection, Queue
+from flask import render_template, request, redirect, url_for, flash
 
 from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm
 from app.base.models import Assignment, ClassGroup, Badge, Request, User
-from app.tasks.models import simple_task
 
 
 @blueprint.route('/')
@@ -73,20 +70,6 @@ def route_assignment_new():
     assignment_form.classgroups.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
     assignment_form.badges.choices = [(x.id, x.title + ': ' + x.description) for x in Badge.query.all()]
     return render_template('assignment_new.html', form=assignment_form)
-
-
-@blueprint.route('/create-task')
-def create_task():
-    with Connection(redis.from_url(current_app.config["REDIS_URL"])):
-        q = Queue()
-        task = q.enqueue(simple_task)
-    response_object = {
-        "status": "success",
-        "data": {
-            "task_id": task.get_id()
-        }
-    }
-    return jsonify(response_object), 202
 
 
 def create_assignment(data):

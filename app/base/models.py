@@ -57,6 +57,7 @@ class User(db.Model, UserMixin):
     last_login_ip = Column(String(100))
     login_count = Column(Integer, default=0)
     registered_at = Column(DateTime(), default=datetime.utcnow)
+    last_request_sent_at = Column(DateTime())
     avatar = Column(String)
     access_token = Column(String)
     # Relations
@@ -151,6 +152,7 @@ class Team(db.Model):
         if 'key' not in kwargs:
             setattr(self, 'key', random_string(10))
 
+
 class ClassGroup(db.Model):
     """
     Represent a Class or Group in the database
@@ -196,6 +198,8 @@ class Request(db.Model):
     file_location = Column(String(255))
     code_analysis = Column(JSON)
     output = Column(UnicodeText)
+    ip_address = Column(String(255))
+    task_id = Column(String)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
