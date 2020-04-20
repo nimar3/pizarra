@@ -115,9 +115,13 @@ def send_assignment(name):
     if 'file' not in request.files:
         return build_response(_('There is no file in this Request'), 400)
 
-    # TODO check file size, file extension and other security issues
-
     file = request.files['file']
+
+    # check the file extension
+    if not allowed_file(file.filename):
+        return build_response(_('The extension of this file is not allowed'), 400)
+
+    # save file
     filename = '-'.join(
         [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(10), secure_filename(file.filename)])
     file_location_relative = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
@@ -133,7 +137,8 @@ def send_assignment(name):
 
     # analyze code with lizard
     code_analysis = lizard.analyze_file(file_location)
-    user_request.code_analysis = code_analysis.function_list[0].__dict__
+    if len(code_analysis.function_list) > 0:
+        user_request.code_analysis = code_analysis.function_list[0].__dict__
 
     db.session.add(user_request)
     db.session.commit()
@@ -179,3 +184,8 @@ def build_response(message, status_code):
         mimetype='application/json'
     )
     return response
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in current_app.config['FILE_ALLOWED_EXTENSIONS']

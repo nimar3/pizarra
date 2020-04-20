@@ -36,7 +36,7 @@ class Config(object):
     # Uploaded files
     UPLOAD_FOLDER = 'uploads'
     FILE_ALLOWED_EXTENSIONS = {'c', 'cpp'}
-    FILE_MAX_SIZE = 1 * 1024 * 1024  # 1 megabyte
+    MAX_CONTENT_LENGTH = 1 * 1024 * 1024  # 1 megabyte
 
     TIME_BETWEEN_REQUESTS = environ.get('TIME_BETWEEN_REQUESTS', 60)  # in seconds
 
