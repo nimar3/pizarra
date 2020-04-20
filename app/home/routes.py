@@ -6,6 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 from datetime import datetime
 
+import lizard
 from flask import render_template, redirect, url_for, request, json, current_app, abort
 from flask_login import current_user
 from flask_security.utils import _
@@ -44,7 +45,7 @@ def requests(id):
     user_request = Request.query.filter_by(id=id).first()
 
     if user_request is None:
-        return redirect(url_for('requests'))
+        return redirect(url_for('home_blueprint.requests', id=None))
 
     if user_request.user != current_user and not current_user.is_admin:
         return abort(403)
@@ -54,7 +55,13 @@ def requests(id):
         with current_app.open_resource(user_request.file_location, mode='r') as f:
             contents = f.read()
 
-    return render_template('request.html', user_request=user_request, contents=contents)
+    # prettify the JSON and remove the filename location for security
+    code_analysis = user_request.code_analysis
+    if code_analysis is not None:
+        del code_analysis['filename']
+        code_analysis = json.dumps(code_analysis, sort_keys=True, indent=2)
+
+    return render_template('request.html', user_request=user_request, contents=contents, code_analysis=code_analysis)
 
 
 @blueprint.route('/assignments/', defaults={'name': None}, methods=['GET'])
@@ -113,22 +120,27 @@ def send_assignment(name):
     file = request.files['file']
     filename = '-'.join(
         [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(10), secure_filename(file.filename)])
-    file_location = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-    file.save(os.path.join('app', file_location))
+    file_location_relative = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+    file_location = os.path.join('app', file_location_relative)
+    file.save(file_location)
 
     # create the request
     user_request = Request()
     user_request.assignment = assignment
     user_request.user = user
-    user_request.file_location = file_location
+    user_request.file_location = file_location_relative
     user_request.status = RequestStatus.CREATED
+
+    # analyze code with lizard
+    code_analysis = lizard.analyze_file(file_location)
+    user_request.code_analysis = code_analysis.function_list[0].__dict__
 
     db.session.add(user_request)
     db.session.commit()
 
     request_url = request.host_url[:-1] + url_for('.requests', id=user_request.id)
 
-    return build_response(_('Request created, please navigate to  {} to check the results'.format(request_url)), 201)
+    return build_response(_('Request created, please navigate to {} to check the results'.format(request_url)), 201)
 
 
 @blueprint.route('/<template>')
@@ -162,7 +174,7 @@ def build_response(message, status_code):
         response=json.dumps({
             'code': status_code,
             'message': message
-        }),
+        }, indent=2),
         status=status_code,
         mimetype='application/json'
     )

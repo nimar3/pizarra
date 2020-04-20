@@ -45,10 +45,12 @@
         <div class="row">
             <div class="col-xs-7">
                 <p class="lead">{{ _('Request Input') }}</p>
-                <pre><code class="language-c">{{ contents | safe }}</code></pre>
+                <pre class="language-c line-numbers"><code>{{ contents | safe }}</code></pre>
             </div>
             <!-- /.col -->
             <div class="col-xs-5">
+                <p class="lead">{{ _('Code Analysis') }}</p>
+                <pre class="language-json"><code>{{ code_analysis | safe }}</code></pre>
                 <p class="lead">{{ _('Output') }}</p>
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                     {{ user_request.output | safe }}

@@ -50,6 +50,8 @@ class Config(object):
     RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
     QUEUES = ["default"]
 
+    JSONIFY_PRETTYPRINT_REGULAR = True
+
 
 class ProductionConfig(Config):
     DEBUG = False

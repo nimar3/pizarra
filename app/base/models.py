@@ -7,7 +7,7 @@ from datetime import datetime
 from random import randint
 
 from flask_security import UserMixin, RoleMixin
-from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, UnicodeText, Table
+from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, UnicodeText, Table, JSON
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
@@ -194,6 +194,7 @@ class Request(db.Model):
     status = Column(Enum(RequestStatus))
     run_time = Column(Integer)
     file_location = Column(String(255))
+    code_analysis = Column(JSON)
     output = Column(UnicodeText)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
