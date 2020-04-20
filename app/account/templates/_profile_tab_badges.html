@@ -1,3 +1,35 @@
+{% macro show_badge(badge) %}
+    <div class="col-md-4">
+        <!-- Widget: Badge -->
+        <div class="box box-widget widget-user">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header {{ badge.background_color }}">
+                <h3 class="widget-user-username">{{ badge.title }}</h3>
+                <h5 class="widget-user-desc">{{ badge.subtitle }}</h5>
+            </div>
+
+            <div class="widget-user-image">
+                <img class="img-circle" src="{{ url_for('base_blueprint.static',filename=STATIC_PZ + badge.image) }}"
+                     alt="User Avatar">
+            </div>
+            <div class="box-footer">
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-sm-12">
+                        <div class="description-block">
+                            <span class="description-text">{{ badge.description }}</span>
+                        </div>
+                        <!-- /.description-block -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+        </div>
+        <!-- /.widget-badge -->
+    </div>
+    <!-- /.col -->
+{% endmacro %}
+
 <!-- tab pane Badges -->
 <div class="tab-pane {{ 'active' if anchor == 'badges' }}" id="badges">
     <div class="row">
@@ -7,7 +39,8 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <img id="doge-tooltip" class="pull-right" src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + 'doge-tooltip.png') }}"
+            <img id="doge-tooltip" class="pull-right"
+                 src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + 'doge-tooltip.png') }}"
                  data-container="body"
                  data-toggle="popover" data-placement="left"
                  data-content="{{ "SO SHINY!!<br/> MUCH AMAZING" if current_user.badges | count > 0

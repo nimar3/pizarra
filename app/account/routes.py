@@ -17,7 +17,7 @@ from app.base.util import random_string, hash_pass
 @blueprint.route('/', defaults={'anchor': 'activity'})
 @blueprint.route('/<anchor>')
 def route_account_home(anchor):
-    anchors = ['activity', 'badges', 'classgroup', 'password', 'access-key']
+    anchors = ['activity', 'badges', 'classgroup', 'password', 'access-token']
     if anchor is not None and anchor not in anchors:
         return redirect(url_for('account_blueprint.route_account_home', anchor=None))
 
@@ -31,9 +31,9 @@ def route_regenerate_key():
     user.access_token = random_string()
     db.session.add(user)
     db.session.commit()
-    flash(_('New Access key has been generated!'), 'success')
+    flash(_('New Access Token has been generated!'), 'success')
 
-    return redirect(url_for('account_blueprint.route_account_home', anchor='access-key'))
+    return redirect(url_for('account_blueprint.route_account_home', anchor='access-token'))
 
 
 @blueprint.route('/team/join/<key>')

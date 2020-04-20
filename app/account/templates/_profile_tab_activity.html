@@ -1,4 +1,75 @@
-{% from 'macros.html' import activity_registered, activity_request, activity_badge %}
+{% macro activity_request(time,user_request) %}
+    <!-- timeline item -->
+    <li>
+        <i class="fa fa-upload bg-orange"></i>
+
+        <div class="timeline-item">
+            <span class="time"><i class="fa fa-clock-o"></i> {{ time }}</span>
+
+            <h3 class="timeline-header"><a href="
+                                    {{ url_for('home_blueprint.assignments', name=user_request.assignment.name) }}">{{ _('Request') }}</a>
+                {{ _('sent to') }} {{ user_request.assignment.title }}</h3>
+
+            <div class="timeline-body">
+                {{ _('You sent a Request with ID') }} <a
+                    href="{{ url_for('home_blueprint.requests', id=user_request.id) }}">#{{ user_request.id }}</a>
+                {{ _('for the Assignment') }} <b>{{ user_request.assignment.title }}</b>
+            </div>
+            <div class="timeline-footer">
+                {{ _('Status for this request is') }} <span
+                    class="label {{ user_request.status.label }}">{{ user_request.status.name }}</span>
+            </div>
+        </div>
+    </li>
+    <!-- END timeline item -->
+{% endmacro %}
+
+{% macro activity_registered(time) %}
+    <!-- timeline item -->
+    <li>
+        <i class="fa fa-user bg-green"></i>
+
+        <div class="timeline-item">
+            <span class="time"><i class="fa fa-clock-o"></i> {{ time }}</span>
+
+            <h3 class="timeline-header no-border"><a
+                    href="#">{{ _('Registered') }}</a> {{ _('you joined Pizarra') }}
+            </h3>
+        </div>
+    </li>
+    <!-- END timeline item -->
+{% endmacro %}
+
+{% macro activity_badge(time, badge) %}
+    <!-- timeline item -->
+    <li>
+        <i class="fa fa-trophy bg-blue"></i>
+
+        <div class="timeline-item">
+            <span class="time"><i class="fa fa-clock-o"></i> {{ time }}</span>
+
+            <h3 class="timeline-header"><a href="#">{{ _('Badge') }}</a> {{ _('earned') }}</h3>
+
+            <div class="timeline-body">{{ _('You earned the Badge') }} <b>{{ badge.title }}</b>
+            </div>
+
+            <div class="timeline-footer">
+                <div class="direct-chat-msg">
+                    <!-- /.direct-chat-info -->
+                    <img class="direct-chat-img" style="border-radius: unset;"
+                         src="{{ url_for('base_blueprint.static',filename=STATIC_PZ + badge.image) }}"
+                         alt="{{ _('Badge Image') }}"><!-- /.direct-chat-img -->
+                    <div class="direct-chat-text">
+                        {{ badge.description }}
+                    </div>
+                    <!-- /.direct-chat-text -->
+                </div>
+
+            </div>
+        </div>
+    </li>
+    <!-- END timeline item -->
+{% endmacro %}
 
 <!-- tab pane Activity -->
 <div class="tab-pane {{ 'active' if anchor == None or anchor == 'activity' }}" id="activity">

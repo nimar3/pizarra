@@ -35,7 +35,10 @@ class Config(object):
 
     # Uploaded files
     UPLOAD_FOLDER = 'uploads'
-    ALLOWED_EXTENSIONS = {'c', 'cpp'}
+    FILE_ALLOWED_EXTENSIONS = {'c', 'cpp'}
+    FILE_MAX_SIZE = 1 * 1024 * 1024  # 1 megabyte
+
+    TIME_BETWEEN_REQUESTS = environ.get('TIME_BETWEEN_REQUESTS', 60)  # in seconds
 
     # Teams
     TEAM_MAX_SIZE = environ.get('TEAM_MAX_SIZE', 3)

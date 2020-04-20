@@ -1,6 +1,11 @@
 {% extends "base_site.html" %}
 
-{% from 'macros.html' import show_badge, errors, tab, render_field with context %}
+{% macro tab(name, description) %}
+    <li id="profile-tabs-{{ name }}" data-url="{{ name }}"
+            {{ 'class=active' if anchor == None or anchor == name }}>
+        <a href="#{{ name }}" data-toggle="tab">{{ description }}</a>
+    </li>
+{% endmacro %}
 
 {% block title %} Profile {% endblock title %}
 
@@ -48,7 +53,7 @@
 
                         {{ tab('password', _('Password')) }}
 
-                        {{ tab('access-key', _('Access Key')) }}
+                        {{ tab('access-token', _('Access Token')) }}
 
                     </ul>
                     <!-- tabs -->
@@ -81,21 +86,8 @@
 {% block javascripts %}
 
     <script>
-        function copyText() {
-            /* Get the text field */
-            const copyText = document.getElementById("code");
-            const textArea = document.createElement("textarea");
-            textArea.value = copyText.textContent;
-            document.body.appendChild(textArea);
-            textArea.select();
-            textArea.setSelectionRange(0, 99999); /*For mobile devices*/
-            document.execCommand("Copy");
-            textArea.remove();
-        }
-    </script>
-
-    <script>
         $("#profile-tabs li").click(function () {
+            // only show doge on badges tab
             if ($(this).attr('id') === 'profile-tabs-badges') {
                 setTimeout(function () {
                     $('#doge-tooltip').popover('show')
@@ -103,6 +95,7 @@
             } else {
                 $('#doge-tooltip').popover('hide')
             }
+            // after clicking on a Tab we change the URL of the website
             history.pushState({
                 id: 'my-account'
             }, 'Pizarra - Profile | UPV', {{ url_for('account_blueprint.route_account_home') }} +$(this)[0].dataset['url']);
