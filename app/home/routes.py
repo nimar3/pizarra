@@ -109,6 +109,11 @@ def send_assignment(name):
             return build_response(_('Assignment has not started yet'), 400)
         if assignment.expired:
             return build_response(_('Assignment is closed and not accepting any more requests'), 400)
+        if user.last_request_sent_at is not None:
+            difference = datetime.utcnow() - user.last_request_sent_at
+            if difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']:
+                return build_response(_('You are sending Requests too fast, please wait {} seconds').format(
+                    current_app.config['TIME_BETWEEN_REQUESTS'] - difference.seconds), 400)
         if user.quota <= 0:
             return build_response(
                 _('You have used all your Quota for sending Requests. Please contact an administrator'), 400)

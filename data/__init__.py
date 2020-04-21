@@ -3,17 +3,14 @@
 License: MIT
 Copyright (c) 2020 - nimar3
 """
-from os import environ
 
 import sqla_yaml_fixtures
-from sqlalchemy.ext.declarative import declarative_base
-
-BaseModel = declarative_base()
+from flask import current_app
 
 
 def init_app(app, db=None, directory=None):
     with app.app_context():
-        if environ.get('IMPORT_SAMPLE_DATA', True):
+        if current_app.config['IMPORT_SAMPLE_DATA']:
             sqla_yaml_fixtures.load(db.Model, db.session, open(directory + '/sample.yml'))
 
 

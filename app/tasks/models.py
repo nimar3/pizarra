@@ -7,13 +7,6 @@ Copyright (c) 2020 - nimar3
 import enum
 import time
 
-import redis
-from flask import current_app
-from rq import Connection, Queue
-
-
-
-
 
 class RequestStatus(enum.Enum):
     CREATED = 0
