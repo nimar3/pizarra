@@ -42,7 +42,7 @@
        </pre>
     - __key__: assignment_openmp_basic
       name: openmp_basic
-      due_date: 2020-04-20 23:59:00
+      due_date: 2020-04-22 23:59:00
       title: "Hybrid MPI/OpenMP"
       description: |+
         <p>#Introduction to Hybrid MPI and OpenMP programs Hybridization is becoming more important as the number of CPU Cores per socket increases. Using less MPI ranks, and more localized parallelism, a reduction in memory footprint per node is often observed, a decrease in communication sensitivity is likely, and is nearly essential for chips moving forward to obtain the most performance at while remaining tunable. Below are some examples which use MPI and OpenMP:</p>
@@ -83,16 +83,22 @@
         </pre>
     - __key__: assignment_openmpi_basic
       name: openmpi_basic
+      title: "Another Basic OpenMPI example"
+      description: |+
+        <p><strong>Create:</strong>&nbsp;Using your favorite text editor (vi/vim, emacs, nedit, gedit, nano...) open a new file - call it whatever you&#39;d like.<br />
+        It should do the following:</p>
+        <ul>
+        	<li>Use the appropriate MPI include file</li>
+        	<li>Identify task 0 as the &quot;master&quot; task</li>
+        	<li>Initialize the MPI environment</li>
+        	<li>Get the total number of tasks</li>
+        	<li>Get the task&#39;s rank (who it is)</li>
+        	<li>Get the name of the processor it is executing on</li>
+        	<li>Print a hello message that includes its task rank and processor name</li>
+        	<li>Have the master task alone print the total number of tasks</li>
+        	<li>Terminate the MPI environment</li>
+        </ul>
       due_date: 2020-04-01 23:59:59
-      title: "OpenMPI"
-    - __key__: assignment_other
-      name: assignment_other
-      due_date: 2020-06-20 23:59:59
-      title: "Other"
-    - __key__: assignment_other_again
-      due_date: 2020-06-25 23:59:59
-      name: assignment_other_again
-      title: "Other Again"
 
 - Team:
     - __key__: team_foo
@@ -116,7 +122,7 @@
       description: "Earn when a program is the fastest of the Assignment"
       background_color: "bg-maroon-active"
       image: "badge-number-one-128x128.png"
-      assignments: [assignment_hello_world, assignment_other, assignment_openmpi_basic]
+      assignments: [assignment_hello_world, assignment_openmpi_basic]
     - __key__: badge_beat_the_machine
       name: "beat_the_machine"
       title: "Beat the machine"
@@ -130,7 +136,7 @@
     - __key__: class_a
       name: "G2019-A1"
       description: "Class from 2019 A1 group"
-      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic, assignment_other, assignment_other_again]
+      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic]
     - __key__: class_b
       name: "G2019-B1"
       description: "Class from 2019 B1 group"
@@ -177,7 +183,7 @@
       name: "Francisco de Goya"
       password: "bar"
       roles: [users]
-      classgroup: class_b
+      classgroup: class_a
     - __key__: user_test
       username: "test"
       email: "test@test.test"
@@ -283,13 +289,13 @@
       status: TIMEWALL
       timestamp: 2020-04-07 01:41:06
       run_time: 300
-      assignment: assignment_hello_world
+      assignment: assignment_openmpi_basic
       user: user_bar
     - __key__: request_17
       status: ERROR
       timestamp: 2020-04-07 01:41:06
       run_time: 1
-      assignment: assignment_hello_world
+      assignment: assignment_openmpi_basic
       user: user_bar
     - __key__: request_18
       status: ERROR
