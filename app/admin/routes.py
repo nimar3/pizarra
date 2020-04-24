@@ -57,7 +57,7 @@ def upload_students():
         with open(file_location, newline='') as csvfile:
             # create a list with dicts for each user
             csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(csvfile, skipinitialspace=True)]
-            result = []
+            result = {'success': [], 'error': []}
             for student in csv_dicts:
                 # create a random password for the user
                 student_password = random_string(5)
@@ -68,7 +68,8 @@ def upload_students():
                 db.session.add(student)
                 db.session.commit()
                 # store result
-                result.append({'email': student.email, 'username': student.username, 'password': student_password})
+                result['success'].append(
+                    {'email': student.email, 'username': student.username, 'password': student_password})
 
     return json.dumps(result, indent=2)
 
