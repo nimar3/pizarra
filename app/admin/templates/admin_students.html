@@ -78,7 +78,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form id="form" role="form" method="post" action="{{ url_for('.upload_students') }}"
+                        <form id="form" role="form" method="post" action="{{ url_for('.students') }}"
                               enctype="multipart/form-data">
 
                             {{ form.hidden_tag() }}
@@ -148,36 +148,4 @@
 {% block javascripts_include %}
     <!--  syntax highlighter https://prismjs.com/  -->
     <script src="{{ url_for('base_blueprint.static', filename='assets/prism/prism.js') }}"></script>
-    <script>
-
-        $(function () {
-            $('form').on('submit', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    type: 'post',
-                    url: this.action,
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-
-                        let html = '<div class="box box-default"> \
-                                        <div class="box-header"> \
-                                            <a href="data:text/json;charset=utf-8,' + encodeURIComponent(data) + '" class="btn btn-default pull-right" \
-                                            download="students.json"><i class="fa fa-download"></i> {{ _('Download') }} </a> \
-                                        </div> \
-                                        <div class="box-body"> \
-                                            <pre><code>' + data + '</code></pre> \
-                                        </div> \
-                                    </div>';
-                        $("div.import-result").prepend(html);
-                    },
-                    error: function (xhr, desc, err) {
-
-                    }
-                });
-            });
-        });
-
-    </script>
 {% endblock %}

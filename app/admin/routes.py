@@ -34,44 +34,19 @@ def classgroups():
     return render_template('admin_classgroups.html', classgroup_list=classgroup_list)
 
 
-@blueprint.route('/students')
+@blueprint.route('/students', methods=['GET', 'POST'])
 def students():
+    import_result = None
+    if request.method == 'POST':
+        form = UsersUploadForm()
+        if form.validate_on_submit():
+            import_result = import_users(form)
+
     # TODO change to SQL Query
     student_list = [x for x in User.query.all() if not x.is_admin]
     form = UsersUploadForm()
     form.classgroup.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
-    return render_template('admin_students.html', student_list=student_list, form=form)
-
-
-@blueprint.route('/students/upload', methods=['GET', 'POST'])
-def upload_students():
-    form = UsersUploadForm()
-    if form.validate_on_submit():
-        f = form.file.data
-        # TODO avoid storing file
-        # create file
-        filename = secure_filename(f.filename)
-        file_location = os.path.join('app', current_app.config['UPLOAD_FOLDER'], filename)
-        f.save(file_location)
-        # open file
-        with open(file_location, newline='') as csvfile:
-            # create a list with dicts for each user
-            csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(csvfile, skipinitialspace=True)]
-            result = {'success': [], 'error': []}
-            for student in csv_dicts:
-                # create a random password for the user
-                student_password = random_string(5)
-                student['password'] = student_password
-                student['classgroup'] = form.data['classgroup']
-                # create and store User
-                student = User(**student)
-                db.session.add(student)
-                db.session.commit()
-                # store result
-                result['success'].append(
-                    {'email': student.email, 'username': student.username, 'password': student_password})
-
-    return json.dumps(result, indent=2)
+    return render_template('admin_students.html', student_list=student_list, form=form, import_result=import_result)
 
 
 @blueprint.route('/assignments')
@@ -121,6 +96,39 @@ def create_assignment(data):
     # each badge must be fetched
     assignment.badges = list(map(lambda x: Badge.query.filter_by(id=x).first(), set(data['badges'])))
     return assignment
+
+
+def import_users(form):
+    result = {'success': [], 'error': []}
+    f = form.file.data
+    # TODO avoid storing file
+    # create file
+    filename = secure_filename(f.filename)
+    file_location = os.path.join('app', current_app.config['UPLOAD_FOLDER'], filename)
+    f.save(file_location)
+    # open file
+    with open(file_location, newline='') as csvfile:
+        # create a list with dicts for each user
+        csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(csvfile, skipinitialspace=True)]
+        for student in csv_dicts:
+            # create a random password for the user
+            student_password = random_string(5)
+            student['password'] = student_password
+            student['classgroup'] = form.data['classgroup']
+            # TODO check if user and email exist
+            # create and store User
+            student = User(**student)
+            db.session.add(student)
+            db.session.commit()
+            # store result
+            result['success'].append(
+                {'email': student.email, 'username': student.username, 'password': student_password})
+
+    if len(result['error']) > 0:
+        flash('Imported file with errors', 'error')
+    else:
+        flash('File imported successfully', 'success')
+    return json.dumps(result, indent=2)
 
 
 def process_date(string_date):
