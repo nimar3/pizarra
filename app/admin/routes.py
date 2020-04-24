@@ -36,15 +36,11 @@ def classgroups():
 
 @blueprint.route('/students', methods=['GET', 'POST'])
 def students():
-    import_result = None
-    if request.method == 'POST':
-        form = UsersUploadForm()
-        if form.validate_on_submit():
-            import_result = import_users(form)
+    form = UsersUploadForm()
+    import_result = import_users(form) if request.method == 'POST' and form.validate_on_submit() else None
 
     # TODO change to SQL Query
     student_list = [x for x in User.query.all() if not x.is_admin]
-    form = UsersUploadForm()
     form.classgroup.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
     return render_template('admin_students.html', student_list=student_list, form=form, import_result=import_result)
 
