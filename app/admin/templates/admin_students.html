@@ -60,7 +60,95 @@
                 <!-- /.box -->
             </div>
         </div>
+
     </section>
     <!-- /.content -->
 
+    <section class="content">
+
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">{{ _('Import Students') }}</h3>
+                        <div class="box-tools">
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form id="form" role="form" method="post" action="{{ url_for('.upload_students') }}"
+                              enctype="multipart/form-data">
+
+                            {{ form.hidden_tag() }}
+
+                            <div class="form-group">
+                                <label for="groups">{{ _('Groups') }}</label>
+                                {{ form.classgroup(class="form-control") }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="groups">{{ _('Students *.csv file') }}</label>
+                                {{ form.file(class="form-control") }}
+                            </div>
+
+                            <div>
+                                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                    <b class="pull-right"><i>students-example-file.csv</i></b><br/>
+                                    <b>email,name</b><br/>
+                                    fran.goya@pizarra.com, Fransisco Goya<br/>
+                                    joaquin.sorolla@pizarra.com, Joaquín Sorolla<br/>
+                                    jusepe.ribera@pizarra.com, Jusepe de Ribera
+                                </p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button type="submit" name="submit"
+                                        class="btn btn-primary btn-success pull-right"><i
+                                        class="fa fa-save"></i> {{ _('Save') }}</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <div class="col-xs-6 import-result">
+                <pre class="language-json"><code></code></pre>
+            </div>
+        </div>
+
+    </section>
+
+{% endblock %}
+
+{% block javascripts_include %}
+    <!--  syntax highlighter https://prismjs.com/  -->
+    <script src="{{ url_for('base_blueprint.static', filename='assets/prism/prism.js') }}"></script>
+    <script>
+
+        $(function () {
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'post',
+                    url: this.action,
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function (data, status) {
+                        $("div.import-result pre code").html(data);
+                    },
+                    error: function (xhr, desc, err) {
+
+                    }
+                });
+            });
+        });
+
+    </script>
 {% endblock %}

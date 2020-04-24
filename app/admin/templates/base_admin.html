@@ -5,6 +5,9 @@
 {% block stylesheets %}
     <link rel="stylesheet"
           href="{{ url_for('base_blueprint.static', filename='assets/css/dataTables.bootstrap.min.css') }}">
+
+    <!--  syntax highlighter https://prismjs.com/  -->
+    <link rel="stylesheet" href="{{ url_for('base_blueprint.static', filename='assets/prism/prism.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -48,4 +51,6 @@
             });
         });
     </script>
+
+    {% block javascripts_include %}{% endblock javascripts_include %}
 {% endblock %}

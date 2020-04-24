@@ -311,203 +311,193 @@
       quota_used: 3411
       roles: [users]
       classgroup: class_a
-    - username: gravida
+    - email: gravid@upv.es
       name: Lev
       quota_used: 5321
       roles: [users]
       classgroup: class_a
-    - username: et
+    - email: eac@upv.es
       name: Ryan
       quota_used: 65
       roles: [users]
       classgroup: class_a
-    - username: luctus
+    - email: luctu@upv.es
       name: Shelley
       quota_used: 474
       roles: [users]
       classgroup: class_a
-    - username: enim
+    - email: eni@upv.es
       name: Thomas
       quota_used: 1274
       roles: [users]
       classgroup: class_a
-    - username: pellentesque
+    - email: pellentesqu@upv.es
       name: Ignatius
       quota_used: 1494
       roles: [users]
       classgroup: class_a
-    - username: eu
+    - email: e@upv.es
       name: Devin
       quota_used: 4869
       roles: [users]
       classgroup: class_a
-    - username: aliquam
+    - email: aliqua@upv.es
       name: Todd
       quota_used: 3222
       roles: [users]
       classgroup: class_a
-    - username: in,
+    - email: in@upv.es
       name: Lynn
       quota_used: 3779
       roles: [users]
       classgroup: class_a
-    - username: risus
+    - email: risu@upv.es
       name: Abraham
       quota_used: 5579
       roles: [users]
       classgroup: class_a
-    - username: vel
+    - email: ve@upv.es
       name: Ralph
       quota_used: 1596
       roles: [users]
       classgroup: class_a
-    - username: ut
+    - email: u@upv.es
       name: Noah
       quota_used: 4483
       roles: [users]
       classgroup: class_a
-    - username: sit
+    - email: si@upv.es
       name: Jacob
       quota_used: 3916
       roles: [users]
       classgroup: class_a
-    - username: in
+    - email: ilkiu@upv.es
       name: Frances
       quota_used: 3230
       roles: [users]
       classgroup: class_a
-    - username: sem.
+    - email: sem@upv.es
       name: Abbot
       quota_used: 5605
       roles: [users]
       classgroup: class_a
-    - username: rutrum
+    - email: rutru@upv.es
       name: Kenneth
       quota_used: 100
       roles: [users]
       classgroup: class_a
-    - username: eget,
+    - email: eget@upv.es
       name: Rooney
       quota_used: 296
       roles: [users]
       classgroup: class_a
-    - username: vel,
-      name: Aimee
-      quota_used: 866
-      roles: [users]
-      classgroup: class_a
-    - username: urna.
+    - email: urna@upv.es
       name: Caldwell
       quota_used: 386
       roles: [users]
       classgroup: class_a
-    - username: porttitor
+    - email: porttito@upv.es
       name: Astra
       quota_used: 1565
       roles: [users]
       classgroup: class_a
-    - username: id,
+    - email: i@upv.es
       name: Mohammad
       quota_used: 1809
       roles: [users]
       classgroup: class_a
-    - username: magna.
+    - email: magna@upv.es
       name: Whitney
       quota_used: 3506
       roles: [users]
       classgroup: class_a
-    - username: hymenaeos.
+    - email: hymenaeo@upv.es
       name: Claudia
       quota_used: 2578
       roles: [users]
       classgroup: class_a
-    - username: Morbi
+    - email: Morb@upv.es
       name: Kiayada
       quota_used: 2102
       roles: [users]
       classgroup: class_a
-    - username: arcu
+    - email: arc@upv.es
       name: Jeremy
       quota_used: 3214
       roles: [users]
       classgroup: class_a
-    - username: erat
+    - email: era@upv.es
       name: Lionel
       quota_used: 204
       roles: [users]
       classgroup: class_a
-    - username: Pellentesque
+    - email: Pellentesqu@upv.es
       name: Geoffrey
       quota_used: 983
       roles: [users]
       classgroup: class_a
-    - username: natoque
+    - email: natoqu@upv.es
       name: Keegan
       quota_used: 1161
       roles: [users]
       classgroup: class_a
-    - username: tempus
+    - email: tempu@upv.es
       name: Paloma
       quota_used: 3170
       roles: [users]
       classgroup: class_a
-    - username: malesuada
+    - email: malesuad@upv.es
       name: Ivana
       quota_used: 5742
       roles: [users]
       classgroup: class_a
-    - username: fringilla
+    - email: fringill@upv.es
       name: Amber
       quota_used: 415
       roles: [users]
       classgroup: class_a
-    - username: tincidunt
+    - email: tincidun@upv.es
       name: Fiona
       quota_used: 878
       roles: [users]
       classgroup: class_a
-    - username: habitant
+    - email: habitan@upv.es
       name: Kaitlin
       quota_used: 2373
       roles: [users]
       classgroup: class_a
-    - username: Sed
+    - email: Se@upv.es
       name: Brandon
       quota_used: 3764
       roles: [users]
       classgroup: class_a
-    - username: nulla.
+    - email: null@upv.es
       name: Shay
       quota_used: 4885
       roles: [users]
       classgroup: class_a
-    - username: molestie.
+    - email: molesti@upv.es
       name: May
       quota_used: 2282
       roles: [users]
       classgroup: class_a
-    - username: tempor,
+    - email: tempo@upv.es
       name: Jermaine
       quota_used: 4381
       roles: [users]
       classgroup: class_a
-    - username: eu,
+    - email: eu@upv.es
       name: Kimberly
       quota_used: 2470
       roles: [users]
       classgroup: class_a
-    - username: faucibus
+    - email: faucibu@upv.es
       name: Danielle
       quota_used: 2239
       roles: [users]
       classgroup: class_a
-    - username: blandit
+    - email: blandi@upv.es
       name: Fletcher
       quota_used: 5981
-      roles: [users]
-      classgroup: class_a
-    - username: tempor
-      name: Orson
-      quota_used: 247
       roles: [users]
       classgroup: class_a

@@ -3,14 +3,18 @@
 License: MIT
 Copyright (c) 2019 - present AppSeed.us
 """
+import csv
+import os
 from datetime import datetime
 
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, current_app, json
+from werkzeug.utils import secure_filename
 
 from app import db
 from app.admin import blueprint
-from app.admin.forms import AssignmentForm
+from app.admin.forms import AssignmentForm, UsersUploadForm
 from app.base.models import Assignment, ClassGroup, Badge, Request, User
+from app.base.util import random_string
 
 
 @blueprint.route('/')
@@ -34,7 +38,39 @@ def classgroups():
 def students():
     # TODO change to SQL Query
     student_list = [x for x in User.query.all() if not x.is_admin]
-    return render_template('admin_students.html', student_list=student_list)
+    form = UsersUploadForm()
+    form.classgroup.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
+    return render_template('admin_students.html', student_list=student_list, form=form)
+
+
+@blueprint.route('/students/upload', methods=['GET', 'POST'])
+def upload_students():
+    form = UsersUploadForm()
+    if form.validate_on_submit():
+        f = form.file.data
+        # TODO avoid storing file
+        # create file
+        filename = secure_filename(f.filename)
+        file_location = os.path.join('app', current_app.config['UPLOAD_FOLDER'], filename)
+        f.save(file_location)
+        # open file
+        with open(file_location, newline='') as csvfile:
+            # create a list with dicts for each user
+            csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(csvfile, skipinitialspace=True)]
+            result = []
+            for student in csv_dicts:
+                # create a random password for the user
+                student_password = random_string(5)
+                student['password'] = student_password
+                student['classgroup'] = form.data['classgroup']
+                # create and store User
+                student = User(**student)
+                db.session.add(student)
+                db.session.commit()
+                # store result
+                result.append({'email': student.email, 'username': student.username, 'password': student_password})
+
+    return json.dumps(result, indent=2)
 
 
 @blueprint.route('/assignments')

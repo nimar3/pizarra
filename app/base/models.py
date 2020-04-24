@@ -92,13 +92,17 @@ class User(db.Model, UserMixin):
             setattr(self, 'avatar', 'avatar-' + str(randint(1, 18)) + '-256x256.png')
 
         if 'password' not in kwargs:
-            setattr(self, 'password', hash_pass('123'))
+            setattr(self, 'password', hash_pass(random_string(5)))
 
         if 'username' not in kwargs or 'username' is None or 'username' is '':
             setattr(self, 'username', kwargs['email'].split('@')[0])
 
         if 'access_token' not in kwargs:
             setattr(self, 'access_token', random_string())
+
+        if 'roles' not in kwargs:
+            roles = [Role.query.filter_by(name='users').first()]
+            setattr(self, 'roles', roles)
 
     def __repr__(self):
         return str(self.username)
@@ -165,6 +169,9 @@ class ClassGroup(db.Model):
     students = relationship('User', back_populates='classgroup')
     assignments = relationship('Assignment', secondary=classgroups_assignments, back_populates='classgroups',
                                order_by='asc(Assignment.due_date)')
+
+    def __repr__(self):
+        return '{} ({})'.format(self.description, self.name)
 
 
 class Badge(db.Model):
