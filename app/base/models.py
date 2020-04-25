@@ -11,7 +11,7 @@ from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, Forei
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
-from app.base.util import hash_pass, random_string
+from app.base.util import hash_pass, random_string, process_date
 from app.tasks.models import RequestStatus
 
 # many-to-many relationships
@@ -105,7 +105,7 @@ class User(db.Model, UserMixin):
             setattr(self, 'roles', roles)
 
     def __repr__(self):
-        return str(self.username)
+        return '{}, {} ({})'.format(self.name, self.email, self.username)
 
     @property
     def quota_percentage_used(self):
@@ -190,7 +190,7 @@ class Badge(db.Model):
     assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
 
     def __repr__(self):
-        return ', '.join([str(self.id), self.name, self.title])
+        return '{} - {}'.format(self.title, self.subtitle)
 
 
 class Request(db.Model):
@@ -228,6 +228,13 @@ class Assignment(db.Model):
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
     badges = relationship("Badge", secondary=assignments_badges, back_populates="assignments")
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            if (key == 'start_date' or key == 'due_date') and isinstance(value, str):
+                value = process_date(value)
+
+            setattr(self, key, value)
 
     @property
     def expires_soon(self):

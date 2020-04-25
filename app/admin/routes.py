@@ -8,6 +8,7 @@ import os
 from datetime import datetime
 
 from flask import render_template, request, redirect, url_for, flash, current_app, json
+from flask_security.utils import _
 from werkzeug.utils import secure_filename
 
 from app import db
@@ -24,14 +25,12 @@ def index():
 
 @blueprint.route('/dashboard')
 def route_admin_home():
-    request_list = Request.query.all()
-    return render_template('admin_home.html', request_list=request_list)
+    return render_template('admin_home.html', request_list=Request.query.all())
 
 
 @blueprint.route('/classgroups')
 def classgroups():
-    classgroup_list = ClassGroup.query.all()
-    return render_template('admin_classgroups.html', classgroup_list=classgroup_list)
+    return render_template('admin_classgroups.html', classgroup_list=ClassGroup.query.all())
 
 
 @blueprint.route('/students', methods=['GET', 'POST'])
@@ -45,8 +44,7 @@ def students():
 
 @blueprint.route('/assignments')
 def assignments():
-    assignment_list = Assignment.query.all()
-    return render_template('admin_assignments.html', assignment_list=assignment_list)
+    return render_template('admin_assignments.html', assignment_list=Assignment.query.all())
 
 
 @blueprint.route('/settings')
@@ -56,40 +54,24 @@ def settings():
 
 @blueprint.route('/assignment/new', methods=['GET', 'POST'])
 def route_assignment_new():
-    assignment_form = AssignmentForm(request.form)
+    form = AssignmentForm(request.form)
     if 'submit' in request.form:
         # read form data
-        name = assignment_form.data['name']
+        name = form.data['name']
 
         # Locate assignment
         assignment = Assignment.query.filter_by(name=name).first()
 
         if assignment is None:
-            assignment = create_assignment(assignment_form.data)
+            assignment = Assignment(**form.data)
 
         db.session.add(assignment)
         db.session.commit()
-        flash('New Assignment has been created!', 'success')
+        flash(_('New Assignment has been created!'), 'success')
 
         return redirect(url_for('home_blueprint.assignments', name=assignment.name))
 
-    assignment_form.classgroups.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
-    assignment_form.badges.choices = [(x.id, x.title + ': ' + x.description) for x in Badge.query.all()]
-    return render_template('assignment_new.html', form=assignment_form)
-
-
-def create_assignment(data):
-    assignment = Assignment()
-    assignment.name = data['name']
-    assignment.title = data['title']
-    assignment.description = data['description']
-    assignment.start_date = process_date(data['start_date'])
-    assignment.due_date = process_date(data['due_date'])
-    # each class group must be fetched
-    assignment.classgroups = list(map(lambda x: ClassGroup.query.filter_by(id=x).first(), set(data['classgroups'])))
-    # each badge must be fetched
-    assignment.badges = list(map(lambda x: Badge.query.filter_by(id=x).first(), set(data['badges'])))
-    return assignment
+    return render_template('assignment_new.html', form=form)
 
 
 def import_users(form):
@@ -125,13 +107,4 @@ def import_users(form):
     return json.dumps(result, indent=2)
 
 
-def process_date(string_date):
-    """ transforms a string date to datetime """
-    if string_date is not None and string_date != '':
-        try:
-            date = datetime.strptime(string_date, '%Y-%m-%d %H:%M')
-            return date
-        except ValueError:
-            pass
 
-    return None
