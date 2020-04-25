@@ -13,6 +13,7 @@ import re
 import string
 from datetime import datetime
 
+from dateutil.parser import parse
 from flask import url_for, redirect, request, abort
 from flask_login import current_user
 
@@ -72,8 +73,8 @@ def process_date(string_date):
     """ transforms a string date to datetime """
     if string_date is not None and string_date != '':
         try:
-            date = datetime.strptime(string_date, '%Y-%m-%d %H:%M')
-            return date
+            parsed_date = parse(string_date)
+            return parsed_date
         except ValueError:
             pass
 

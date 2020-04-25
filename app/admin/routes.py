@@ -86,7 +86,7 @@ def assignments_edit(name):
     form.classgroups.data = assignment.classgroups
     form.badges.data = assignment.badges
 
-    return render_template('admin_assignment_new_edit.html', form=form)
+    return render_template('admin_assignment_new_edit.html', form=form, edit=True)
 
 
 @blueprint.route('/assignments/new', methods=['GET', 'POST'])
@@ -108,7 +108,7 @@ def assignments_new():
 
         return redirect(url_for('home_blueprint.assignments', name=assignment.name))
 
-    return render_template('admin_assignment_new_edit.html', form=form)
+    return render_template('admin_assignment_new_edit.html', form=form, edit=False)
 
 
 def import_users(form):

@@ -13,12 +13,12 @@
     <section class="content-header">
         <h1>
             {{ _('Assignment') }}
-            <small>{{ _('edit') if form.name.data else _('new') }}</small>
+            <small>{{ _('edit') if edit else _('new') }}</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ url_for('admin_blueprint.route_admin_home') }}">{{ _('Admin') }}</a></li>
             <li><a href="{{ url_for('admin_blueprint.assignments') }}">{{ _('Assignments') }}</a></li>
-            <li class="active">{{ form.name.data if form.name.data else _('new') }}</li>
+            <li class="active">{{ form.name.data if edit else _('new') }}</li>
         </ol>
     </section>
 
@@ -34,7 +34,7 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form" method="post"
-                          action="{{ url_for('.assignments_edit', name=form.name.data) if form.name.data else url_for('.assignments_new') }}">
+                          action="{{ url_for('.assignments_edit', name=form.name.data) if edit else url_for('.assignments_new') }}">
 
                         {{ form.hidden_tag() }}
                         <div class="box-body">
@@ -91,7 +91,7 @@
                             <div class="row">
                                 <div class="col-xs-6">
                                     <div class="form-group">
-                                        <label for="groups">{{ _('Header') }}</label>
+                                        <label for="groups">{{ _('Header') }} (Makefile)</label>
                                         {{ form.header(placeholder='CL1 = \n\nCC=nvcc\nCFLAGS= -O3 -arch=sm_35 -DCP_TABLON -DCP_CUDA \n#-L ./ -I ./ \n# -lcutil\n\n%: %.cu\n	$(CC) $(CFLAGS) $(CL1) -o $@ $<\n', class="form-control") }}
                                     </div>
                                 </div>
@@ -110,6 +110,10 @@
                             <!-- /.box-body -->
 
                             <div class="box-footer">
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#modal-remove-assignment">
+                                    <i class="fa fa-trash-o"></i> {{ _('Remove') }}
+                                </button>
                                 <button type="submit" name="submit"
                                         class="btn btn-primary btn-success pull-right"><i
                                         class="fa fa-save"></i> {{ _('Save') }}</button>
@@ -124,6 +128,33 @@
         <!-- ./row -->
     </section>
     <!-- /.content -->
+
+    {% if edit %}
+        <div class="modal modal-danger fade" id="modal-remove-assignment">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('Close') }}">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">{{ _('Removing Assignment') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ _('Are you sure you want to remove this Assignment?') }}</p>
+                        <p>{{ _('All Request information related to this Assignment will also be removed.') }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left"
+                                data-dismiss="modal">{{ _('Close') }}</button>
+                        <a href="{{ url_for('.assignments_remove', name=form.name.data) }}" class="btn btn-outline">
+                            {{ _('Remove') }}</a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    {% endif %}
 
 {% endblock content %}
 

@@ -225,7 +225,8 @@ class Assignment(db.Model):
     header = Column(UnicodeText)
     start_date = Column(DateTime())
     due_date = Column(DateTime())
-    requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)')
+    requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
+                            cascade='delete')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
     badges = relationship("Badge", secondary=assignments_badges, back_populates="assignments")
 
