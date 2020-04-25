@@ -78,7 +78,8 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <form id="form" role="form" method="post" action="{{ url_for('.students') }}"
+                        <form id="form" role="form" method="post"
+                              action="{{ url_for('.students', _anchor='import-result') }}"
                               enctype="multipart/form-data">
 
                             {{ form.hidden_tag() }}
@@ -124,7 +125,7 @@
                 <!-- /.box -->
             </div>
             {% if import_result %}
-                <div class="col-xs-6 import-result">
+                <div class="col-xs-6 import-result" id="import-result">
                     <!-- student upload result will be placed here -->
                     <div class="box box-default">
                         <div class="box-header">
@@ -133,6 +134,11 @@
                                download="students.json"><i class="fa fa-download"></i> {{ _('Download') }} </a>
                         </div>
                         <div class="box-body">
+                            <div class="callout callout-warning">
+                                <p>
+                                    <i class="icon fa fa-warning"></i> {{ _('This results are not stored in any local file or DB. Please download the results') }}
+                                </p>
+                            </div>
                             <pre class="language-json"><code>{{ import_result }}</code></pre>
                         </div>
                     </div>
