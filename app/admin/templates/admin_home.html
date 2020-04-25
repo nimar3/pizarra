@@ -34,6 +34,7 @@
                                 <th>{{ _('ID') }}</th>
                                 <th>{{ _('Date') }}</th>
                                 <th>{{ _('User') }}</th>
+                                <th>{{ _('Email') }}</th>
                                 <th>{{ _('Group') }}</th>
                                 <th>{{ _('Assignment') }}</th>
                                 <th>{{ _('Status') }}</th>
@@ -46,7 +47,8 @@
                                     <td><a href="{{ url_for('home_blueprint.requests',id=user_request.id) }}">
                                         #{{ user_request.id }} </a></td>
                                     <td>{{ user_request.timestamp }}</td>
-                                    <td>{{ user_request.user.name }} ({{ user_request.user.email }})</td>
+                                    <td>{{ user_request.user.name }} ({{ user_request.user.username }})</td>
+                                    <td>{{ user_request.user.email }}</td>
                                     <td>{{ user_request.user.classgroup.name }}</td>
                                     <td>
                                         <a href="{{ url_for('home_blueprint.assignments', name=user_request.assignment.name ) }}">

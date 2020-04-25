@@ -56,10 +56,11 @@ def students():
 @blueprint.route('/students/remove/<id>')
 def students_remove(id):
     user = User.query.filter_by(id=id).first()
-    if user is not None:
+    if user is not None and not user.is_admin:
+        name, email = user.name, user.email
         db.session.delete(user)
         db.session.commit()
-        flash(_('User removed successfully'), 'success')
+        flash(_('Student {} ({}) was removed successfully').format(name, email), 'success')
 
     return redirect(url_for('.students'))
 
