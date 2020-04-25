@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm, UsersUploadForm
-from app.base.models import Assignment, ClassGroup, Badge, Request, User
+from app.base.models import Assignment, ClassGroup, Badge, Request, User, Role
 from app.base.util import random_string
 
 
@@ -37,11 +37,9 @@ def classgroups():
 @blueprint.route('/students', methods=['GET', 'POST'])
 def students():
     form = UsersUploadForm()
+    # if the request is for creating users we validate and then import
     import_result = import_users(form) if request.method == 'POST' and form.validate_on_submit() else None
-
-    # TODO change to SQL Query
-    student_list = [x for x in User.query.all() if not x.is_admin]
-    form.classgroup.choices = [(x.id, x.description) for x in ClassGroup.query.all()]
+    student_list = User.query.filter(User.roles.any(name='users')).all()
     return render_template('admin_students.html', student_list=student_list, form=form, import_result=import_result)
 
 

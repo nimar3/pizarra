@@ -164,7 +164,7 @@
       access_token: "123"
       avatar: "avatar-default-128x128.jpg"
       quota: 9999
-      roles: [users, admins]
+      roles: [admins]
     - __key__: user_foo
       username: "foo"
       email: "foo@test.test"
