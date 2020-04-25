@@ -27,6 +27,17 @@ def route_admin_home():
     return render_template('admin_home.html', request_list=Request.query.all())
 
 
+@blueprint.route('/requests/remove/<id>')
+def requests_remove(id):
+    user_request = Request.query.filter_by(id=id).first()
+    if user_request is not None:
+        db.session.delete(user_request)
+        db.session.commit()
+        flash(_('Request removed successfully'), 'success')
+
+    return redirect(url_for('.route_admin_home'))
+
+
 @blueprint.route('/classgroups')
 def classgroups():
     return render_template('admin_classgroups.html', classgroup_list=ClassGroup.query.all())
