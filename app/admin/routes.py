@@ -51,6 +51,17 @@ def settings():
     return render_template('admin_settings.html')
 
 
+@blueprint.route('/assignments/remove/<name>', methods=['GET', 'POST'])
+def assignments_remove(name):
+    assignment = Assignment.query.filter_by(name=name).first()
+    if assignment is not None:
+        db.session.delete(assignment)
+        db.session.commit()
+        flash(_('Assignment removed successfully'), 'success')
+
+    return redirect(url_for('.assignments'))
+
+
 @blueprint.route('/assignments/edit/<name>', methods=['GET', 'POST'])
 def assignments_edit(name):
     assignment = Assignment.query.filter_by(name=name).first()
