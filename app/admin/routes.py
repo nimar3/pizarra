@@ -5,7 +5,6 @@ Copyright (c) 2019 - present AppSeed.us
 """
 import csv
 import os
-from random import randint
 
 from flask import render_template, request, redirect, url_for, flash, current_app, json
 from flask_security.utils import _
@@ -15,7 +14,7 @@ from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm, UsersUploadForm
 from app.base.models import Assignment, ClassGroup, Request, User
-from app.base.util import random_string
+from app.base.util import random_string, process_date
 
 
 @blueprint.route('/')
@@ -52,8 +51,35 @@ def settings():
     return render_template('admin_settings.html')
 
 
-@blueprint.route('/assignment/new', methods=['GET', 'POST'])
-def route_assignment_new():
+@blueprint.route('/assignments/edit/<name>', methods=['GET', 'POST'])
+def assignments_edit(name):
+    assignment = Assignment.query.filter_by(name=name).first()
+    # check if assignment exist
+    if assignment is None:
+        return redirect(url_for('.assignments'))
+
+    # if assignment was updated
+    if 'submit' in request.form:
+        form = AssignmentForm(request.form)
+        if form.validate_on_submit():
+            populate_assignment(assignment, form.data)
+            db.session.add(assignment)
+            db.session.commit()
+            flash(_('Assignment has been updated!'), 'success')
+            # returning redirect since name could have been changed
+            return redirect(url_for('.assignments_edit', name=assignment.name))
+
+    form = AssignmentForm(request.form, obj=assignment)
+    # set default select values for QuerySelectMultipleFields
+    # TODO find a default way to avoid this
+    form.classgroups.data = assignment.classgroups
+    form.badges.data = assignment.badges
+
+    return render_template('admin_assignment_new_edit.html', form=form)
+
+
+@blueprint.route('/assignments/new', methods=['GET', 'POST'])
+def assignments_new():
     form = AssignmentForm(request.form)
     if 'submit' in request.form:
         # read form data
@@ -71,7 +97,7 @@ def route_assignment_new():
 
         return redirect(url_for('home_blueprint.assignments', name=assignment.name))
 
-    return render_template('assignment_new.html', form=form)
+    return render_template('admin_assignment_new_edit.html', form=form)
 
 
 def import_users(form):
@@ -112,3 +138,14 @@ def import_users(form):
     else:
         flash('File imported successfully', 'success')
     return json.dumps(result, indent=2)
+
+
+def populate_assignment(assignment, data):
+    assignment.name = data['name']
+    assignment.title = data['title']
+    assignment.description = data['description']
+    assignment.start_date = process_date(data['start_date'])
+    assignment.due_date = process_date(data['due_date'])
+    assignment.header = data['header']
+    assignment.classgroups = data['classgroups']
+    assignment.badges = data['badges']

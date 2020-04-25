@@ -38,18 +38,25 @@
                                 <th>{{ _('Start Date') }}</th>
                                 <th>{{ _('Due Date') }}</th>
                                 <th>{{ _('Groups') }}</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for assignment in assignment_list %}
                                 <tr>
-                                    <td><a href="#"> #{{ assignment.id }} </a></td>
+                                    <td><a href="{{ url_for('home_blueprint.assignments', name=assignment.name) }}">
+                                        #{{ assignment.id }} </a></td>
                                     <td>{{ assignment.name }}</td>
                                     <td>{{ assignment.title }}</td>
                                     <td>{{ assignment.requests | count }}</td>
                                     <td>{{ assignment.start_date }}</td>
                                     <td>{{ assignment.due_date }}</td>
-                                    <td>{{ assignment.classgroups | count }}</td>
+                                    <td>{{ assignment.classgroups | map(attribute='name') | join(', ') }}</td>
+                                    <td><a href="{{ url_for('admin_blueprint.assignments_edit', name=assignment.name) }}">
+                                        <small class="label pull-right bg-yellow" style="font-weight: unset"><i
+                                                class="fa fa-edit"></i> {{ _('Edit') }}</small>
+                                    </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -63,7 +70,7 @@
 
         <div class="row no-print">
             <div class="col-xs-12">
-                <a href="{{ url_for('admin_blueprint.route_assignment_new') }}" class="btn btn-success pull-right"><i
+                <a href="{{ url_for('admin_blueprint.assignments_new') }}" class="btn btn-success pull-right"><i
                         class="fa fa-plus"></i> {{ ('New Assignment') }}</a>
             </div>
         </div>
