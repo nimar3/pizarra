@@ -1,5 +1,7 @@
 {% extends "base_admin.html" %}
 
+{% from "admin_macros.html" import modal_remove %}
+
 {% block admin_header %}
 
     <li class="active">{{ _('Students') }}</li>
@@ -38,6 +40,7 @@
                                 <th>{{ _('Group') }}</th>
                                 <th>{{ _('Quota') }}</th>
                                 <th>{{ _('Last Login') }}</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -50,6 +53,17 @@
                                     <td>{{ student.classgroup.description }}</td>
                                     <td>{{ student.quota_used }} / {{ student.quota }}</td>
                                     <td>{{ student.last_login_at if student.last_login_at != None else _('Never') }}</td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#modal-student-password"
+                                           data-id="{{ student.id }}" data-url="{{ url_for('.students_password') }}">
+                                            <small class="label bg-yellow" style="font-weight: unset">
+                                                <i class="fa fa-fw fa-key"></i> {{ _('Password') }}</small></a>
+
+                                        <a href="#" data-toggle="modal" data-target="#modal-remove-student"
+                                           data-id="{{ student.id }}">
+                                            <small class="label bg-red" style="font-weight: unset"> <i
+                                                    class="fa fa-fw fa-trash-o"></i> {{ _('Remove') }}</small></a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -65,7 +79,6 @@
     <!-- /.content -->
 
     <section class="content">
-
 
         <!-- /.row -->
         <div class="row">
@@ -148,9 +161,41 @@
 
     </section>
 
+    {{ modal_remove('modal-remove-student', _('Removing Student'), _('Are you sure you want to remove this Student?'),
+    url_for('.students_remove')) }}
+
 {% endblock %}
 
 {% block javascripts_include %}
     <!--  syntax highlighter https://prismjs.com/  -->
     <script src="{{ url_for('base_blueprint.static', filename='assets/prism/prism.js') }}"></script>
+
+    <script>
+        // update link URL to remove User
+        $('a[data-target="#modal-remove-student"]').click(function (event) {
+            let a = $('#modal-a-remove-link');
+            a.attr('href', a.data('url') + $(this).data('id'));
+        });
+
+        $('a[data-target="#modal-student-password"]').click(function (event) {
+            let id = $(this).data('id');
+            let url = $(this).data('url');
+            bootbox.dialog({
+                title: "Reset Student Password?",
+                message: "Do you want to generate a random password for this user? This cannot be undone.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> {{ _('Cancel') }}'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> {{ _('Confirm') }}',
+                        callback: function () {
+                            //redirect to reset password URL
+                            window.location.href = url + id;
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

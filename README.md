@@ -28,9 +28,9 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
     - [ ] global status ?
     - students
       - [x] view
-      - [ ] edit
-      - [ ] import csv
-      - [ ] remove
+      - [x] reset password
+      - [x] import csv
+      - [x] remove
     - assignments
       - [x] view
       - [x] create

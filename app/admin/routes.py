@@ -14,7 +14,7 @@ from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm, UsersUploadForm
 from app.base.models import Assignment, ClassGroup, Request, User
-from app.base.util import random_string, process_date
+from app.base.util import random_string, process_date, hash_pass
 
 
 @blueprint.route('/')
@@ -50,6 +50,33 @@ def students():
     import_result = import_users(form) if request.method == 'POST' and form.validate_on_submit() else None
     student_list = User.query.filter(User.roles.any(name='users')).all()
     return render_template('admin_students.html', student_list=student_list, form=form, import_result=import_result)
+
+
+@blueprint.route('/students/remove/')
+@blueprint.route('/students/remove/<id>')
+def students_remove(id):
+    user = User.query.filter_by(id=id).first()
+    if user is not None:
+        db.session.delete(user)
+        db.session.commit()
+        flash(_('User removed successfully'), 'success')
+
+    return redirect(url_for('.students'))
+
+
+@blueprint.route('/students/password/')
+@blueprint.route('/students/password/<id>')
+def students_password(id):
+    user = User.query.filter_by(id=id).first()
+    if user is not None:
+        random_password = random_string(5)
+        user.password = hash_pass(random_password)
+        db.session.add(user)
+        db.session.commit()
+        flash(_('Password for user {} ({}) was reset to <b>{}</b>'.format(user.name, user.email, random_password)),
+              'success')
+
+    return redirect(url_for('.students'))
 
 
 @blueprint.route('/assignments')
