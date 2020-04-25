@@ -95,7 +95,7 @@ class User(db.Model, UserMixin):
             setattr(self, 'password', hash_pass(random_string(5)))
 
         if 'username' not in kwargs or 'username' is None or 'username' is '':
-            setattr(self, 'username', kwargs['email'].split('@')[0])
+            setattr(self, 'username', generate_username(kwargs['email']))
 
         if 'access_token' not in kwargs:
             setattr(self, 'access_token', random_string())
@@ -266,3 +266,22 @@ def request_loader(request):
     username = request.form.get('username')
     user = User.query.filter_by(username=username).first()
     return user if user else None
+
+
+def generate_username(email):
+    """
+    generates an username base on the email. If the username is duplicated it will try to generate a new one with
+    username.N where N is incremental until no user is found
+    """
+    username = email.split('@')[0]
+    if User.query.filter_by(username=username).first() is None:
+        return username
+    else:
+        # try to generate a random username
+        i = 0
+        while True:
+            random_username = '.'.join([username, str(i)])
+            if User.query.filter_by(username=random_username).first() is None:
+                return random_username
+            else:
+                i = i + 1

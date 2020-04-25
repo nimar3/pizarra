@@ -5,7 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 import csv
 import os
-from datetime import datetime
+from random import randint
 
 from flask import render_template, request, redirect, url_for, flash, current_app, json
 from flask_security.utils import _
@@ -14,7 +14,7 @@ from werkzeug.utils import secure_filename
 from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm, UsersUploadForm
-from app.base.models import Assignment, ClassGroup, Badge, Request, User, Role
+from app.base.models import Assignment, ClassGroup, Request, User
 from app.base.util import random_string
 
 
@@ -87,24 +87,28 @@ def import_users(form):
         # create a list with dicts for each user
         csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(csvfile, skipinitialspace=True)]
         for student in csv_dicts:
-            # create a random password for the user
-            student_password = random_string(5)
-            student['password'] = student_password
-            student['classgroup'] = form.data['classgroup']
-            # TODO check if user and email exist
-            # create and store User
-            student = User(**student)
-            db.session.add(student)
-            db.session.commit()
-            # store result
-            result['success'].append(
-                {'email': student.email, 'username': student.username, 'password': student_password})
+            # check if email exist
+            user = User.query.filter_by(email=student['email']).first()
+            if user is not None:
+                result['error'].append({
+                    'email': student['email'],
+                    'message': _('email already exist in DB for username {}').format(user.username)
+                })
+            else:
+                student['classgroup'] = form.data['classgroup']
+                # create a random password for the user
+                student_password = random_string(5)
+                student['password'] = student_password
+                # create and store User
+                student = User(**student)
+                db.session.add(student)
+                db.session.commit()
+                # store result
+                result['success'].append(
+                    {'email': student.email, 'username': student.username, 'password': student_password})
 
     if len(result['error']) > 0:
         flash('Imported file with errors', 'error')
     else:
         flash('File imported successfully', 'success')
     return json.dumps(result, indent=2)
-
-
-
