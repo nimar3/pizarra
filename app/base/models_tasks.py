@@ -40,8 +40,11 @@ class PizarraTask:
         self.return_code = 0
 
     def process_request(self):
-        bin = self.compile()
+        compiled_binary = self.compile()
         print(self.output, self.return_code)
+        self.execute(compiled_binary)
+        print(self.output, self.return_code)
+        self.update()
 
         return True
 
@@ -53,46 +56,47 @@ class PizarraTask:
         # localhost compile gcc-9 -fopenmp omp_hello.c -o hello
         file_location = os.path.join(os.getcwd(), 'app', self.user_request.file_location)
         file_binary_location = os.path.splitext(file_location)[0]
-        process = subprocess.Popen(['gcc-9', '-fopenmp', file_location, '-o', file_binary_location],
-                                   stdout=subprocess.PIPE,
-                                   universal_newlines=True)
 
-        while True:
-            line_output = process.stdout.readline()
-            if line_output is not None:
-                self.output.append(line_output.strip())
-            self.return_code = process.poll()
-            if self.return_code is not None:
-                # Process has finished, read rest of the output
-                for line_output in process.stdout.readlines():
-                    self.output.append(line_output.strip())
-                break
+        self.run_process(['gcc-9', '-fopenmp', file_location, '-o', file_binary_location])
 
         return file_binary_location
 
     def execute(self, bin):
+        """
+        runs compiled binary
+        """
         self.change_status(RequestStatus.RUNNING)
-        process = subprocess.Popen([bin],
-                                   stdout=subprocess.PIPE,
-                                   universal_newlines=True)
+        self.run_process([bin])
+
+    def update(self):
+        self.change_status(RequestStatus.FINISHED)
 
     def change_status(self, status):
+        """
+        change status of Request
+        """
         self.user_request.status = status
+        self.user_request.output = '\n'.join(self.output)
         db.session.add(self.user_request)
         db.session.commit()
 
-    def run_process(self, args):
-        process = subprocess.Popen(args,
-                                   stdout=subprocess.PIPE,
-                                   universal_newlines=True)
+    def run_process(self, args: list):
+        """
+        runs a subprocess and catches the return code and output
+        """
+        print(args)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, universal_newlines=True)
 
         while True:
             line_output = process.stdout.readline()
             if line_output is not None:
+                print(line_output)
                 self.output.append(line_output.strip())
             self.return_code = process.poll()
             if self.return_code is not None:
                 # Process has finished, read rest of the output
                 for line_output in process.stdout.readlines():
+                    print(line_output)
                     self.output.append(line_output.strip())
                 break
+        print('finish')

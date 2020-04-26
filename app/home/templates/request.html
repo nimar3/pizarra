@@ -52,9 +52,9 @@
                 <p class="lead">{{ _('Code Analysis') }}</p>
                 <pre class="language-json"><code>{{ code_analysis | safe }}</code></pre>
                 <p class="lead">{{ _('Output') }}</p>
-                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    {{ user_request.output | safe }}
-                </p>
+                <pre class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                {{ user_request.output | safe }}
+                </pre>
                 <p class="pull-right">{{ _('Run Time') }}: <i>{{ user_request.run_time }} s.</i></p>
             </div>
             <!-- /.col -->
