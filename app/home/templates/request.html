@@ -45,16 +45,20 @@
         <div class="row">
             <div class="col-xs-7">
                 <p class="lead">{{ _('Request Input') }}</p>
-                <pre class="language-c line-numbers"><code>{{ contents | safe }}</code></pre>
+                {% if contents != None %}
+                    <pre class="language-c line-numbers"><code>{{ contents | safe }}</code></pre>
+                {% endif %}
             </div>
             <!-- /.col -->
             <div class="col-xs-5">
                 <p class="lead">{{ _('Code Analysis') }}</p>
                 <pre class="language-json"><code>{{ code_analysis | safe }}</code></pre>
                 <p class="lead">{{ _('Output') }}</p>
-                <pre class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                {{ user_request.output | safe }}
-                </pre>
+                {% if user_request.output != None %}
+                    <pre class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    {{ user_request.output | safe }}
+                    </pre>
+                {% endif %}
                 <p class="pull-right">{{ _('Run Time') }}: <i>{{ user_request.run_time }} s.</i></p>
             </div>
             <!-- /.col -->

@@ -62,9 +62,10 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
 - FAQ
   - [ ] info
 - RQ
-  - [ ] send requests
-  - [ ] update requests
-  - [ ] check requests
+  - [x] enqueue
+  - [ ] check for malicious code
+  - [x] execute
+  - [x] update status
 
 ## Other features
 
