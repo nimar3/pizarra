@@ -13,7 +13,7 @@ from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
 from rq import Connection, Queue
-from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename, escape
 
 from app import db
 from app.base.models import Assignment, User, Request, RequestStatus
@@ -55,13 +55,13 @@ def requests(id):
     contents = None
     if user_request.file_location is not None:
         with current_app.open_resource(user_request.file_location, mode='r') as f:
-            contents = f.read()
+            contents = escape(f.read())
 
     # prettify the JSON and remove the filename location for security
-    code_analysis = user_request.code_analysis
-    if code_analysis is not None:
-        del code_analysis['filename']
-        code_analysis = json.dumps(code_analysis, sort_keys=True, indent=2)
+    code_analysis = user_request.code_analysis if user_request.code_analysis is not None else dict()
+    if not current_user.is_admin:
+        code_analysis.pop('filename', None)
+    code_analysis = json.dumps(code_analysis, sort_keys=True, indent=2)
 
     return render_template('request.html', user_request=user_request, contents=contents, code_analysis=code_analysis)
 

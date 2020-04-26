@@ -41,10 +41,13 @@ class PizarraTask:
 
     def process_request(self):
         compiled_binary = self.compile()
-        print(self.output, self.return_code)
-        self.execute(compiled_binary)
-        print(self.output, self.return_code)
-        self.update()
+        if self.return_code == 0:
+            # only execute if it was compiled successfully
+            self.execute(compiled_binary)
+            self.change_status(RequestStatus.FINISHED)
+        else:
+            self.change_status(RequestStatus.ERROR)
+
 
         return True
 
@@ -53,10 +56,10 @@ class PizarraTask:
         compiles the source and return the binary to execute
         """
         self.change_status(RequestStatus.COMPILING)
-        # localhost compile gcc-9 -fopenmp omp_hello.c -o hello
         file_location = os.path.join(os.getcwd(), 'app', self.user_request.file_location)
         file_binary_location = os.path.splitext(file_location)[0]
 
+        # localhost compile -> gcc-9 -fopenmp omp_hello.c -o hello
         self.run_process(['gcc-9', '-fopenmp', file_location, '-o', file_binary_location])
 
         return file_binary_location
@@ -67,9 +70,6 @@ class PizarraTask:
         """
         self.change_status(RequestStatus.RUNNING)
         self.run_process([bin])
-
-    def update(self):
-        self.change_status(RequestStatus.FINISHED)
 
     def change_status(self, status):
         """
@@ -82,21 +82,17 @@ class PizarraTask:
 
     def run_process(self, args: list):
         """
-        runs a subprocess and catches the return code and output
+        runs a subprocess and updates the return code and output
         """
-        print(args)
         process = subprocess.Popen(args, stdout=subprocess.PIPE, universal_newlines=True)
 
         while True:
             line_output = process.stdout.readline()
             if line_output is not None:
-                print(line_output)
                 self.output.append(line_output.strip())
             self.return_code = process.poll()
             if self.return_code is not None:
                 # Process has finished, read rest of the output
                 for line_output in process.stdout.readlines():
-                    print(line_output)
                     self.output.append(line_output.strip())
                 break
-        print('finish')
