@@ -98,7 +98,8 @@
         	<li>Have the master task alone print the total number of tasks</li>
         	<li>Terminate the MPI environment</li>
         </ul>
-      due_date: 2020-04-01 23:59:59
+      start_date: 2020-05-01 00:00:00
+      due_date: 2020-06-01 23:59:59
 
 - Team:
     - __key__: team_foo

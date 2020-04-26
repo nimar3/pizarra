@@ -1,5 +1,12 @@
 {% extends "base_admin.html" %}
 
+{% block stylesheets_include %}
+
+    <!--  syntax highlighter https://prismjs.com/  -->
+    <link rel="stylesheet" href="{{ url_for('base_blueprint.static', filename='assets/prism/prism.css') }}">
+
+{% endblock %}
+
 {% block admin_header %}
 
     <li class="active">{{ _('Students') }}</li>
@@ -52,15 +59,17 @@
                                     <td>{{ student.quota_used }} / {{ student.quota }}</td>
                                     <td>{{ student.last_login_at if student.last_login_at != None else _('Never') }}</td>
                                     <td>
-                                        <a href="#" data-toggle="modal" data-target="#modal-bootboxjs"
-                                           data-id="{{ student.id }}" data-url="{{ url_for('.students_password') }}"
+                                        <a href="#" data-target="#modal-bootboxjs"
+                                           data-id="{{ student.id }}"
+                                           data-url="{{ url_for('.students_password') }}"
                                            data-title="{{ _('Reset Student Password?') }}"
                                            data-message="{{ _('Do you want to generate a random password for this user? This cannot be undone.') }}">
                                             <small class="label bg-yellow" style="font-weight: unset">
                                                 <i class="fa fa-fw fa-key"></i> {{ _('Password') }}</small></a>
 
-                                        <a href="#" data-toggle="modal" data-target="#modal-bootboxjs"
-                                           data-id="{{ student.id }}" data-url="{{ url_for('.students_remove') }}"
+                                        <a href="#" data-target="#modal-bootboxjs"
+                                           data-id="{{ student.id }}"
+                                           data-url="{{ url_for('.students_remove') }}"
                                            data-title="{{ _('Remove Student?') }}"
                                            data-message="{{ _('Are you sure you want to remove this Student? This cannot be undone.') }}">
                                             <small class="label bg-red" style="font-weight: unset"> <i
@@ -168,28 +177,4 @@
 {% block javascripts_include %}
     <!--  syntax highlighter https://prismjs.com/  -->
     <script src="{{ url_for('base_blueprint.static', filename='assets/prism/prism.js') }}"></script>
-
-    <script>
-        $('a[data-target="#modal-bootboxjs"]').click(function (event) {
-            let id = $(this).data('id');
-            let url = $(this).data('url');
-            let title = $(this).data('title');
-            let message = $(this).data('message');
-            bootbox.dialog({
-                title: title,
-                message: message,
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> {{ _('Cancel') }}'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> {{ _('Confirm') }}',
-                        callback: function () {
-                            window.location.href = url + id;
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 {% endblock %}

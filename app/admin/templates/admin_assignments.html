@@ -1,5 +1,7 @@
 {% extends "base_admin.html" %}
 
+{% from "macros/assignment.html" import assignment_label with context %}
+
 {% block admin_header %}
 
     <li class="active">{{ _('Assignments') }}</li>
@@ -32,6 +34,7 @@
                             <thead>
                             <tr>
                                 <th>{{ _('ID') }}</th>
+                                <th>{{ _('Status') }}</th>
                                 <th>{{ _('Name') }}</th>
                                 <th>{{ _('Title') }}</th>
                                 <th>{{ _('Requests') }}</th>
@@ -46,16 +49,17 @@
                                 <tr>
                                     <td><a href="{{ url_for('home_blueprint.assignments', name=assignment.name) }}">
                                         #{{ assignment.id }} </a></td>
+                                    <td>{{ assignment_label(assignment) }}</td>
                                     <td>{{ assignment.name }}</td>
                                     <td>{{ assignment.title }}</td>
                                     <td>{{ assignment.requests | count }}</td>
                                     <td>{{ assignment.start_date }}</td>
                                     <td>{{ assignment.due_date }}</td>
                                     <td>{{ assignment.classgroups | map(attribute='name') | join(', ') }}</td>
-                                    <td><a href="{{ url_for('admin_blueprint.assignments_edit', name=assignment.name) }}">
-                                        <small class="label pull-right bg-yellow" style="font-weight: unset"><i
-                                                class="fa fa-edit"></i> {{ _('Edit') }}</small>
-                                    </a>
+                                    <td>
+                                        <a href="{{ url_for('admin_blueprint.assignments_edit', name=assignment.name) }}">
+                                        <small class="label bg-yellow"><i class="fa fa-edit"></i> {{ _('Edit') }}</small>
+                                        </a>
                                     </td>
                                 </tr>
                             {% endfor %}

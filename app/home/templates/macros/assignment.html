@@ -1,3 +1,17 @@
+{% macro assignment_label(assignment) %}
+    {% if assignment.id in current_user.passed_assignments and not current_user.is_admin %}
+        <small class="label label-success"><i class="fa fa-check"></i> {{ _('Passed') }}</small>
+    {% elif assignment.expired %}
+        <small class="label label-danger"><i class="fa fa-warning"></i> {{ _('Closed') }}</small>
+    {% elif assignment.expires_soon %}
+        <small class="label label-warning"><i class="fa fa-clock-o"></i> {{ _('Closes soon') }}</small>
+    {% elif assignment.started %}
+        <small class="label label-info"><i class="fa fa-send-o"></i> {{ _('Open') }}</small>
+    {% else %}
+        <small class="label label-default"><i class="fa fa-hourglass-start"></i> {{ _('Opens Soon') }}</small>
+    {% endif %}
+{% endmacro %}
+
 {% macro assignment_summary(assignment) %}
 
     <div class="col-md-6">
@@ -5,15 +19,7 @@
             <div class="box-header with-border">
                 <!-- /.user-block -->
                 <div class="box-tools">
-                    {% if assignment.id in current_user.passed_assignments %}
-                        <small class="label label-success"><i class="fa fa-check"></i> {{ _('Passed') }}</small>
-                    {% endif %}
-                    {% if assignment.expired %}
-                        <small class="label label-danger"><i class="fa fa-warning"></i> {{ _('Closed') }}</small>
-                    {% endif %}
-                    {% if assignment.expires_soon %}
-                        <small class="label label-warning"><i class="fa fa-clock-o"></i> {{ _('Closes soon') }}</small>
-                    {% endif %}
+                    {{ assignment_label(assignment) }}
                     <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                     </button>
                 </div>

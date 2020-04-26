@@ -166,7 +166,7 @@ class ClassGroup(db.Model):
     id = Column(Integer(), primary_key=True)
     name = Column(String(100), unique=True)
     description = Column(String(255))
-    students = relationship('User', back_populates='classgroup')
+    students = relationship('User', back_populates='classgroup', cascade='all, delete, delete-orphan')
     assignments = relationship('Assignment', secondary=classgroups_assignments, back_populates='classgroups',
                                order_by='asc(Assignment.due_date)')
 

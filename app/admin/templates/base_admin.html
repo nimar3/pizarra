@@ -6,8 +6,8 @@
     <link rel="stylesheet"
           href="{{ url_for('base_blueprint.static', filename='assets/css/dataTables.bootstrap.min.css') }}">
 
-    <!--  syntax highlighter https://prismjs.com/  -->
-    <link rel="stylesheet" href="{{ url_for('base_blueprint.static', filename='assets/prism/prism.css') }}">
+    {% block stylesheets_include %}{% endblock stylesheets_include %}
+
 {% endblock %}
 
 {% block content %}
@@ -31,11 +31,14 @@
 {% endblock content %}
 
 {% block javascripts %}
+
     <script src="{{ url_for('base_blueprint.static', filename='assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url_for('base_blueprint.static', filename='assets/js/dataTables.bootstrap.min.js') }}"></script>
 
     <script>
         $(document).ready(function () {
+
+            // dataTables view
             let table = $('#table').DataTable({
                 'paging': true,
                 'lengthChange': false,
@@ -43,14 +46,38 @@
                 'info': true,
                 'autoWidth': false,
                 'sDom': 'ltipr',
-                'aaSorting': [[1, 'desc']]
+                'aaSorting': [[0, 'desc']]
             });
 
+            // datatables search on searchbox keypress
             $("#table-search").keyup(function () {
                 table.search($('#table-search').val()).draw();
+            });
+
+            // reusable modals for admin view
+            $('a[data-target="#modal-bootboxjs"]').click(function (event) {
+                let url = $(this).data('url') + $(this).data('id');
+                let title = $(this).data('title');
+                let message = $(this).data('message');
+                bootbox.dialog({
+                    title: title,
+                    message: message,
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> {{ _('Cancel') }}'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> {{ _('Confirm') }}',
+                            callback: function () {
+                                window.location.href = url;
+                            }
+                        }
+                    }
+                });
             });
         });
     </script>
 
     {% block javascripts_include %}{% endblock javascripts_include %}
+
 {% endblock %}

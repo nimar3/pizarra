@@ -31,9 +31,10 @@ def route_admin_home():
 def requests_remove(id):
     user_request = Request.query.filter_by(id=id).first()
     if user_request is not None:
+        request_id = user_request.id
         db.session.delete(user_request)
         db.session.commit()
-        flash(_('Request removed successfully'), 'success')
+        flash(_('Request with ID #{} removed successfully').format(request_id), 'success')
 
     return redirect(url_for('.route_admin_home'))
 
@@ -41,6 +42,18 @@ def requests_remove(id):
 @blueprint.route('/classgroups')
 def classgroups():
     return render_template('admin_classgroups.html', classgroup_list=ClassGroup.query.all())
+
+
+@blueprint.route('/classgroups/remove/<id>')
+def classgroups_remove(id):
+    classgroup = ClassGroup.query.filter_by(id=id).first()
+    if classgroup is not None:
+        classgroup_name, classgroup_description = classgroup.name, classgroup.description
+        db.session.delete(classgroup)
+        db.session.commit()
+        flash(_('Group {} ({}) removed successfully').format(classgroup_name, classgroup_description), 'success')
+
+    return redirect(url_for('.classgroups'))
 
 
 @blueprint.route('/students', methods=['GET', 'POST'])
@@ -94,9 +107,10 @@ def settings():
 def assignments_remove(name):
     assignment = Assignment.query.filter_by(name=name).first()
     if assignment is not None:
+        assignment_name = assignment.name
         db.session.delete(assignment)
         db.session.commit()
-        flash(_('Assignment removed successfully'), 'success')
+        flash(_('Assignment {} removed successfully').format(assignment_name), 'success')
 
     return redirect(url_for('.assignments'))
 

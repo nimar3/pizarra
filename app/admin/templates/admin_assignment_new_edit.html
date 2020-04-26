@@ -1,8 +1,8 @@
-{% extends "base_site.html" %}
+{% extends "base_admin.html" %}
 
-{% block title %} {{ _('New Assignment') }} {% endblock title %}
+{% block title %} {{ _('Edit Assignment') if edit else _('New Assignment') }} {% endblock title %}
 
-{% block stylesheets %}
+{% block stylesheets_include %}
     <link rel="stylesheet"
           href="{{ url_for('base_blueprint.static', filename='assets/css/bootstrap-datetimepicker.min.css') }}">
 {% endblock %}
@@ -30,6 +30,15 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ _('Editor') }}</h3>
+                        {% if edit %}
+                            <a href="#" class="btn btn-danger pull-right"
+                               data-target="#modal-bootboxjs"
+                               data-id=""
+                               data-url="{{ url_for('.assignments_remove', name=form.name.data) }}"
+                               data-title="{{ _('Remove Assignment?') }}"
+                               data-message="{{ _('Do you want to remove this Assignment? This cannot be undone.') }}">
+                                <i class="fa fa-trash-o"></i> {{ _('Remove') }}</a>
+                        {% endif %}
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -110,10 +119,6 @@
                             <!-- /.box-body -->
 
                             <div class="box-footer">
-                                <button type="button" class="btn btn-danger" data-toggle="modal"
-                                        data-target="#modal-remove-assignment">
-                                    <i class="fa fa-trash-o"></i> {{ _('Remove') }}
-                                </button>
                                 <button type="submit" name="submit"
                                         class="btn btn-primary btn-success pull-right"><i
                                         class="fa fa-save"></i> {{ _('Save') }}</button>
@@ -129,42 +134,15 @@
     </section>
     <!-- /.content -->
 
-    {% if edit %}
-        <div class="modal modal-danger fade" id="modal-remove-assignment">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ _('Close') }}">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">{{ _('Removing Assignment') }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>{{ _('Are you sure you want to remove this Assignment?') }}</p>
-                        <p>{{ _('All Request information related to this Assignment will also be removed.') }}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline pull-left"
-                                data-dismiss="modal">{{ _('Close') }}</button>
-                        <a href="{{ url_for('.assignments_remove', name=form.name.data) }}" class="btn btn-outline">
-                            {{ _('Remove') }}</a>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
-    {% endif %}
-
 {% endblock content %}
 
-{% block javascripts %}
+{% block javascripts_include %}
 
     <!-- CK Editor -->
     <script src="{{ url_for('base_blueprint.static', filename='assets/ckeditor/ckeditor.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ url_for('base_blueprint.static', filename='assets/select2/js/select2.js') }}"></script>
-
+    <!-- Date Picker -->
     <script src="{{ url_for('base_blueprint.static', filename='assets/js/moment.min.js') }}"></script>
     <script src="{{ url_for('base_blueprint.static', filename='assets/js/bootstrap-datetimepicker.min.js') }}"></script>
 
@@ -187,6 +165,5 @@
             $('#due-date').datetimepicker({autoclose: true});
         })
     </script>
-
 
 {% endblock %}

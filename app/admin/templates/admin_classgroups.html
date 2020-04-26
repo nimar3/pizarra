@@ -36,6 +36,7 @@
                                 <th>{{ _('Description') }}</th>
                                 <th>{{ _('Students') }}</th>
                                 <th>{{ _('Assignments') }}</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -46,6 +47,15 @@
                                     <td>{{ group.description }}</td>
                                     <td>{{ group.students | count }}</td>
                                     <td>{{ group.assignments | map(attribute='name') | join(', ') }}</td>
+                                    <td>
+                                        <a href="#" data-target="#modal-bootboxjs"
+                                           data-id=""
+                                           data-url="{{ url_for('.classgroups_remove', id=group.id) }}"
+                                           data-title="{{ _('Remove Group?') }}"
+                                           data-message="{{ _('Are you sure you want to remove this Group? This cannot be undone.') }}">
+                                            <small class="label bg-red" style="font-weight: unset"> <i
+                                                    class="fa fa-fw fa-trash-o"></i> {{ _('Remove') }}</small></a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
