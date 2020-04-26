@@ -3,8 +3,6 @@
 License: MIT
 Copyright (c) 2020 - nimar3
 """
-import enum
-import time
 from datetime import datetime
 from random import randint
 
@@ -13,6 +11,7 @@ from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, Forei
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
+from app.base.models_tasks import RequestStatus
 from app.base.util import hash_pass, random_string, process_date
 
 # many-to-many relationships
@@ -30,46 +29,6 @@ users_roles = Table('_users_roles', db.Model.metadata,
                     Column('user_id', Integer(), ForeignKey('user.id')),
                     Column('role_id', Integer(), ForeignKey('role.id'))
                     )
-
-
-class RequestStatus(enum.Enum):
-    CREATED = 0
-    COMPILING = 1
-    QUEUED = 2
-    DEPLOYING = 3
-    WAITING = 4
-    RUNNING = 5
-    FINISHED = 6
-    CANCELED = 7
-    ERROR = 9
-    TIMEWALL = 10
-
-    @property
-    def label(self):
-        """
-        Dictionary to map enum to Bootstrap labels
-        """
-        label_dict = {RequestStatus.COMPILING: 'label-info', RequestStatus.DEPLOYING: 'label-info',
-                      RequestStatus.WAITING: 'label-info', RequestStatus.RUNNING: 'label-primary',
-                      RequestStatus.FINISHED: 'label-success', RequestStatus.CANCELED: 'label-warning',
-                      RequestStatus.ERROR: 'label-danger', RequestStatus.TIMEWALL: 'label-warning'}
-        return label_dict[self] if self in label_dict else 'label-default'
-
-
-class PizarraTask:
-
-    def __init__(self, user_request):
-        self.user_request = user_request
-
-    def process_request(self):
-        self.change_status(RequestStatus.COMPILING)
-        time.sleep(10)
-        return True
-
-    def change_status(self, status: RequestStatus):
-        self.user_request.status = status
-        db.session.add(self.user_request)
-        db.session.commit()
 
 
 class UserBadge(db.Model):

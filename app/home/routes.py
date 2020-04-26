@@ -16,7 +16,8 @@ from rq import Connection, Queue
 from werkzeug.utils import secure_filename
 
 from app import db
-from app.base.models import Assignment, User, Request, RequestStatus, PizarraTask
+from app.base.models import Assignment, User, Request, RequestStatus
+from app.base.models_tasks import PizarraTask
 from app.base.util import random_string
 from app.home import blueprint
 
