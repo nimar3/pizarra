@@ -225,5 +225,8 @@ def create_task(user_request):
 
 
 def pizarra_task(user_request):
+    """
+    creates the task for the worker and executes it
+    """
     task = PizarraTask(user_request)
     return task.process_request()

@@ -5,8 +5,6 @@ import enum
 import os
 import subprocess
 
-from flask import current_app
-
 from app import db
 
 
@@ -38,12 +36,19 @@ class PizarraTask:
 
     def __init__(self, user_request):
         self.user_request = user_request
+        self.output = []
+        self.return_code = 0
 
     def process_request(self):
-        self.compile()
+        bin = self.compile()
+        print(self.output, self.return_code)
+
         return True
 
     def compile(self):
+        """
+        compiles the source and return the binary to execute
+        """
         self.change_status(RequestStatus.COMPILING)
         # localhost compile gcc-9 -fopenmp omp_hello.c -o hello
         file_location = os.path.join(os.getcwd(), 'app', self.user_request.file_location)
@@ -53,18 +58,41 @@ class PizarraTask:
                                    universal_newlines=True)
 
         while True:
-            output = process.stdout.readline()
-            print(output.strip())
-            # Do something else
-            return_code = process.poll()
-            if return_code is not None:
-                print('RETURN CODE', return_code)
+            line_output = process.stdout.readline()
+            if line_output is not None:
+                self.output.append(line_output.strip())
+            self.return_code = process.poll()
+            if self.return_code is not None:
                 # Process has finished, read rest of the output
-                for output in process.stdout.readlines():
-                    print(output.strip())
+                for line_output in process.stdout.readlines():
+                    self.output.append(line_output.strip())
                 break
+
+        return file_binary_location
+
+    def execute(self, bin):
+        self.change_status(RequestStatus.RUNNING)
+        process = subprocess.Popen([bin],
+                                   stdout=subprocess.PIPE,
+                                   universal_newlines=True)
 
     def change_status(self, status):
         self.user_request.status = status
         db.session.add(self.user_request)
         db.session.commit()
+
+    def run_process(self, args):
+        process = subprocess.Popen(args,
+                                   stdout=subprocess.PIPE,
+                                   universal_newlines=True)
+
+        while True:
+            line_output = process.stdout.readline()
+            if line_output is not None:
+                self.output.append(line_output.strip())
+            self.return_code = process.poll()
+            if self.return_code is not None:
+                # Process has finished, read rest of the output
+                for line_output in process.stdout.readlines():
+                    self.output.append(line_output.strip())
+                break
