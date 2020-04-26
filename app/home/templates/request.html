@@ -55,9 +55,8 @@
                 <pre class="language-json"><code>{{ code_analysis | safe }}</code></pre>
                 <p class="lead">{{ _('Output') }}</p>
                 {% if user_request.output != None %}
-                    <pre class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    {{ user_request.output | safe }}
-                    </pre>
+                    <pre class="text-muted well well-sm no-shadow"
+                         style="margin-top: 10px;">{{ user_request.output | safe }}</pre>
                 {% endif %}
                 <p class="pull-right">{{ _('Run Time') }}: <i>{{ user_request.run_time }} s.</i></p>
             </div>

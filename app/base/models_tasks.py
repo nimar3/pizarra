@@ -4,6 +4,9 @@
 import enum
 import os
 import subprocess
+import time
+
+from flask import current_app
 
 from app import db
 
@@ -36,18 +39,20 @@ class PizarraTask:
 
     def __init__(self, user_request):
         self.user_request = user_request
-        self.output = []
+        self.output = ''
         self.return_code = 0
 
     def process_request(self):
         compiled_binary = self.compile()
         if self.return_code == 0:
             # only execute if it was compiled successfully
-            self.execute(compiled_binary)
-            self.change_status(RequestStatus.FINISHED)
+            try:
+                elapsed_time = self.execute(compiled_binary)
+                self.change_status(RequestStatus.FINISHED, elapsed_time)
+            except subprocess.TimeoutExpired:
+                self.change_status(RequestStatus.TIMEWALL, current_app.config['TIMEWALL'])
         else:
             self.change_status(RequestStatus.ERROR)
-
 
         return True
 
@@ -69,30 +74,32 @@ class PizarraTask:
         runs compiled binary
         """
         self.change_status(RequestStatus.RUNNING)
-        self.run_process([bin])
+        return self.run_process([bin])
 
-    def change_status(self, status):
+    def change_status(self, status, elapsed_time=0.0):
         """
         change status of Request
         """
         self.user_request.status = status
-        self.user_request.output = '\n'.join(self.output)
+        self.user_request.output = self.output
+        self.user_request.run_time = elapsed_time
         db.session.add(self.user_request)
         db.session.commit()
 
     def run_process(self, args: list):
         """
-        runs a subprocess and updates the return code and output
+        runs a subprocess and updates the return code and output, returns execution time
         """
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, universal_newlines=True)
+        start = time.time()
+        output = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=True,
+                                timeout=current_app.config['TIMEWALL'])
+        elapsed_time = time.time() - start
+        try:
+            output.check_returncode()
+            self.output = output.stdout
+        except subprocess.CalledProcessError:
+            # TODO check how to capture errors
+            self.output = output.stderr
+        self.return_code = output.returncode
 
-        while True:
-            line_output = process.stdout.readline()
-            if line_output is not None:
-                self.output.append(line_output.strip())
-            self.return_code = process.poll()
-            if self.return_code is not None:
-                # Process has finished, read rest of the output
-                for line_output in process.stdout.readlines():
-                    self.output.append(line_output.strip())
-                break
+        return elapsed_time

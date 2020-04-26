@@ -49,6 +49,12 @@ class Config(object):
     # Registration
     REGISTRATION_ENABLED = environ.get('REGISTRATION_ENABLED', True)
 
+    # Tasks
+    TIMEWALL = environ.get('TIMEWALL', 15) # in seconds
+    FORBIDDEN_CODE = ['##', 'fork', 'exec', 'popen', 'fopen', 'open', 'setjmp', 'remove', 'rename', 'system', 'getenv',
+                      'MPI_File_open', 'sys/syscall.h', 'sys/stat.h', 'fstream'
+                      ]
+
     # rq
     RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
     QUEUES = ["default"]
