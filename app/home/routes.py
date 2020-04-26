@@ -16,10 +16,9 @@ from rq import Connection, Queue
 from werkzeug.utils import secure_filename
 
 from app import db
-from app.base.models import Assignment, User, Request
+from app.base.models import Assignment, User, Request, RequestStatus, PizarraTask
 from app.base.util import random_string
 from app.home import blueprint
-from app.tasks.models import RequestStatus, pizarra_task
 
 
 @blueprint.route('/home')
@@ -158,7 +157,7 @@ def send_assignment(name):
     db.session.commit()
 
     # create and enqueue task
-    task_id = create_task(user_request.id)
+    task_id = create_task(user_request)
     user_request.task_id = task_id
     db.session.add(user_request)
     db.session.commit()
@@ -214,11 +213,16 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in current_app.config['FILE_ALLOWED_EXTENSIONS']
 
 
-def create_task(id):
+def create_task(user_request):
     """
     creates and enqueues a task from pizarra to be executed by a worker
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue()
-        task = q.enqueue(pizarra_task, id)
+        task = q.enqueue(pizarra_task, user_request)
         return task.get_id()
+
+
+def pizarra_task(user_request):
+    task = PizarraTask(user_request)
+    return task.process_request()
