@@ -50,7 +50,7 @@ class Config(object):
     REGISTRATION_ENABLED = environ.get('REGISTRATION_ENABLED', True)
 
     # Tasks
-    TIMEWALL = environ.get('TIMEWALL', 15) # in seconds
+    TIMEWALL = environ.get('TIMEWALL', 15.0) # in seconds
     FORBIDDEN_CODE = ['##', 'fork', 'exec', 'popen', 'fopen', 'open', 'setjmp', 'remove', 'rename', 'system', 'getenv',
                       'MPI_File_open', 'sys/syscall.h', 'sys/stat.h', 'fstream'
                       ]

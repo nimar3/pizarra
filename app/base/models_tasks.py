@@ -43,92 +43,94 @@ class PizarraTask:
     def __init__(self, user_request):
         self.user_request = user_request
         self.output = ''
+        self.binary_file_location = ''
         self.return_code = 0
+        self.run_time = 0.0
 
     def process_request(self):
         """
         process the task request
         """
-        if not self.contains_malicious_content():
-            compiled_binary = self.compile()
-            if self.return_code == 0:
-                # only execute if it was compiled successfully
-                try:
-                    elapsed_time = self.execute(compiled_binary)
-                    self.change_status(RequestStatus.FINISHED, elapsed_time)
-                except subprocess.TimeoutExpired:
-                    self.change_status(RequestStatus.TIMEWALL, current_app.config['TIMEWALL'])
-            else:
-                self.change_status(RequestStatus.ERROR)
+        if not self.contains_malicious_content() and self.compile():
+            try:
+                self.execute()
+            except subprocess.TimeoutExpired:
+                self.change_status(RequestStatus.TIMEWALL)
+        else:
+            self.change_status(RequestStatus.ERROR)
 
         return True
 
     def contains_malicious_content(self):
         """
-        verifies code for malicious content, taken from Tablón
-        updates output if found
+        verifies code for malicious content (taken from Tablón)
         """
-
         # update status
         self.change_status(RequestStatus.VERIFYING)
 
         # open file and check for forbidden code
         with current_app.open_resource(self.user_request.file_location, mode='r') as f:
             file_content = remove_comments(f.read())
-            forbidden_code_list = current_app.config['FORBIDDEN_CODE']
             for i, line in enumerate(file_content.split('\n')):
                 # check if line contains any forbidden code
-                if any(re.search(fc, line) for fc in forbidden_code_list):
+                if any(re.search(fc, line) for fc in current_app.config['FORBIDDEN_CODE']):
                     self.output = 'Found forbidden code at line {}\n\n{}'.format(i + 1, line)
-                    self.change_status(RequestStatus.ERROR)
                     return True
 
         return False
 
     def compile(self):
         """
-        compiles the source and return the binary to execute
+        compiles the source and returns if it was successful
         """
         self.change_status(RequestStatus.COMPILING)
         file_location = os.path.join(os.getcwd(), 'app', self.user_request.file_location)
-        file_binary_location = os.path.splitext(file_location)[0]
+        self.binary_file_location = os.path.splitext(file_location)[0]
 
         # localhost compile -> gcc-9 -fopenmp omp_hello.c -o hello
-        self.run_process(['gcc-9', '-fopenmp', file_location, '-o', file_binary_location])
+        return_code, elapsed_time = self.run_process(
+            ['gcc-9', '-fopenmp', file_location, '-o', self.binary_file_location], False)
 
-        return file_binary_location
+        return return_code == 0
 
-    def execute(self, binary_file):
+    def execute(self):
         """
         runs compiled binary
         """
         self.change_status(RequestStatus.RUNNING)
-        return self.run_process([binary_file])
+        # TODO run process with inputs and expected outputs
+        self.run_process([self.binary_file_location])
+        self.change_status(RequestStatus.FINISHED)
 
-    def change_status(self, status, elapsed_time=0.0):
+    def run_process(self, args: list, update_run_time=True):
         """
-        change status of Request
+        runs a subprocess and updates the return code and output, returns code and execution time
+        if update_run_time then it will add execution time to pool of used time
         """
-        self.user_request.status = status
-        self.user_request.output = self.output
-        self.user_request.run_time = elapsed_time
-        db.session.add(self.user_request)
-        db.session.commit()
-
-    def run_process(self, args: list):
-        """
-        runs a subprocess and updates the return code and output, returns execution time
-        """
+        timeout = current_app.config['TIMEWALL'] - self.run_time
         start = time.time()
-        output = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=True,
-                                timeout=current_app.config['TIMEWALL'])
+        output = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=True, timeout=timeout)
         elapsed_time = time.time() - start
+
         try:
             output.check_returncode()
             self.output = output.stdout
         except subprocess.CalledProcessError:
             # TODO check how to capture errors
-            self.output = output.stderr
-        self.return_code = output.returncode
+            self.output = output.stdout
 
-        return elapsed_time
+        self.return_code = output.returncode
+        self.run_time = (self.run_time + elapsed_time) if update_run_time else self.run_time
+
+        return output.returncode, elapsed_time
+
+    def change_status(self, status):
+        """
+        change status of Request
+        """
+        self.user_request.status = status
+        self.user_request.output = self.output
+        self.user_request.run_time = self.run_time
+
+        db.session.add(self.user_request)
+        db.session.commit()
