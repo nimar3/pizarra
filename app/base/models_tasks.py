@@ -116,8 +116,7 @@ class PizarraTask:
             output.check_returncode()
             self.output = output.stdout
         except subprocess.CalledProcessError:
-            # TODO check how to capture errors
-            self.output = output.stdout
+            self.output = 'Unable to compile file.'
 
         self.return_code = output.returncode
         self.run_time = (self.run_time + elapsed_time) if update_run_time else self.run_time

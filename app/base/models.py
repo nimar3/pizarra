@@ -215,6 +215,10 @@ class Request(db.Model):
     user = relationship('User', back_populates='requests')
     user_id = Column('user_id', String, ForeignKey('user.id'))
 
+    @property
+    def finished_execution(self):
+        return self.status in [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL, RequestStatus.FINISHED]
+
 
 class Assignment(db.Model):
     """
@@ -229,6 +233,7 @@ class Assignment(db.Model):
     start_date = Column(DateTime)
     due_date = Column(DateTime)
     points = Column(Integer)
+    show_output = Column(Boolean, default=True)
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
                             cascade='delete')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
