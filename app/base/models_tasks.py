@@ -46,6 +46,7 @@ class PizarraTask:
         self.binary_file_location = ''
         self.return_code = 0
         self.run_time = 0.0
+        self.points_assigned = 0
 
     def process_request(self):
         """
@@ -55,10 +56,12 @@ class PizarraTask:
             try:
                 self.execute()
             except subprocess.TimeoutExpired:
-                self.run_time = self.user_request.max_execution_time
-                self.change_status(RequestStatus.TIMEWALL)
+                self.timewalled()
         else:
-            self.change_status(RequestStatus.ERROR)
+            self.update_request(RequestStatus.ERROR)
+
+        # check if user won any badge, this can happen even if we were timewalled or an error was thrown
+        self.assign_badges()
 
         return True
 
@@ -67,7 +70,7 @@ class PizarraTask:
         verifies code for malicious content (taken from Tablón)
         """
         # update status
-        self.change_status(RequestStatus.VERIFYING)
+        self.update_request(RequestStatus.VERIFYING)
 
         # open file and check for forbidden code
         with current_app.open_resource(self.user_request.file_location, mode='r') as f:
@@ -84,7 +87,7 @@ class PizarraTask:
         """
         compiles the source and returns if it was successful
         """
-        self.change_status(RequestStatus.COMPILING)
+        self.update_request(RequestStatus.COMPILING)
         file_location = os.path.join(os.getcwd(), 'app', self.user_request.file_location)
         self.binary_file_location = os.path.splitext(file_location)[0]
 
@@ -98,10 +101,47 @@ class PizarraTask:
         """
         runs compiled binary
         """
-        self.change_status(RequestStatus.RUNNING)
+        self.update_request(RequestStatus.RUNNING)
         # TODO run process with inputs and expected outputs
         self.run_process([self.binary_file_location])
-        self.change_status(RequestStatus.FINISHED)
+        # sum assignment points to user
+        self.assign_points(self.user_request.assignment.points)
+        # mark as finished :)
+        self.update_request(RequestStatus.FINISHED)
+
+    def timewalled(self):
+        """
+        marks a request as TIMEWALL
+        """
+        self.run_time = self.user_request.max_execution_time
+        self.assign_points(current_app.config['TIMEWALL_PENALTY'])
+        self.update_request(RequestStatus.TIMEWALL)
+
+    def assign_badges(self):
+        """
+        checks for badges that can be assigned when a Request finishes successfully
+        """
+        for badge in self.user_request.assignment.badges:
+            # TODO do something
+            print('checking badge {}'.format(badge.name))
+
+        # TODO if badge was assigned then update points of the request
+        self.update_request()
+        return None
+
+    def assign_points(self, points: int):
+        """
+        adds the given points to the user account and to the Task
+        """
+        if points != 0:
+            # points for the Task
+            self.points_assigned = max(self.points_assigned + points, 0)
+            # points for the user account
+            user = self.user_request.user
+            user.points = max(user.points + points, 0)
+            print('assigning {} points to user {}'.format(user.points, user.name))
+            db.session.add(user)
+            db.session.commit()
 
     def run_process(self, args: list, update_run_time=True):
         """
@@ -125,13 +165,14 @@ class PizarraTask:
 
         return output.returncode, elapsed_time
 
-    def change_status(self, status):
+    def update_request(self, status=None):
         """
-        change status of Request
+        update status of Request
         """
-        self.user_request.status = status
+        self.user_request.status = self.user_request.status if status is None else status
         self.user_request.output = self.output
         self.user_request.run_time = self.run_time
+        self.user_request.points_assigned = self.points_assigned
 
         db.session.add(self.user_request)
         db.session.commit()

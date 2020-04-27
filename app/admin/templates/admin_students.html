@@ -44,6 +44,7 @@
                                 <th>{{ _('Name') }}</th>
                                 <th>{{ _('Group') }}</th>
                                 <th>{{ _('Quota') }}</th>
+                                <th>{{ _('Points') }}</th>
                                 <th>{{ _('Last Login') }}</th>
                                 <th></th>
                             </tr>
@@ -57,6 +58,7 @@
                                     <td>{{ student.name }}</td>
                                     <td>{{ student.classgroup.description }}</td>
                                     <td>{{ student.quota_used }} / {{ student.quota }}</td>
+                                    <td>{{ student.points }}</td>
                                     <td>{{ student.last_login_at if student.last_login_at != None else _('Never') }}</td>
                                     <td>
                                         <a href="#" data-target="#modal-bootboxjs"

@@ -211,6 +211,7 @@ class Request(db.Model):
     output = Column(UnicodeText)
     ip_address = Column(String(255))
     task_id = Column(String)
+    points_assigned = Column(Integer)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
@@ -239,7 +240,7 @@ class Assignment(db.Model):
     header = Column(UnicodeText)
     start_date = Column(DateTime)
     due_date = Column(DateTime)
-    points = Column(Integer)
+    points = Column(Integer, default=100)
     show_output = Column(Boolean, default=True)
     timewall = Column(Float)
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
@@ -302,4 +303,4 @@ def generate_username(email):
             if User.query.filter_by(username=random_username).first() is None:
                 return random_username
             else:
-                i = i + 1
+                i += 1
