@@ -55,6 +55,7 @@ class PizarraTask:
             try:
                 self.execute()
             except subprocess.TimeoutExpired:
+                self.run_time = self.user_request.max_execution_time
                 self.change_status(RequestStatus.TIMEWALL)
         else:
             self.change_status(RequestStatus.ERROR)
@@ -107,7 +108,8 @@ class PizarraTask:
         runs a subprocess and updates the return code and output, returns code and execution time
         if update_run_time then it will add execution time to pool of used time
         """
-        timeout = current_app.config['TIMEWALL'] - self.run_time
+        timeout = self.user_request.max_execution_time - self.run_time
+        # run process and take timing
         start = time.time()
         output = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=True, timeout=timeout)
         elapsed_time = time.time() - start

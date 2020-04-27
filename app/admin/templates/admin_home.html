@@ -45,8 +45,8 @@
                             {% for user_request in request_list %}
                                 <tr>
                                     <td><a href="{{ url_for('home_blueprint.requests',id=user_request.id) }}">
-                                        #{{ user_request.id }} </a></td>
-                                    <td>{{ user_request.timestamp }}</td>
+                                        {{ user_request.id }} </a></td>
+                                    <td>{{ user_request.timestamp.strftime('%Y-%m-%d - %H:%M:%S') }}</td>
                                     <td>{{ user_request.user.name }} ({{ user_request.user.username }})</td>
                                     <td>{{ user_request.user.email }}</td>
                                     <td>{{ user_request.user.classgroup.name }}</td>

@@ -6,6 +6,7 @@ Copyright (c) 2020 - nimar3
 from datetime import datetime
 from random import randint
 
+from flask import current_app
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, UnicodeText, Table, JSON, \
     Float
@@ -217,7 +218,13 @@ class Request(db.Model):
 
     @property
     def finished_execution(self):
-        return self.status in [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL, RequestStatus.FINISHED]
+        return self.status in [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL,
+                               RequestStatus.FINISHED]
+
+    @property
+    def max_execution_time(self):
+        return current_app.config['TIMEWALL'] if self.assignment.timewall is None else min(
+            current_app.config['TIMEWALL'], self.assignment.timewall)
 
 
 class Assignment(db.Model):
@@ -234,6 +241,7 @@ class Assignment(db.Model):
     due_date = Column(DateTime)
     points = Column(Integer)
     show_output = Column(Boolean, default=True)
+    timewall = Column(Float)
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
                             cascade='delete')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
