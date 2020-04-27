@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
 License: MIT
-Copyright (c) 2019 - present AppSeed.us
+Copyright (c) 2002 - Pizarra
 """
 
 from importlib import import_module
@@ -19,7 +19,7 @@ login_manager = LoginManager()
 
 def register_rq_dashboard(app):
     app.config.from_object(rq_dashboard.default_settings)
-    app.register_blueprint(rq_dashboard.blueprint, url_prefix="/admin/scheduler")
+    app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/scheduler')
 
 
 def register_global_variables(app):

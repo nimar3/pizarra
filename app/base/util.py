@@ -11,7 +11,6 @@ import os
 import random
 import re
 import string
-from datetime import datetime
 
 from dateutil.parser import parse
 from flask import url_for, redirect, request, abort
@@ -79,3 +78,24 @@ def process_date(string_date):
             pass
 
     return None
+
+
+def remove_comments(source_code):
+    """
+    remove comments from C and C++ comments, modified to keep new lines so line numbers don't change
+    http://stackoverflow.com/questions/241327/python-snippet-to-remove-c-and-c-comments
+    """
+
+    def replacer(match):
+        s = match.group(0)
+        if s.startswith('/'):
+            return " " + "\n" * s.count('\n')  # note: a space and not an empty string
+        else:
+            return s
+
+    pattern = re.compile(
+        r'//.*?$|/\*.*?\*/|\'(?:\\.|[^\\\'])*\'|"(?:\\.|[^\\"])*"',
+        re.DOTALL | re.MULTILINE
+    )
+
+    return re.sub(pattern, replacer, source_code)

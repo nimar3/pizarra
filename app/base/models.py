@@ -51,16 +51,17 @@ class User(db.Model, UserMixin):
     username = Column(String, unique=True)
     name = Column(String)
     password = Column(Binary)
-    active = Column(Boolean(), default=True)
-    quota = Column(Integer(), default=21600)
-    quota_used = Column(Integer(), default=0)
-    last_login_at = Column(DateTime())
+    active = Column(Boolean, default=True)
+    quota = Column(Integer, default=21600)
+    quota_used = Column(Integer, default=0)
+    last_login_at = Column(DateTime)
     last_login_ip = Column(String(100))
     login_count = Column(Integer, default=0)
-    registered_at = Column(DateTime(), default=datetime.utcnow)
-    last_request_sent_at = Column(DateTime())
+    registered_at = Column(DateTime, default=datetime.utcnow)
+    last_request_sent_at = Column(DateTime)
     avatar = Column(String)
     access_token = Column(String)
+    points = Column(Integer, default=0)
     # Relations
     # one-to-many
     requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)',
@@ -188,6 +189,7 @@ class Badge(db.Model):
     description = Column(String(255))
     background_color = Column(String(100))
     image = Column(String(255))
+    points = Column(Integer)
     assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
 
     def __repr__(self):
@@ -224,8 +226,9 @@ class Assignment(db.Model):
     title = Column(String(100))
     description = Column(UnicodeText)
     header = Column(UnicodeText)
-    start_date = Column(DateTime())
-    due_date = Column(DateTime())
+    start_date = Column(DateTime)
+    due_date = Column(DateTime)
+    points = Column(Integer)
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
                             cascade='delete')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
