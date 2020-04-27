@@ -67,6 +67,8 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] compile
   - [x] local execution
   - [x] update status
+  - [x] update user quota
+  - [x] update points to request and user 
   - [ ] verify results with inputs
 
 ## Other features

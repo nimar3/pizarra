@@ -172,7 +172,7 @@
       name: "Diego Velázquez"
       password: "foo"
       access_token: "123"
-      quota_used: 3540
+      quota_used: 0
       roles: [users]
       classgroup: class_a
       team: team_foo

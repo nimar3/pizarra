@@ -2,6 +2,7 @@
 #  Copyright (c) 2020 - Pizarra
 #
 import enum
+import math
 import os
 import re
 import subprocess
@@ -46,7 +47,7 @@ class PizarraTask:
         self.binary_file_location = ''
         self.return_code = 0
         self.run_time = 0.0
-        self.points_assigned = 0
+        self.points_earned = 0
 
     def process_request(self):
         """
@@ -62,6 +63,9 @@ class PizarraTask:
 
         # check if user won any badge, this can happen even if we were timewalled or an error was thrown
         self.assign_badges()
+        self.update_user_quota_and_points()
+        # update request one last time to set points_earned to request
+        self.update_request()
 
         return True
 
@@ -102,10 +106,12 @@ class PizarraTask:
         runs compiled binary
         """
         self.update_request(RequestStatus.RUNNING)
+
         # TODO run process with inputs and expected outputs
         self.run_process([self.binary_file_location])
-        # sum assignment points to user
-        self.assign_points(self.user_request.assignment.points)
+
+        # sum assignment points
+        self.points_earned += self.user_request.assignment.points
         # mark as finished :)
         self.update_request(RequestStatus.FINISHED)
 
@@ -114,7 +120,7 @@ class PizarraTask:
         marks a request as TIMEWALL
         """
         self.run_time = self.user_request.max_execution_time
-        self.assign_points(current_app.config['TIMEWALL_PENALTY'])
+        self.points_earned += current_app.config['TIMEWALL_PENALTY']
         self.update_request(RequestStatus.TIMEWALL)
 
     def assign_badges(self):
@@ -126,22 +132,18 @@ class PizarraTask:
             print('checking badge {}'.format(badge.name))
 
         # TODO if badge was assigned then update points of the request
-        self.update_request()
-        return None
+        self.points_earned += 0
 
-    def assign_points(self, points: int):
+    def update_user_quota_and_points(self):
         """
         adds the given points to the user account and to the Task
         """
-        if points != 0:
-            # points for the Task
-            self.points_assigned = max(self.points_assigned + points, 0)
-            # points for the user account
-            user = self.user_request.user
-            user.points = max(user.points + points, 0)
-            print('assigning {} points to user {}'.format(user.points, user.name))
-            db.session.add(user)
-            db.session.commit()
+        # points for the user account
+        user = self.user_request.user
+        user.quota_used += math.ceil(self.run_time)  # always round up, even if time was less than 1 second
+        user.points = max(user.points + self.points_earned, 0)  # points can't be negative
+        db.session.add(user)
+        db.session.commit()
 
     def run_process(self, args: list, update_run_time=True):
         """
@@ -172,7 +174,7 @@ class PizarraTask:
         self.user_request.status = self.user_request.status if status is None else status
         self.user_request.output = self.output
         self.user_request.run_time = self.run_time
-        self.user_request.points_assigned = self.points_assigned
+        self.user_request.points_earned = self.points_earned
 
         db.session.add(self.user_request)
         db.session.commit()
