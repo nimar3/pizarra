@@ -15,7 +15,7 @@
 
         <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
-                <b>{{ _('Group Members') }}</b> <a class="pull-right">
+                <b>{{ _('Group Members') }}</b> <a class="pull-right" href="#">
                 {{ current_user.classgroup.students | count }}</a>
             </li>
             <li class="list-group-item">
@@ -25,6 +25,10 @@
                 <b>{{ _('Requests') }}</b> <a class="pull-right"
                                               href="{{ url_for('home_blueprint.requests') }}">
                 {{ current_user.requests | count }}</a>
+            </li>
+            <li class="list-group-item">
+                <b>{{ _('Points') }}</b> <a class="pull-right" href="#">
+                {{ current_user.points }}</a>
             </li>
             <li class="list-group-item">
                 <b>{{ _('Quota') }}</b> <a class="pull-right">{{ current_user.quota_used }}
