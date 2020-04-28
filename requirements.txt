@@ -4,11 +4,17 @@ flask_migrate
 flask_wtf
 flask_sqlalchemy
 flask_security
+flask-babel
 gunicorn
+# import sample data
 pyyaml
 sqla-yaml-fixtures
+# task scheduler
 redis
 rq
 rq-dashboard
-flask-babel
+# static code analyzer
 lizard
+# added because recent issue with wtf library
+# https://github.com/alphagov/notifications-admin/commit/5ce2906c5aa6d16
+email-validator==1.0.5

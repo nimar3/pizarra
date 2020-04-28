@@ -1,7 +1,3 @@
-flask
-flask_login
-flask_migrate
-flask_wtf
-flask_sqlalchemy
-gunicorn
+psycopg2-binary
 psycopg2
+-r requirements.txt

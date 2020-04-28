@@ -213,9 +213,9 @@ class Request(db.Model):
     task_id = Column(String)
     points_assigned = Column(Integer)
     assignment = relationship('Assignment', back_populates='requests')
-    assignment_id = Column('assignment_id', Integer(), ForeignKey('assignment.id'))
+    assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
-    user_id = Column('user_id', String, ForeignKey('user.id'))
+    user_id = Column('user_id', Integer, ForeignKey('user.id'))
 
     @property
     def finished_execution(self):
@@ -226,6 +226,9 @@ class Request(db.Model):
     def max_execution_time(self):
         return current_app.config['TIMEWALL'] if self.assignment.timewall is None else min(
             current_app.config['TIMEWALL'], self.assignment.timewall)
+
+    def __repr__(self):
+        return 'Request: {} from {} for Assignment {}'.format(self.id, self.user, self.assignment)
 
 
 class Assignment(db.Model):
@@ -273,6 +276,9 @@ class Assignment(db.Model):
     def started(self):
         """returns True if an assignment started"""
         return self.start_date is None or self.start_date < datetime.utcnow()
+
+    def __repr__(self):
+        return '{} - {}'.format(self.title, self.description)
 
 
 @login_manager.user_loader

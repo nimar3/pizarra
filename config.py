@@ -75,7 +75,7 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'postgresql://{}:{}@{}:{}/{}'.format(
         environ.get('DATABASE_USER', 'pizarra'),
         environ.get('DATABASE_PASSWORD', 'pizarra'),
-        environ.get('DATABASE_HOST', 'db'),
+        environ.get('DATABASE_HOST', 'postgres'),
         environ.get('DATABASE_PORT', 5432),
         environ.get('DATABASE_NAME', 'pizarra')
     )
