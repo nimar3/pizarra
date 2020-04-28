@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.7"
 services:
   postgres:
     image: postgres:9.6-alpine
@@ -19,6 +19,12 @@ services:
     restart: unless-stopped
   pizarra-woker:
     image: pizarra
+    deploy:
+      resources:
+        limits:
+          cpus: '3'
+      mode: replicated
+      replicas: 2
     volumes:
       - ./app/uploads:/opt/pizarra/app/uploads
     depends_on:
