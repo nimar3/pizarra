@@ -97,7 +97,7 @@ class PizarraTask:
 
         # localhost compile -> gcc-9 -fopenmp omp_hello.c -o hello
         return_code, elapsed_time = self.run_process(
-            ['gcc', '-fopenmp', file_location, '-o', self.binary_file_location], False)
+            [current_app.config['COMPILER'], '-fopenmp', file_location, '-o', self.binary_file_location], False)
 
         return return_code == 0
 
