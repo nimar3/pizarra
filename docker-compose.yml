@@ -1,5 +1,6 @@
-version: "3.7"
+version: "3.1"
 services:
+
   postgres:
     image: postgres:9.6-alpine
     container_name: postgres
@@ -11,20 +12,30 @@ services:
       - POSTGRES_USER=pizarra
       - POSTGRES_PASSWORD=pizarra
     restart: unless-stopped
+
   redis:
     image: redis:alpine
     container_name: redis
     ports:
       - 6379:6379
     restart: unless-stopped
+
+  pizarra-web:
+    image: pizarra
+    volumes:
+      - ./app/uploads:/opt/pizarra/app/uploads
+    ports:
+      - 5000:5000
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    environment:
+      - RQ_DASHBOARD_REDIS_URL=redis://redis:6379/0
+      - CONFIG_MODE=Production
+
   pizarra-woker:
     image: pizarra
-    deploy:
-      resources:
-        limits:
-          cpus: '3'
-      mode: replicated
-      replicas: 2
     volumes:
       - ./app/uploads:/opt/pizarra/app/uploads
     depends_on:
@@ -34,6 +45,7 @@ services:
     environment:
       - RQ_DASHBOARD_REDIS_URL=redis://redis:6379/0
       - CONFIG_MODE=Production
+      - APP_MODE=Worker
 
 # run
 # docker-compose up -d --scale pizarra-woker=2

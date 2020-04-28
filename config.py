@@ -62,6 +62,10 @@ class Config(object):
 
     JSONIFY_PRETTYPRINT_REGULAR = True
 
+    # App Mode, TODO change to cli command
+    APP_MODE = environ.get('APP_MODE', 'Pizarra')
+    COMPILER = environ.get('COMPILER', 'gcc')
+
 
 class ProductionConfig(Config):
     DEBUG = False

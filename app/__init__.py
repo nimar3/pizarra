@@ -8,13 +8,17 @@ from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path
 
+import redis
 import rq_dashboard
-from flask import Flask, url_for
+from flask import Flask, url_for, session, request, current_app
+from flask_babel import Babel
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from rq import Connection, Worker
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+babel = Babel()
 
 
 def register_rq_dashboard(app):
@@ -26,9 +30,17 @@ def register_global_variables(app):
     app.jinja_env.globals['STATIC_PZ'] = 'assets/pizarra/img/'
 
 
-def register_extensions(app):
+def register_database(app):
     db.init_app(app)
+
+    @app.teardown_request
+    def shutdown_session(exception=None):
+        db.session.remove()
+
+
+def register_other_extensions(app):
     login_manager.init_app(app)
+    babel.init_app(app)
 
 
 def register_blueprints(app):
@@ -41,12 +53,6 @@ def initialize_database(app):
     with app.app_context():
         db.drop_all()
         db.create_all()
-
-
-def configure_database(app):
-    @app.teardown_request
-    def shutdown_session(exception=None):
-        db.session.remove()
 
 
 def configure_logs(app):
@@ -90,27 +96,44 @@ def apply_themes(app):
         return url_for(endpoint, **values)
 
 
-def create_app(config, selenium=False):
-    app = Flask(__name__, static_folder='base/static')
-    app.config.from_object(config)
-    if selenium:
-        app.config['LOGIN_DISABLED'] = True
-
+def app_web(app):
+    register_other_extensions(app)
     register_rq_dashboard(app)
     register_global_variables(app)
-    register_extensions(app)
     register_blueprints(app)
-    initialize_database(app)
-    configure_database(app)
-    configure_logs(app)
     apply_themes(app)
-    return app
 
 
-def create_worker_app(config):
+def app_worker(app):
+    with app.app_context():
+        redis_url = app.config["RQ_DASHBOARD_REDIS_URL"]
+        redis_connection = redis.from_url(redis_url)
+        with Connection(redis_connection):
+            worker = Worker(app.config["QUEUES"])
+            worker.work()
+            print('Worker Started')
+
+
+def create_app(config):
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
-    register_extensions(app)
-    configure_database(app)
+    register_database(app)
     configure_logs(app)
+
+    # execute worker or web app depending on the mode
+    app_worker(app) if app.config['APP_MODE'] == 'Worker' else app_web(app)
+
     return app
+
+
+@babel.localeselector
+def get_locale():
+    # if the user has set up the language manually it will be stored in the session,
+    # so we use the locale from the user settings
+    try:
+        language = session['language']
+    except KeyError:
+        language = None
+    if language is not None:
+        return language
+    return request.accept_languages.best_match(current_app.config['SUPPORTED_LANGUAGES'].keys())

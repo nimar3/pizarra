@@ -278,7 +278,7 @@ class Assignment(db.Model):
         return self.start_date is None or self.start_date < datetime.utcnow()
 
     def __repr__(self):
-        return '{} - {}'.format(self.title, self.description)
+        return '{} - {}'.format(self.name, self.title)
 
 
 @login_manager.user_loader

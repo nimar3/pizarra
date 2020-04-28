@@ -18,7 +18,6 @@ from app.base import blueprint
 from app.base.forms import LoginForm, CreateAccountForm
 from app.base.models import User
 from app.base.util import verify_pass
-from run import app
 
 
 @blueprint.route('/')
@@ -106,17 +105,17 @@ def unauthorized_handler():
     return render_template('errors/page_403.html'), 403
 
 
-@app.errorhandler(403)
+@blueprint.errorhandler(403)
 def access_forbidden():
     return render_template('errors/page_403.html'), 403
 
 
-@app.errorhandler(404)
+@blueprint.errorhandler(404)
 def not_found_error(error):
     return render_template('errors/page_404.html'), 404
 
 
-@app.errorhandler(500)
+@blueprint.errorhandler(500)
 def internal_error(error):
     return render_template('errors/page_500.html'), 500
 
