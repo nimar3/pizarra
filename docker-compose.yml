@@ -20,12 +20,21 @@ services:
       - 6379:6379
     restart: unless-stopped
 
+  nginx:
+    build: ./nginx
+    container_name: ngix_pizarra
+    ports:
+      - 80:80
+    depends_on:
+      - pizarra-web
+
   pizarra-web:
     image: pizarra
+    container_name: pizarra
     volumes:
       - ./app/uploads:/opt/pizarra/app/uploads
     ports:
-      - 5000:5000
+      - 5005:5005
     depends_on:
       - redis
       - postgres
@@ -36,6 +45,8 @@ services:
 
   pizarra-woker:
     image: pizarra
+    container_name: worker
+    entrypoint: "/usr/local/bin/python3.7 /opt/pizarra/run.py"
     volumes:
       - ./app/uploads:/opt/pizarra/app/uploads
     depends_on:
