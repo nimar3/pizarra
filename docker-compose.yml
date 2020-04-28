@@ -25,6 +25,7 @@ services:
     container_name: ngix_pizarra
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - pizarra-web
 
