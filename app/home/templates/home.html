@@ -47,7 +47,7 @@
             <div class="col-md-4">
                 <!-- User latest badge -->
                 {% if current_user.badges | count > 0 %}
-                    {{ badge(current_user.badges[0], _('Latest Badge')) }}
+                    {{ badge(current_user.badges[-1], _('Latest Badge')) }}
                 {% else %}
                     {{ no_badge() }}
                 {% endif %}
