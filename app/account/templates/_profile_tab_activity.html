@@ -76,10 +76,10 @@
     <!-- The timeline -->
     <ul class="timeline timeline-inverse">
 
-        {% for date, items in ( activity_stream.items() | sort(reverse=true)) %}
+        {% for date, items in ( activity_stream.items() | sort(reverse=True)) %}
             <!-- timeline time label -->
             <li class="time-label"><span class="bg-maroon">{{ date }}</span></li>
-            {% for item in items %}
+            {% for item in items | sort(attribute='time', reverse=True) %}
                 {% if item.type == 'registered' %}
                     {{ activity_registered(item.time) }}
                 {% endif %}
