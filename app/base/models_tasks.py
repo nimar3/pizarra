@@ -8,6 +8,7 @@ import re
 import subprocess
 import time
 
+import rule_engine
 from flask import current_app
 
 from app import db
@@ -48,6 +49,14 @@ class PizarraTask:
         self.return_code = 0
         self.run_time = 0.0
         self.points_earned = 0
+
+    @property
+    def rule_engine_attributes(self):
+        return {
+            'request': self.user_request.__dict__,
+            'user': self.user_request.user.__dict__,
+            'assignment': self.user_request.assignment.__dict__
+        }
 
     def process_request(self):
         """
@@ -128,11 +137,15 @@ class PizarraTask:
         checks for badges that can be assigned when a Request finishes successfully
         """
         for badge in self.user_request.assignment.badges:
-            # TODO do something
-            print('checking badge {}'.format(badge.name))
-
-        # TODO if badge was assigned then update points of the request
-        self.points_earned += 0
+            if badge.rule is not None and badge.points is not None and badge not in self.user_request.user.badges:
+                rule = rule_engine.Rule(badge.rule)
+                if rule.matches(self.rule_engine_attributes):
+                    self.points_earned += badge.points
+                    user = self.user_request.user
+                    user.badges.append(badge)
+                    db.session.add(user)
+                    db.session.commit()
+                    print('{} matched'.format(badge.name))
 
     def update_user_quota_and_points(self):
         """

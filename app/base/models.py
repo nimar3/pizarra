@@ -147,9 +147,9 @@ class Team(db.Model):
     A Team can have many students
     """
     __tablename__ = 'team'
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(), unique=True)
-    key = Column(String())
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True)
+    key = Column(String)
     members = relationship('User', back_populates='team')
 
     def __init__(self, **kwargs):
@@ -166,7 +166,7 @@ class ClassGroup(db.Model):
     A Student can be a part of more than one Class or Group
     """
     __tablename__ = 'classgroup'
-    id = Column(Integer(), primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True)
     description = Column(String(255))
     students = relationship('User', back_populates='classgroup', cascade='all, delete, delete-orphan')
@@ -183,14 +183,15 @@ class Badge(db.Model):
     A Student can earn Badges as he completes the Tasks assigned to them
     """
     __tablename__ = 'badge'
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(100), unique=True)
-    title = Column(String(255))
-    subtitle = Column(String(255))
-    description = Column(String(255))
-    background_color = Column(String(100))
-    image = Column(String(255))
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True)
+    title = Column(String)
+    subtitle = Column(String)
+    description = Column(String)
+    rule = Column(UnicodeText)
     points = Column(Integer)
+    image = Column(String)
+    background_color = Column(String)
     assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
 
     def __repr__(self):
@@ -206,10 +207,10 @@ class Request(db.Model):
     timestamp = Column(DateTime(), default=datetime.utcnow)
     status = Column(Enum(RequestStatus))
     run_time = Column(Float)
-    file_location = Column(String(255))
+    file_location = Column(String)
     code_analysis = Column(JSON)
     output = Column(UnicodeText)
-    ip_address = Column(String(255))
+    ip_address = Column(String)
     task_id = Column(String)
     points_assigned = Column(Integer)
     assignment = relationship('Assignment', back_populates='requests')

@@ -129,6 +129,8 @@
       title: "Beat the machine"
       subtitle: "Damn! you are fast"
       description: "Earn when your program runs below a certain threshold"
+      rule: "request.run_time < 10"
+      points: 50
       background_color: "bg-navy-active"
       image: "badge-beat-the-machine-256x256.png"
       assignments: [assignment_hello_world, assignment_openmp_basic]
@@ -177,7 +179,6 @@
       classgroup: class_a
       team: team_foo
       registered_at: 2020-01-01 09:00:00
-      badges: [badge_flash, badge_first_place]
     - __key__: user_bar
       username: "bar"
       email: "bar@test.test"

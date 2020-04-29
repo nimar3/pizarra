@@ -16,9 +16,12 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from rq import Connection, Worker
 
+from data import Sample
+
 db = SQLAlchemy()
 login_manager = LoginManager()
 babel = Babel()
+sample = Sample()
 
 
 def register_rq_dashboard(app):
@@ -30,17 +33,11 @@ def register_global_variables(app):
     app.jinja_env.globals['STATIC_PZ'] = 'assets/pizarra/img/'
 
 
-def register_database(app):
+def register_extensions(app):
     db.init_app(app)
-
-    @app.teardown_request
-    def shutdown_session(exception=None):
-        db.session.remove()
-
-
-def register_other_extensions(app):
-    login_manager.init_app(app)
     babel.init_app(app)
+    login_manager.init_app(app)
+    sample.init_app(app, db)
 
 
 def register_blueprints(app):
@@ -53,6 +50,16 @@ def initialize_database(app):
     with app.app_context():
         db.drop_all()
         db.create_all()
+
+
+def import_sample_data():
+    sample.import_sample_data()
+
+
+def configure_database(app):
+    @app.teardown_request
+    def shutdown_session(exception=None):
+        db.session.remove()
 
 
 def configure_logs(app):
@@ -96,40 +103,42 @@ def apply_themes(app):
         return url_for(endpoint, **values)
 
 
-def app_web(app):
-    register_other_extensions(app)
+def create_app_web(config):
+    app = Flask(__name__, static_folder='base/static')
+    app.config.from_object(config)
+
     register_rq_dashboard(app)
     register_global_variables(app)
+    register_extensions(app)
     register_blueprints(app)
+    initialize_database(app)
+    configure_database(app)
+    configure_logs(app)
     apply_themes(app)
+    import_sample_data()
+
+    return app
 
 
-def app_worker(app):
+def create_app_worker(config):
+    app = Flask(__name__, static_folder='base/static')
+    app.config.from_object(config)
+    register_extensions(app)
+    configure_database(app)
+    configure_logs(app)
     with app.app_context():
         redis_url = app.config["RQ_DASHBOARD_REDIS_URL"]
         redis_connection = redis.from_url(redis_url)
         with Connection(redis_connection):
             worker = Worker(app.config["QUEUES"])
             worker.work()
-            print('Worker Started')
-
-
-def create_app(config):
-    app = Flask(__name__, static_folder='base/static')
-    app.config.from_object(config)
-    register_database(app)
-    configure_logs(app)
-
-    # execute worker or web app depending on the mode
-    app_worker(app) if app.config['APP_MODE'] == 'Worker' else app_web(app)
-
-    return app
 
 
 @babel.localeselector
 def get_locale():
     # if the user has set up the language manually it will be stored in the session,
     # so we use the locale from the user settings
+    # TODO see why this works here but not in base/routes.py
     try:
         language = session['language']
     except KeyError:
