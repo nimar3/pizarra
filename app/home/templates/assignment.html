@@ -86,13 +86,15 @@
         </h2>
         <div class="row">
             {% for item in assignment.badges %}
-                <div class="col-md-4">
                 {% if item in current_user.badges  %}
+                    <div class="col-md-4">
                     {{ badge(item, _('You earned this Badge'), false) }}
-                {% else %}
+                    </div>
+                {% elif not item.secret %}
+                    <div class="col-md-4">
                     {{ badge(item, _('Complete the Badge mission to earn it'), true) }}
+                    </div>
                 {% endif %}
-                </div>
             {% endfor %}
         </div>
     </section>

@@ -38,7 +38,7 @@ class UserBadge(db.Model):
     id = Column(Integer, primary_key=True)
     user_id = Column('user_id', Integer(), ForeignKey('user.id'))
     badge_id = Column('badge_id', Integer(), ForeignKey('badge.id'))
-    timestamp = Column('timestamp', DateTime(), default=datetime.now)
+    timestamp = Column('timestamp', DateTime(), default=datetime.utcnow)
 
 
 class User(db.Model, UserMixin):
@@ -190,6 +190,7 @@ class Badge(db.Model):
     description = Column(String)
     rule = Column(UnicodeText)
     points = Column(Integer)
+    secret = Column(Boolean, default=False)
     image = Column(String)
     background_color = Column(String)
     assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
@@ -212,7 +213,7 @@ class Request(db.Model):
     output = Column(UnicodeText)
     ip_address = Column(String)
     task_id = Column(String)
-    points_assigned = Column(Integer)
+    points = Column(Integer, default=0)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
@@ -283,8 +284,8 @@ class Assignment(db.Model):
 
 
 @login_manager.user_loader
-def user_loader(id):
-    return User.query.filter_by(id=id).first()
+def user_loader(user_id):
+    return User.query.filter_by(id=user_id).first()
 
 
 @login_manager.request_loader

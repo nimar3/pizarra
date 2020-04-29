@@ -187,7 +187,7 @@ class PizarraTask:
         self.user_request.status = self.user_request.status if status is None else status
         self.user_request.output = self.output
         self.user_request.run_time = self.run_time
-        self.user_request.points_earned = self.points_earned
+        self.user_request.points = self.points_earned
 
         db.session.add(self.user_request)
         db.session.commit()

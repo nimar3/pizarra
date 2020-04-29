@@ -38,6 +38,7 @@
                                 <th>{{ _('Group') }}</th>
                                 <th>{{ _('Assignment') }}</th>
                                 <th>{{ _('Status') }}</th>
+                                <th>{{ _('Points Assigned') }}</th>
                                 <th>{{ _('Time') }}</th>
                             </tr>
                             </thead>
@@ -57,6 +58,7 @@
                                     <td><span
                                             class="label {{ user_request.status.label }}">{{ user_request.status.name }}</span>
                                     </td>
+                                    <td>{{ user_request.points }}</td>
                                     <td>{{ user_request.run_time }} s.</td>
                                 </tr>
                             {% endfor %}

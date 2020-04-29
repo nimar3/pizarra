@@ -49,11 +49,13 @@
                         {% if assignment.badges | count > 0 %}
                             <ul class="users-list clearfix badge-assignment-list">
                                 {% for badge in assignment.badges %}
-                                    <li>
-                                        <img src="{{ url_for('.static', filename='assets/pizarra/img/' + badge.image) }}"
-                                             alt="{{ _('Badge') }} - {{ badge.title }}"
-                                             data-toggle="tooltip" data-placement="bottom" title="{{ badge.title }}">
-                                    </li>
+                                    {% if not badge.secret %}
+                                        <li>
+                                            <img src="{{ url_for('.static', filename='assets/pizarra/img/' + badge.image) }}"
+                                                 alt="{{ _('Badge') }} - {{ badge.title }}"
+                                                 data-toggle="tooltip" data-placement="bottom" title="{{ badge.title }}">
+                                        </li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         {% else %}
@@ -78,7 +80,7 @@
                                     {% for request in assignment.requests[:3] %}
                                         <tr>
                                             <td>{{ request.timestamp }}</td>
-                                            <td>{{ request.user }}</td>
+                                            <td>{{ request.user.username }}</td>
                                             <td><span
                                                     class="label {{ request.status.label }}">{{ request.status.name }}</span>
                                             </td>

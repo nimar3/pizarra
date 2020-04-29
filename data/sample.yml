@@ -130,10 +130,21 @@
       subtitle: "Damn! you are fast"
       description: "Earn when your program runs below a certain threshold"
       rule: "request.run_time < 10"
-      points: 50
+      points: 75
       background_color: "bg-navy-active"
       image: "badge-beat-the-machine-256x256.png"
       assignments: [assignment_hello_world, assignment_openmp_basic]
+    - __key__: badge_bingo
+      name: "bingo"
+      title: "Bingo"
+      subtitle: "Lucky Winnter"
+      description: "Earn when you Request is number #2"
+      rule: "request.id == 2"
+      points: 50
+      secret: True
+      background_color: "bg-navy-active"
+      image: "badge-bingo-256x256.png"
+      assignments: [assignment_hello_world]
 
 - ClassGroup:
     - __key__: class_a
@@ -195,116 +206,6 @@
       classgroup: class_a
       team: team_foo
 
-
-- Request:
-    - __key__: request_1
-      status: TIMEWALL
-      timestamp: 2020-04-07 01:43:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_2
-      status: FINISHED
-      timestamp: 2020-04-07 01:41:22
-      run_time: 200
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_3
-      status: QUEUED
-      timestamp: 2020-04-08 01:41:22
-      run_time: 1
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_4
-      status: WAITING
-      timestamp: 2020-04-07 01:41:22
-      run_time: 10
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_5
-      status: QUEUED
-      timestamp: 2020-04-02 03:44:05
-      run_time: 1
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_6
-      status: ERROR
-      timestamp: 2020-04-07 08:45:54
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_7
-      status: TIMEWALL
-      timestamp: 2020-04-05 14:45:00
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_8
-      status: TIMEWALL
-      timestamp: 2020-04-06 19:20:12
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_9
-      status: ERROR
-      timestamp: 2020-04-05 14:45:00
-      run_time: 1
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_10
-      status: COMPILING
-      timestamp: 2020-04-06 19:20:12
-      run_time: 20
-      assignment: assignment_hello_world
-      user: user_foo
-    - __key__: request_11
-      status: TIMEWALL
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_bar
-    - __key__: request_12
-      status: ERROR
-      timestamp: 2020-04-07 01:41:06
-      run_time: 1
-      assignment: assignment_hello_world
-      user: user_bar
-    - __key__: request_13
-      status: TIMEWALL
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_bar
-    - __key__: request_14
-      status: TIMEWALL
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_bar
-    - __key__: request_15
-      status: TIMEWALL
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_bar
-    - __key__: request_16
-      status: TIMEWALL
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_openmpi_basic
-      user: user_bar
-    - __key__: request_17
-      status: ERROR
-      timestamp: 2020-04-07 01:41:06
-      run_time: 1
-      assignment: assignment_openmpi_basic
-      user: user_bar
-    - __key__: request_18
-      status: ERROR
-      timestamp: 2020-04-07 01:41:06
-      run_time: 300
-      assignment: assignment_hello_world
-      user: user_bar
 
 # BULK DATA
 - User:
@@ -456,50 +357,5 @@
     - email: fringill@upv.es
       name: Amber
       quota_used: 415
-      roles: [users]
-      classgroup: class_a
-    - email: tincidun@upv.es
-      name: Fiona
-      quota_used: 878
-      roles: [users]
-      classgroup: class_a
-    - email: habitan@upv.es
-      name: Kaitlin
-      quota_used: 2373
-      roles: [users]
-      classgroup: class_a
-    - email: Se@upv.es
-      name: Brandon
-      quota_used: 3764
-      roles: [users]
-      classgroup: class_a
-    - email: null@upv.es
-      name: Shay
-      quota_used: 4885
-      roles: [users]
-      classgroup: class_a
-    - email: molesti@upv.es
-      name: May
-      quota_used: 2282
-      roles: [users]
-      classgroup: class_a
-    - email: tempo@upv.es
-      name: Jermaine
-      quota_used: 4381
-      roles: [users]
-      classgroup: class_a
-    - email: eu@upv.es
-      name: Kimberly
-      quota_used: 2470
-      roles: [users]
-      classgroup: class_a
-    - email: faucibu@upv.es
-      name: Danielle
-      quota_used: 2239
-      roles: [users]
-      classgroup: class_a
-    - email: blandi@upv.es
-      name: Fletcher
-      quota_used: 5981
       roles: [users]
       classgroup: class_a
