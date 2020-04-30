@@ -43,11 +43,11 @@ services:
     environment:
       - RQ_DASHBOARD_REDIS_URL=redis://redis:6379/0
       - CONFIG_MODE=Production
+      - IMPORT_SAMPLE_DATA=True
 
   pizarra-woker:
     image: pizarra
     container_name: worker
-    entrypoint: "/usr/local/bin/python3.7 /opt/pizarra/run.py"
     volumes:
       - ./app/uploads:/opt/pizarra/app/uploads
     depends_on:

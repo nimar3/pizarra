@@ -47,9 +47,10 @@ def register_blueprints(app):
 
 
 def initialize_database(app):
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
+    if app.config['IMPORT_SAMPLE_DATA']:
+        with app.app_context():
+            db.drop_all()
+            db.create_all()
 
 
 def import_sample_data():
@@ -126,12 +127,12 @@ def create_app_worker(config):
     register_extensions(app)
     configure_database(app)
     configure_logs(app)
-    with app.app_context():
-        redis_url = app.config["RQ_DASHBOARD_REDIS_URL"]
-        redis_connection = redis.from_url(redis_url)
-        with Connection(redis_connection):
-            worker = Worker(app.config["QUEUES"])
-            worker.work()
+        with app.app_context():
+            redis_url = app.config["RQ_DASHBOARD_REDIS_URL"]
+            redis_connection = redis.from_url(redis_url)
+            with Connection(redis_connection):
+                worker = Worker(app.config["QUEUES"])
+                worker.work()
 
 
 @babel.localeselector
