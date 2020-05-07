@@ -206,7 +206,7 @@ class Request(db.Model):
     __tablename__ = 'request'
     id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime(), default=datetime.utcnow)
-    status = Column(Enum(RequestStatus))
+    status = Column(Enum(RequestStatus), default=RequestStatus.CREATED)
     run_time = Column(Float)
     file_location = Column(String)
     code_analysis = Column(JSON)
