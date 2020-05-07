@@ -16,7 +16,7 @@ from rq import Connection, Queue
 from werkzeug.utils import secure_filename, escape
 
 from app import db
-from app.base.models import Assignment, User, Request, RequestStatus
+from app.base.models import Assignment, User, Request
 from app.base.models_tasks import PizarraTask
 from app.base.util import random_string
 from app.home import blueprint
@@ -96,27 +96,39 @@ def send_assignment(name):
     username, access_token = request.authorization['username'], request.authorization['password']
     user = User.query.filter_by(username=username, access_token=access_token).first()
     if user is None:
-        return build_response(_('Authentication failed'), 400)
+        return build_response(_('Authentication failed'), 401)
+
+    # update user latest request time
+    last_request = user.last_request_sent_at
+    user.last_request_sent_at = datetime.utcnow()
+    db.session.add(user)
+    db.session.commit()
 
     # search the assignment
     assignment = Assignment.query.filter_by(name=name).first()
+
     if assignment is None:
-        return build_response(_('Unable to find Assignment'), 400)
+        return build_response(_('Unable to find Assignment'), 403)
 
     # check if user is able to queue a request
     if not user.is_admin:
+
         if not assignment.started:
-            return build_response(_('Assignment has not started yet'), 400)
+            return build_response(_('Assignment has not started yet'), 403)
+
         if assignment.expired:
-            return build_response(_('Assignment is closed and not accepting any more requests'), 400)
-        if user.last_request_sent_at is not None:
-            difference = datetime.utcnow() - user.last_request_sent_at
-            if difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']:
-                return build_response(_('You are sending Requests too fast, please wait {} seconds').format(
-                    current_app.config['TIME_BETWEEN_REQUESTS'] - difference.seconds), 400)
+            return build_response(_('Assignment is closed and not accepting any more requests'), 403)
+
+        if assignment not in user.classgroup.assignments:
+            return build_response(_('Assignment unavailable'), 403)
+
+        if over_request_limit(last_request):
+            return build_response(_('You are sending Requests too fast. Time between Requests is {} seconds').format(
+                current_app.config['TIME_BETWEEN_REQUESTS']), 403)
+
         if user.quota <= 0:
             return build_response(
-                _('You have used all your Quota for sending Requests. Please contact an administrator'), 400)
+                _('You have used all your Quota for sending Requests. Please contact an Administrator'), 403)
 
     # check if file was sent with request
     if 'file' not in request.files:
@@ -130,7 +142,7 @@ def send_assignment(name):
 
     # save file
     filename = '-'.join(
-        [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(10), secure_filename(file.filename)])
+        [datetime.today().strftime('%Y-%m-%d'), user.username, random_string(5), secure_filename(file.filename)])
     file_location_relative = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
     file_location = os.path.join('app', file_location_relative)
     file.save(file_location)
@@ -141,20 +153,10 @@ def send_assignment(name):
     user_request.user = user
     user_request.file_location = file_location_relative
     user_request.ip_address = request.remote_addr
-    user_request.status = RequestStatus.CREATED
-
-    # analyze code with lizard
-    code_analysis = lizard.analyze_file(file_location)
-    if len(code_analysis.function_list) > 0:
-        user_request.code_analysis = code_analysis.function_list[0].__dict__
+    user_request.code_analysis = analyze_code(file_location)
 
     # commit user request to DB
     db.session.add(user_request)
-    db.session.commit()
-
-    # update user latest request time
-    user.last_request_sent_at = user_request.timestamp
-    db.session.add(user)
     db.session.commit()
 
     # create and enqueue task
@@ -180,7 +182,7 @@ def route_template(template):
         return render_template('page-500.html'), 500
 
 
-def get_assignments_ordered():
+def get_assignments_ordered() -> list:
     """
     returns the list of all available Assignments for the user ordered first with the opened Assignments and
     after that the closed Assignments
@@ -191,7 +193,7 @@ def get_assignments_ordered():
     return open_assignments + closed_assignments
 
 
-def build_response(message, status_code):
+def build_response(message: str, status_code: int) -> str:
     """
     returns a response in JSON format with the message and status code provided
     """
@@ -206,7 +208,15 @@ def build_response(message, status_code):
     return response
 
 
-def allowed_file(filename):
+def analyze_code(file_location: str) -> dict:
+    """
+    execute lizard static code analyzer and returns result
+    """
+    code_analysis = lizard.analyze_file(file_location)
+    return code_analysis.function_list[0].__dict__ if len(code_analysis.function_list) > 0 else None
+
+
+def allowed_file(filename: str) -> bool:
     """
     returns if a file is allowed to be uploaded to the server
     """
@@ -214,9 +224,19 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in current_app.config['FILE_ALLOWED_EXTENSIONS']
 
 
-def create_task(user_request):
+def over_request_limit(last_request: datetime) -> bool:
     """
-    creates and enqueues a task from pizarra to be executed by a worker
+    returns if an user is over the request limit and has to wait to send another request
+    """
+    if last_request is not None:
+        difference = datetime.utcnow() - last_request
+        return difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']
+    return False
+
+
+def create_task(user_request: User) -> str:
+    """
+    creates and enqueues a task from pizarra to be executed by a worker and returns task id
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue()
@@ -224,7 +244,7 @@ def create_task(user_request):
         return task.get_id()
 
 
-def pizarra_task(user_request):
+def pizarra_task(user_request: Request) -> bool:
     """
     creates the task for the worker and executes it
     """
