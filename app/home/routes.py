@@ -18,6 +18,7 @@ from werkzeug.utils import secure_filename, escape
 from app import db
 from app.base.models import Assignment, User, Request
 from app.base.models_tasks import PizarraTask
+from app.base.ssh_client import RemoteClient
 from app.base.util import random_string
 from app.home import blueprint
 
@@ -168,6 +169,13 @@ def send_assignment(name):
     request_url = request.host_url[:-1] + url_for('.requests', id=user_request.id)
 
     return build_response(_('Request created, please navigate to {} to check the results'.format(request_url)), 201)
+
+
+@blueprint.route('/test')
+def test():
+    """Initialize remote host client and execute actions."""
+    remote = RemoteClient()
+    remote.execute_commands(['ls'])
 
 
 @blueprint.route('/<template>')

@@ -58,8 +58,15 @@ class Config(object):
 
     # rq
     RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
-    QUEUES = ["default"]
+    QUEUES = ["default", "kahan"]
 
+    # host to connect and execute commands
+    REMOTE_HOST = environ.get('REMOTE_HOST', 'kahan.dsic.upv.es')
+    REMOTE_USER = environ.get('REMOTE_USER', 'nimar3')
+    REMOTE_PATH = environ.get('REMOTE_PATH', '/')
+    SSH_FILE_PATH = environ.get('SSH_FILE_PATH', 'data/keys')
+
+    # output of JSON responses
     JSONIFY_PRETTYPRINT_REGULAR = True
 
     # App Mode, TODO change to cli command
