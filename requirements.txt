@@ -17,6 +17,9 @@ rq-dashboard
 lizard
 # rule engine
 rule_engine
+#ssh
+paramiko
+scp
 # added because recent issue with wtf library
 # https://github.com/alphagov/notifications-admin/commit/5ce2906c5aa6d16
 email-validator==1.0.5
