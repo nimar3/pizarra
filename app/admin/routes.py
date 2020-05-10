@@ -210,6 +210,10 @@ def populate_assignment(assignment, data):
     assignment.description = data['description']
     assignment.start_date = process_date(data['start_date'])
     assignment.due_date = process_date(data['due_date'])
-    assignment.header = data['header']
+    assignment.makefile = data['makefile']
+    assignment.execution_script = data['execution_script']
+    assignment.expected_result = data['expected_result']
+    assignment.show_output = data['show_output']
+    assignment.points = data['points']
     assignment.classgroups = data['classgroups']
     assignment.badges = data['badges']

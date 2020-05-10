@@ -1,45 +1,37 @@
-- Role:
-    - __key__: users
-      name: "users"
-      description: "Users of the system"
-    - __key__: admins
-      name: "admins"
-      description: "Administrators of the system"
-
 - Assignment:
     - __key__: assignment_hello_world
       name: hello_world
       title: "Hello World"
       due_date: 2020-05-01 23:59:59
       description: |+
-       <h2>Hilos OpenMP</h2>
-       <p>Para escoger el número de hilos OpenMP, hay que especificar el parámetro -t del cliente. Por defecto el número de hilos es 1. En tablón, la función omp_set_num_threads ya no tiene prioridad. Aunque se puede seguir utilizando para reducir el número de hilos que se usa en la región paralela.</p>
-       <p>Por ejemplo, el siguiente código selecciona manualmente 3 hilos pero sólo se hará efectivo cuando desde el cliente se envíe el programa con -t >= 3.</p>
-       <pre>
-       <code>#include <omp.h>
-       #include <stdio.h>
-       #include <stdlib.h>
+        <h2>Hilos OpenMP</h2>
+        <p>Para escoger el número de hilos OpenMP, hay que especificar el parámetro -t del cliente. Por defecto el número de hilos es 1. En tablón, la función omp_set_num_threads ya no tiene prioridad. Aunque se puede seguir utilizando para reducir el número de hilos que se usa en la región paralela.</p>
+        <p>Por ejemplo, el siguiente código selecciona manualmente 3 hilos pero sólo se hará efectivo cuando desde el cliente se envíe el programa con -t >= 3.</p>
+        <pre>
+        <code>#include <omp.h>
+        #include <stdio.h>
+        #include <stdlib.h>
 
-       int main (int argc, char *argv[]) {
+        int main (int argc, char *argv[]) {
 
-       int maxt = omp_get_max_threads();
-       printf("Max threads is: %d\n", maxt);
+        int maxt = omp_get_max_threads();
+        printf("Max threads is: %d\n", maxt);
 
-       omp_set_num_threads(3);
+        omp_set_num_threads(3);
 
-       int tid, tnum;
+        int tid, tnum;
 
-       #pragma omp parallel private(tnum, tid)
-         {
-             tid = omp_get_thread_num();
-             tnum = omp_get_num_threads();
-             printf("Hello World from thread = %d/%d\n", tid, tnum);
-         }
+        #pragma omp parallel private(tnum, tid)
+          {
+              tid = omp_get_thread_num();
+              tnum = omp_get_num_threads();
+              printf("Hello World from thread = %d/%d\n", tid, tnum);
+          }
 
-         return 0;
-       }
-       </code>
-       </pre>
+          return 0;
+        }
+        </code>
+        </pre>
     - __key__: assignment_openmp_basic
       name: openmp_basic
       due_date: 2020-04-22 23:59:00
@@ -100,6 +92,57 @@
         </ul>
       start_date: 2020-05-01 00:00:00
       due_date: 2020-06-01 23:59:59
+    - __key__: assignment_busqueda_cadena
+      name: busqueda_cadena
+      title: "Búsqueda de cadenas"
+      description: |+
+        <h1>Introducci&oacute;n</h1>
+        <p>En esta pr&aacute;ctica vamos a resolver un problema t&iacute;pico de la computaci&oacute;n: la b&uacute;queda de una subcadena dentro de otra. El problema consiste en encontrar en una cadena B de tama&ntilde;o sizeB, una subcadena S de taman&tilde;o sizeS. Si se encuentra esta subcadena, se devuelve la posici&oacute;n de comienzo (startB) de dicha subcadena en B. En caso contrario se devuelve -1.</p>
+      makefile: |+
+        APP = busquedaCadenas
+
+        # Optimization & debug flags:
+        # DEBUG: mensajes de depuracion.
+        # PRINTSTRINGS: imprime las cadenas por pantalla.
+        CFLAGS  =  -O3 -Wall -DDEBUG
+
+        CC = gcc
+
+        all: $(APP)
+
+        $(APP): $(APP).o Makefile
+        	$(CC) -o $(APP) $(APP).o $(CFLAGS)
+
+        $(APP).o: $(APP).c Makefile cputils.h
+        	$(CC) -c $(APP).c $(CFLAGS)
+
+        clean:
+        	- rm -f *.o core $(APP) *~
+      execution_script: |+
+        #!/bin/sh
+        #PBS -l nodes=1,walltime=00:10:00
+        #PBS -q cpa
+        #PBS -d .
+
+        ./busquedaCadenas CadB_1C CadS_5c_1
+      expected_result: |+
+        Result: 1
+
+- Attachment:
+    - __key__: attachment_1
+      file_location: app/uploads/assignments/CadB_1C
+      assignment: assignment_busqueda_cadena
+    - __key__: attachment_2
+      file_location: app/uploads/assignments/CadS_5c_1
+      assignment: assignment_busqueda_cadena
+
+- Role:
+    - __key__: users
+      name: "users"
+      description: "Users of the system"
+    - __key__: admins
+      name: "admins"
+      description: "Administrators of the system"
 
 - Team:
     - __key__: team_foo
@@ -150,7 +193,7 @@
     - __key__: class_a
       name: "G2019-A1"
       description: "Class from 2019 A1 group"
-      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic]
+      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic, assignment_busqueda_cadena]
     - __key__: class_b
       name: "G2019-B1"
       description: "Class from 2019 B1 group"

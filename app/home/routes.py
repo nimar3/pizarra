@@ -176,6 +176,7 @@ def test():
     """Initialize remote host client and execute actions."""
     remote = RemoteClient()
     remote.execute_commands(['ls'])
+    return 'OK'
 
 
 @blueprint.route('/<template>')

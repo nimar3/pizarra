@@ -9,12 +9,12 @@ from os import environ
 
 
 class Config(object):
-    basedir = os.path.abspath(os.path.dirname(__file__))
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     SECRET_KEY = environ.get('SECRET_KEY', 'pUdos1KbNyLYUvb4P7MvHWmuWSGH0AuYbryi045al9upVyFbyUBys5Xq5s3y')
 
     # This will create a file in <app> FOLDER
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
 
     # For 'in memory' database, please use:
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
@@ -29,7 +29,7 @@ class Config(object):
     DEFAULT_THEME = None
 
     # Sample Data
-    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', False)
+    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', True)
 
     # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}
@@ -58,13 +58,13 @@ class Config(object):
 
     # rq
     RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
-    QUEUES = ["default", "kahan"]
+    QUEUES = ['default', 'kahan']
 
     # host to connect and execute commands
     REMOTE_HOST = environ.get('REMOTE_HOST', 'kahan.dsic.upv.es')
     REMOTE_USER = environ.get('REMOTE_USER', 'nimar3')
     REMOTE_PATH = environ.get('REMOTE_PATH', '/')
-    SSH_FILE_PATH = environ.get('SSH_FILE_PATH', 'data/keys')
+    SSH_FILE_PATH = environ.get('SSH_FILE_PATH', os.path.join(BASE_DIR, 'data/keys/id_rsa'))
 
     # output of JSON responses
     JSONIFY_PRETTYPRINT_REGULAR = True

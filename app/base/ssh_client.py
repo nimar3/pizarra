@@ -7,7 +7,6 @@
 
 """Client to handle connections and actions executed against a remote host."""
 import logging
-from os import system
 
 from flask import current_app
 from paramiko import SSHClient, AutoAddPolicy, RSAKey
@@ -26,7 +25,6 @@ class RemoteClient:
         self.client = None
         self.scp = None
         self.conn = None
-        self.__upload_ssh_key()
 
     def __get_ssh_key(self):
         """
@@ -39,14 +37,6 @@ class RemoteClient:
             logging.error(error)
         return self.ssh_key
 
-    def __upload_ssh_key(self):
-        try:
-            system(f'ssh-copy-id -i {self.ssh_key_filepath} {self.user}@{self.host}>/dev/null 2>&1')
-            system(f'ssh-copy-id -i {self.ssh_key_filepath}.pub {self.user}@{self.host}>/dev/null 2>&1')
-            logging.info(f'{self.ssh_key_filepath} uploaded to {self.host}')
-        except FileNotFoundError as error:
-            logging.error(error)
-
     def __connect(self):
         """
         Open connection to remote host.
@@ -57,8 +47,8 @@ class RemoteClient:
             self.client.set_missing_host_key_policy(AutoAddPolicy())
             self.client.connect(self.host,
                                 username=self.user,
-                                key_filename=self.ssh_key_filepath,
-                                look_for_keys=True,
+                                pkey=self.__get_ssh_key(),
+                                look_for_keys=False,
                                 timeout=5000)
             self.scp = SCPClient(self.client.get_transport())
         except AuthenticationException as error:
@@ -75,17 +65,6 @@ class RemoteClient:
         self.client.close()
         self.scp.close()
 
-    def bulk_upload(self, files):
-        """
-        Upload multiple files to a remote directory.
-
-        :param files: List of strings representing file paths to local files.
-        """
-        if self.client is None:
-            self.client = self.__connect()
-        uploads = [self.__upload_single_file(file) for file in files]
-        logging.info(f'Finished uploading {len(uploads)} files to {self.remote_path} on {self.host}')
-
     def __upload_single_file(self, file):
         """Upload a single file to a remote directory."""
         try:
@@ -101,7 +80,7 @@ class RemoteClient:
     def download_file(self, file):
         """Download file from remote host."""
         if self.conn is None:
-            self.conn = self.connect()
+            self.conn = self.__connect()
         self.scp.get(file)
 
     def execute_commands(self, commands):
@@ -117,4 +96,4 @@ class RemoteClient:
             stdout.channel.recv_exit_status()
             response = stdout.readlines()
             for line in response:
-                logging.info(f'INPUT: {cmd} | OUTPUT: {line}')
+                logging.info(line[:-2])

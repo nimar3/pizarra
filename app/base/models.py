@@ -242,14 +242,17 @@ class Assignment(db.Model):
     name = Column(String, unique=True)
     title = Column(String(100))
     description = Column(UnicodeText)
-    header = Column(UnicodeText)
+    makefile = Column(UnicodeText)
+    execution_script = Column(UnicodeText)
     start_date = Column(DateTime)
     due_date = Column(DateTime)
     points = Column(Integer, default=100)
     show_output = Column(Boolean, default=True)
+    expected_result = Column(UnicodeText)
     timewall = Column(Float)
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
                             cascade='delete')
+    attachments = relationship('Attachment', back_populates='assignment', cascade='delete')
     classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
     badges = relationship("Badge", secondary=assignments_badges, back_populates="assignments")
 
@@ -281,6 +284,30 @@ class Assignment(db.Model):
 
     def __repr__(self):
         return '{} - {}'.format(self.name, self.title)
+
+
+class Leaderboard(db.Model):
+    """
+    Represents a Leaderboard for an Assignment
+    """
+    __tablename__ = 'leaderboard'
+    id = Column(Integer, primary_key=True)
+    run_time = Column(Integer)
+    user_id = Column('user_id', Integer, ForeignKey('user.id'))
+    request_id = Column('request_id', Integer, ForeignKey('request.id'))
+    classgroup_id = Column('classgroup_id'), Integer, ForeignKey('classgroup.id')
+    assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
+
+
+class Attachment(db.Model):
+    """
+    Represent Attachments added to Assignments
+    """
+    __tablename__ = 'attachment'
+    id = Column(Integer, primary_key=True)
+    file_location = Column(String)
+    assignment = relationship('Assignment', back_populates='attachments')
+    assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
 
 
 @login_manager.user_loader
