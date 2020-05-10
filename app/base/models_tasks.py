@@ -2,14 +2,18 @@
 #  Copyright (c) 2020 - Pizarra
 #
 import enum
+import logging
 import math
 import os
 import re
 import subprocess
 import time
+from datetime import timedelta
 
+import redis
 import rule_engine
 from flask import current_app
+from rq import Connection, Queue
 
 from app import db
 from app.base.util import remove_comments
@@ -19,14 +23,13 @@ class RequestStatus(enum.Enum):
     CREATED = 0
     VERIFYING = 1
     COMPILING = 2
-    QUEUED = 3
-    DEPLOYING = 4
-    WAITING = 5
-    RUNNING = 6
-    FINISHED = 7
-    CANCELED = 8
-    ERROR = 9
-    TIMEWALL = 10
+    DEPLOYING = 3
+    QUEUED = 4
+    RUNNING = 5
+    CANCELED = 6
+    ERROR = 7
+    TIMEWALL = 8
+    FINISHED = 9
 
     @property
     def label(self):
@@ -34,13 +37,13 @@ class RequestStatus(enum.Enum):
         Dictionary to map enum to Bootstrap labels
         """
         label_dict = {RequestStatus.COMPILING: 'label-info', RequestStatus.DEPLOYING: 'label-info',
-                      RequestStatus.WAITING: 'label-info', RequestStatus.RUNNING: 'label-primary',
-                      RequestStatus.FINISHED: 'label-success', RequestStatus.CANCELED: 'label-warning',
-                      RequestStatus.ERROR: 'label-danger', RequestStatus.TIMEWALL: 'label-warning'}
+                      RequestStatus.RUNNING: 'label-primary', RequestStatus.FINISHED: 'label-success',
+                      RequestStatus.CANCELED: 'label-warning', RequestStatus.ERROR: 'label-danger',
+                      RequestStatus.TIMEWALL: 'label-warning'}
         return label_dict[self] if self in label_dict else 'label-default'
 
 
-class PizarraTask:
+class LocalTask:
 
     def __init__(self, user_request):
         self.user_request = user_request
@@ -49,6 +52,25 @@ class PizarraTask:
         self.return_code = 0
         self.run_time = 0.0
         self.points_earned = 0
+        # defines the function to be executed in next step
+        self.task_process = {
+            RequestStatus.CREATED: self.not_contains_malicious_content,
+            RequestStatus.VERIFYING: self.compile,
+            RequestStatus.COMPILING: self.run
+        }
+
+    def __str__(self):
+        return '{} -> {}'.format(self.user_request.id, self.user_request.status)
+
+    def get_task_step(self):
+        return self.task_process.get(self.user_request.status)
+
+    @property
+    def is_task_completed(self):
+        completed_task_status = [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL,
+                                 RequestStatus.FINISHED]
+
+        return self.user_request.status in completed_task_status
 
     @property
     def rule_engine_attributes(self):
@@ -58,27 +80,26 @@ class PizarraTask:
             'assignment': self.user_request.assignment.__dict__
         }
 
-    def process_request(self):
+    def process(self):
         """
         process the task request
         """
-        if not self.contains_malicious_content() and self.compile():
-            try:
-                self.execute()
-            except subprocess.TimeoutExpired:
-                self.timewalled()
-        else:
-            self.update_request(RequestStatus.ERROR)
+        step_result = True
+        while step_result and not self.is_task_completed:
+            logging.info('Task: {} -> Status {}'.format(self.user_request.id, self.user_request.status))
+            f = self.get_task_step()
+            step_result = f()
 
-        # check if user won any badge, this can happen even if we were timewalled or an error was thrown
-        self.assign_badges()
-        self.update_user_quota_and_points()
-        # update request one last time to set points_earned to request
-        self.update_request()
+        if self.is_task_completed:
+            # check if user won any badge, this can happen even if we were timewalled or an error was thrown
+            self.assign_badges()
+            self.update_user_quota_and_points()
+            # update request one last time to set points_earned to request
+            self.update_request()
 
         return True
 
-    def contains_malicious_content(self):
+    def not_contains_malicious_content(self):
         """
         verifies code for malicious content (taken from Tablón)
         """
@@ -91,10 +112,11 @@ class PizarraTask:
             for i, line in enumerate(file_content.split('\n')):
                 # check if line contains any forbidden code
                 if any(re.search(fc, line) for fc in current_app.config['FORBIDDEN_CODE']):
+                    self.update_request(RequestStatus.ERROR)
                     self.output = 'Found forbidden code at line {}\n\n{}'.format(i + 1, line)
-                    return True
+                    return False
 
-        return False
+        return True
 
     def compile(self):
         """
@@ -108,7 +130,19 @@ class PizarraTask:
         return_code, elapsed_time = self.run_process(
             [current_app.config['COMPILER'], '-fopenmp', file_location, '-o', self.binary_file_location], False)
 
-        return return_code == 0
+        if return_code != 0:
+            self.update_request(RequestStatus.ERROR)
+            return False
+
+        return True
+
+    def run(self):
+        try:
+            return self.execute()
+        except subprocess.TimeoutExpired:
+            self.timewalled()
+
+        return False
 
     def execute(self):
         """
@@ -123,6 +157,8 @@ class PizarraTask:
         self.points_earned += self.user_request.assignment.points
         # mark as finished :)
         self.update_request(RequestStatus.FINISHED)
+
+        return True
 
     def timewalled(self):
         """
@@ -191,3 +227,54 @@ class PizarraTask:
 
         db.session.add(self.user_request)
         db.session.commit()
+
+
+class KahanTask(LocalTask):
+
+    def __init__(self, user_request):
+        super().__init__(user_request)
+        self.task_process = {
+            RequestStatus.CREATED: self.not_contains_malicious_content,
+            RequestStatus.VERIFYING: self.compile,
+            RequestStatus.COMPILING: self.deploy,
+            RequestStatus.QUEUED: self.check_queue
+        }
+
+    def deploy(self):
+        self.update_request(RequestStatus.DEPLOYING)
+
+        # TODO if OK
+        self.update_request(RequestStatus.QUEUED)
+        return True
+
+    def check_queue(self):
+        # TODO check queue if has to check it on the future we requeue the task
+        requeue_task(self)
+        return False
+
+
+def process_task(task) -> bool:
+    """
+    process a task and returns the result
+    """
+    return task.process()
+
+
+def create_task(user_request) -> str:
+    """
+    creates and enqueues a task from pizarra to be executed by a worker and returns task id
+    """
+    with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
+        q = Queue(name=user_request.assignment.queue)
+        task = q.enqueue(process_task, KahanTask(user_request))
+        return task.get_id()
+
+
+def requeue_task(task) -> str:
+    """
+    enqueues a task to be executed in the future
+    """
+    with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
+        q = Queue(name=task.user_request.assignment.queue)
+        task = q.enqueue_in(timedelta(seconds=10), process_task, task)
+        return task.get_id()

@@ -7,17 +7,15 @@ import os
 from datetime import datetime
 
 import lizard
-import redis
 from flask import render_template, redirect, url_for, request, json, current_app, abort
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
-from rq import Connection, Queue
 from werkzeug.utils import secure_filename, escape
 
 from app import db
 from app.base.models import Assignment, User, Request
-from app.base.models_tasks import PizarraTask
+from app.base.models_tasks import create_task
 from app.base.ssh_client import RemoteClient
 from app.base.util import random_string
 from app.home import blueprint
@@ -241,21 +239,3 @@ def over_request_limit(last_request: datetime) -> bool:
         difference = datetime.utcnow() - last_request
         return difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']
     return False
-
-
-def create_task(user_request: User) -> str:
-    """
-    creates and enqueues a task from pizarra to be executed by a worker and returns task id
-    """
-    with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
-        q = Queue()
-        task = q.enqueue(pizarra_task, user_request)
-        return task.get_id()
-
-
-def pizarra_task(user_request: Request) -> bool:
-    """
-    creates the task for the worker and executes it
-    """
-    task = PizarraTask(user_request)
-    return task.process_request()

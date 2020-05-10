@@ -5,7 +5,6 @@
 #  """
 # taken from https://github.com/hackersandslackers/paramiko-tutorial
 
-"""Client to handle connections and actions executed against a remote host."""
 import logging
 
 from flask import current_app

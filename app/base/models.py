@@ -249,6 +249,7 @@ class Assignment(db.Model):
     points = Column(Integer, default=100)
     show_output = Column(Boolean, default=True)
     expected_result = Column(UnicodeText)
+    queue = Column(String, default='default')
     timewall = Column(Float)
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
                             cascade='delete')
