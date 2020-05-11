@@ -16,6 +16,7 @@ from flask import current_app
 from rq import Connection, Queue
 
 from app import db
+from app.base.ssh_client import RemoteClient
 from app.base.util import remove_comments
 
 
@@ -242,6 +243,10 @@ class KahanTask(LocalTask):
 
     def deploy(self):
         self.update_request(RequestStatus.DEPLOYING)
+        remote = RemoteClient()
+        files = list(map(lambda attachment: os.path.join(current_app.config['BASE_DIR'], attachment.file_location),
+                         self.user_request.assignment.attachments))
+        remote.bulk_upload(files)
 
         # TODO if OK
         self.update_request(RequestStatus.QUEUED)

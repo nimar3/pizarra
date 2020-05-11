@@ -63,7 +63,7 @@ class Config(object):
     # host to connect and execute commands
     REMOTE_HOST = environ.get('REMOTE_HOST', 'kahan.dsic.upv.es')
     REMOTE_USER = environ.get('REMOTE_USER', 'nimar3')
-    REMOTE_PATH = environ.get('REMOTE_PATH', '/')
+    REMOTE_PATH = environ.get('REMOTE_PATH', '/labos/alumnos/nimar3/pizarra')
     SSH_FILE_PATH = environ.get('SSH_FILE_PATH', os.path.join(BASE_DIR, 'data/keys/id_rsa'))
 
     # output of JSON responses

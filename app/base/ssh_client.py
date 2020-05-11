@@ -64,6 +64,17 @@ class RemoteClient:
         self.client.close()
         self.scp.close()
 
+    def bulk_upload(self, files):
+        """
+        Upload multiple files to a remote directory.
+
+        :param files: List of strings representing file paths to local files.
+        """
+        if self.client is None:
+            self.client = self.__connect()
+        uploads = [self.__upload_single_file(file) for file in files]
+        logging.info(f'Finished uploading {len(uploads)} files to {self.remote_path} on {self.host}')
+
     def __upload_single_file(self, file):
         """Upload a single file to a remote directory."""
         try:
