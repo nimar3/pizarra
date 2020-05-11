@@ -171,8 +171,8 @@ def send_assignment(name):
 @blueprint.route('/test')
 def test():
     """Initialize remote host client and execute actions."""
-    remote = RemoteClient()
-    remote.execute_commands(['ls'])
+    remote = RemoteClient.Instance()
+    remote.execute_commands(['cd pizarra', './script.sh'])
     return 'OK'
 
 

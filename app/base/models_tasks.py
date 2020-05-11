@@ -219,7 +219,7 @@ class LocalTask:
         db.session.add(user)
         db.session.commit()
 
-    def run_process(self, args: list, update_run_time=True):
+    def run_process(self, args: list, update_run_time=False):
         """
         runs a subprocess and updates the return code and output, returns code and execution time
         if update_run_time then it will add execution time to pool of used time
@@ -347,12 +347,34 @@ class KahanTask(LocalTask):
 
         return True
 
+    def compile(self) -> StepResult:
+        # create temp directory
+        temp_dir = os.path.join(current_app.config['BASE_DIR'], 'app/uploads/tmp', str(self.user_request.id))
+        self.run_process(['mkdir', '-p', temp_dir])
+        self.run_process(['cp', os.path.join(current_app.config['BASE_DIR'], 'data/cputils.h'), temp_dir])
+        self.run_process(['cp', os.path.join(current_app.config['BASE_DIR'], 'app', self.user_request.file_location),
+                          os.path.join(temp_dir, 'busquedaCadenas.c')])
+        with open(os.path.join(temp_dir, 'Makefile'), 'w') as f:
+            f.write(self.user_request.assignment.makefile)
+        subprocess.run('make', cwd=temp_dir)
+
+        # generate script file
+        with open(os.path.join(temp_dir, 'script.sh'), 'w') as f:
+            f.write(self.user_request.assignment.execution_script)
+
+        return StepResult.OK
+
     def deploy(self):
         remote = RemoteClient.Instance()
 
         files = list(map(lambda attachment: os.path.join(current_app.config['BASE_DIR'], attachment.file_location),
                          self.user_request.assignment.attachments))
+        temp_dir = os.path.join(current_app.config['BASE_DIR'], 'app/uploads/tmp', str(self.user_request.id))
+        files.append(os.path.join(temp_dir, 'busquedaCadenas'))
+        files.append(os.path.join(temp_dir, 'script.sh'))
         remote.bulk_upload(files)
+
+        remote.execute_commands(['cd pizarra', '/script.sh'])
 
         # TODO if OK
         return StepResult.OK
@@ -385,7 +407,7 @@ def requeue_task(task):
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue(name=task.user_request.assignment.queue)
-        rq_task = q.enqueue_in(timedelta(seconds=25), process_task, task)
+        rq_task = q.enqueue_in(timedelta(seconds=120), process_task, task)
         task.user_request.task_id = rq_task.get_id()
         db.session.add(task.user_request)
         db.session.commit()

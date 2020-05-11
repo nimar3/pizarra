@@ -130,10 +130,16 @@
 
 - Attachment:
     - __key__: attachment_1
-      file_location: app/uploads/assignments/CadB_1C
+      file_location: app/uploads/assignments/4/CadB_1C
       assignment: assignment_busqueda_cadena
     - __key__: attachment_2
-      file_location: app/uploads/assignments/CadS_5c_1
+      file_location: app/uploads/assignments/4/CadS_5c_1
+      assignment: assignment_busqueda_cadena
+    - __key__: attachment_3
+      file_location: app/uploads/assignments/4/Makefile
+      assignment: assignment_busqueda_cadena
+    - __key__: attachment_4
+      file_location: app/uploads/assignments/4/script.sh
       assignment: assignment_busqueda_cadena
 
 - Role:
