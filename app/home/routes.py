@@ -152,7 +152,6 @@ def send_assignment(name):
     user_request.user = user
     user_request.file_location = file_location_relative
     user_request.ip_address = request.remote_addr
-    user_request.code_analysis = analyze_code(file_location)
 
     # commit user request to DB
     db.session.add(user_request)
@@ -213,14 +212,6 @@ def build_response(message: str, status_code: int) -> str:
         mimetype='application/json'
     )
     return response
-
-
-def analyze_code(file_location: str) -> dict:
-    """
-    execute lizard static code analyzer and returns result
-    """
-    code_analysis = lizard.analyze_file(file_location)
-    return code_analysis.function_list[0].__dict__ if len(code_analysis.function_list) > 0 else None
 
 
 def allowed_file(filename: str) -> bool:

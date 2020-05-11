@@ -10,6 +10,7 @@ import subprocess
 import time
 from datetime import timedelta
 
+import lizard
 import redis
 import rule_engine
 from flask import current_app
@@ -18,6 +19,14 @@ from rq import Connection, Queue
 from app import db
 from app.base.ssh_client import RemoteClient
 from app.base.util import remove_comments
+
+
+class StepResult(enum.Enum):
+    START = 0
+    OK = 1
+    NOK = 2
+    WAIT = 3
+    END = 4
 
 
 class RequestStatus(enum.Enum):
@@ -31,6 +40,7 @@ class RequestStatus(enum.Enum):
     ERROR = 7
     TIMEWALL = 8
     FINISHED = 9
+    UNHANDLED_ERROR = 99
 
     @property
     def label(self):
@@ -55,21 +65,21 @@ class LocalTask:
         self.points_earned = 0
         # defines the function to be executed in next step
         self.task_process = {
-            RequestStatus.CREATED: self.not_contains_malicious_content,
+            RequestStatus.CREATED: self.__not_contains_malicious_content,
             RequestStatus.VERIFYING: self.compile,
             RequestStatus.COMPILING: self.run
         }
 
     def __str__(self):
-        return '{} -> {}'.format(self.user_request.id, self.user_request.status)
+        return 'Task {} -> {}'.format(self.user_request.id, self.user_request.status)
 
     def get_task_step(self):
-        return self.task_process.get(self.user_request.status)
+        return self.task_process[self.user_request.status]
 
     @property
     def is_task_completed(self):
         completed_task_status = [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL,
-                                 RequestStatus.FINISHED]
+                                 RequestStatus.FINISHED, RequestStatus.UNHANDLED_ERROR]
 
         return self.user_request.status in completed_task_status
 
@@ -100,13 +110,20 @@ class LocalTask:
 
         return True
 
-    def not_contains_malicious_content(self):
+    def start(self):
+        """
+        dummy business process step
+        """
+        return StepResult.OK
+
+    def verify(self):
+        return StepResult.OK if (
+                self.__not_contains_malicious_content() and self.__static_code_analysis()) else StepResult.NOK
+
+    def __not_contains_malicious_content(self):
         """
         verifies code for malicious content (taken from Tablón)
         """
-        # update status
-        self.update_request(RequestStatus.VERIFYING)
-
         # open file and check for forbidden code
         with current_app.open_resource(self.user_request.file_location, mode='r') as f:
             file_content = remove_comments(f.read())
@@ -118,6 +135,17 @@ class LocalTask:
                     return False
 
         return True
+
+    def __static_code_analysis(self):
+        """
+        runs lizard static code analysis
+        """
+        try:
+            self.user_request.code_analysis = analyze_code(
+                os.path.join(current_app.config['BASE_DIR'], 'app', self.user_request.file_location))
+        except:
+            return StepResult.NOK
+        return StepResult.OK
 
     def compile(self):
         """
@@ -131,11 +159,7 @@ class LocalTask:
         return_code, elapsed_time = self.run_process(
             [current_app.config['COMPILER'], '-fopenmp', file_location, '-o', self.binary_file_location], False)
 
-        if return_code != 0:
-            self.update_request(RequestStatus.ERROR)
-            return False
-
-        return True
+        return StepResult.OK if return_code == 0 else StepResult.OK
 
     def run(self):
         try:
@@ -217,6 +241,16 @@ class LocalTask:
 
         return output.returncode, elapsed_time
 
+    def end(self):
+        """
+        task was completed, update it for points, badges and more
+        """
+        # check if user won any badge, this can happen even if we were timewalled or an error was thrown
+        self.assign_badges()
+        self.update_user_quota_and_points()
+
+        return StepResult.END
+
     def update_request(self, status=None):
         """
         update status of Request
@@ -235,27 +269,97 @@ class KahanTask(LocalTask):
     def __init__(self, user_request):
         super().__init__(user_request)
         self.task_process = {
-            RequestStatus.CREATED: self.not_contains_malicious_content,
-            RequestStatus.VERIFYING: self.compile,
-            RequestStatus.COMPILING: self.deploy,
-            RequestStatus.QUEUED: self.check_queue
+            RequestStatus.CREATED: {
+                'f': self.start,
+                'steps': {
+                    StepResult.OK: RequestStatus.VERIFYING,
+                }
+            },
+            RequestStatus.VERIFYING: {
+                'f': self.verify,
+                'steps': {
+                    StepResult.OK: RequestStatus.COMPILING,
+                    StepResult.NOK: RequestStatus.ERROR
+                }
+            },
+            RequestStatus.COMPILING: {
+                'f': self.compile,
+                'steps': {
+                    StepResult.OK: RequestStatus.DEPLOYING,
+                    StepResult.NOK: RequestStatus.ERROR
+                }
+            },
+            RequestStatus.DEPLOYING: {
+                'f': self.deploy,
+                'steps': {
+                    StepResult.OK: RequestStatus.QUEUED,
+                    StepResult.NOK: RequestStatus.ERROR
+                }
+            },
+            RequestStatus.QUEUED: {
+                'f': self.check_queue,
+                'steps': {
+                    StepResult.OK: RequestStatus.RUNNING,
+                    StepResult.NOK: RequestStatus.ERROR
+                }
+            },
+            RequestStatus.ERROR: {
+                'f': self.end,
+                'steps': {
+                    StepResult.OK: RequestStatus.ERROR
+                }
+            },
+            RequestStatus.TIMEWALL: {
+                'f': self.end,
+                'steps': {
+                    StepResult.OK: RequestStatus.TIMEWALL
+                }
+            },
+            RequestStatus.FINISHED: {
+                'f': self.end,
+                'steps': {
+                    StepResult.OK: RequestStatus.FINISHED
+                }
+            },
         }
 
+    def process(self):
+        """
+        process the task request step by step until the task is enqueued again or it finishes
+        """
+        step_result = StepResult.OK
+        while step_result != StepResult.END:
+            logging.info(self)
+            step = self.get_task_step()
+            f = step['f']
+            try:
+                step_result = f()
+            except Exception as e:
+                self.user_request.output = e
+                self.update_request(RequestStatus.UNHANDLED_ERROR)
+                break
+
+            if step_result == StepResult.WAIT:
+                requeue_task(self)
+                break
+
+            self.update_request(step['steps'][step_result])
+
+        return True
+
     def deploy(self):
-        self.update_request(RequestStatus.DEPLOYING)
-        remote = RemoteClient()
+        remote = RemoteClient.Instance()
+
         files = list(map(lambda attachment: os.path.join(current_app.config['BASE_DIR'], attachment.file_location),
                          self.user_request.assignment.attachments))
         remote.bulk_upload(files)
 
         # TODO if OK
-        self.update_request(RequestStatus.QUEUED)
-        return True
+        return StepResult.OK
 
     def check_queue(self):
         # TODO check queue if has to check it on the future we requeue the task
-        requeue_task(self)
-        return False
+        return StepResult.WAIT
 
 
 def process_task(task) -> bool:
@@ -271,15 +375,25 @@ def create_task(user_request) -> str:
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue(name=user_request.assignment.queue)
-        task = q.enqueue(process_task, KahanTask(user_request))
-        return task.get_id()
+        rq_task = q.enqueue(process_task, KahanTask(user_request))
+        return rq_task.get_id()
 
 
-def requeue_task(task) -> str:
+def requeue_task(task):
     """
     enqueues a task to be executed in the future
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue(name=task.user_request.assignment.queue)
-        task = q.enqueue_in(timedelta(seconds=10), process_task, task)
-        return task.get_id()
+        rq_task = q.enqueue_in(timedelta(seconds=25), process_task, task)
+        task.user_request.task_id = rq_task.get_id()
+        db.session.add(task.user_request)
+        db.session.commit()
+
+
+def analyze_code(file_location: str) -> dict:
+    """
+    execute lizard static code analyzer and returns result
+    """
+    code_analysis = lizard.analyze_file(file_location)
+    return code_analysis.function_list[0].__dict__ if len(code_analysis.function_list) > 0 else None
