@@ -213,6 +213,7 @@ class Request(db.Model):
     output = Column(UnicodeText)
     ip_address = Column(String)
     task_id = Column(String)
+    kahan_id = Column(String)
     points = Column(Integer, default=0)
     assignment = relationship('Assignment', back_populates='requests')
     assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))

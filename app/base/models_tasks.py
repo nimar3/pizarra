@@ -40,6 +40,7 @@ class RequestStatus(enum.Enum):
     ERROR = 7
     TIMEWALL = 8
     FINISHED = 9
+    KO = 10
     UNHANDLED_ERROR = 99
 
     @property
@@ -50,7 +51,7 @@ class RequestStatus(enum.Enum):
         label_dict = {RequestStatus.COMPILING: 'label-info', RequestStatus.DEPLOYING: 'label-info',
                       RequestStatus.RUNNING: 'label-primary', RequestStatus.FINISHED: 'label-success',
                       RequestStatus.CANCELED: 'label-warning', RequestStatus.ERROR: 'label-danger',
-                      RequestStatus.TIMEWALL: 'label-warning'}
+                      RequestStatus.KO: 'label-danger',  RequestStatus.TIMEWALL: 'label-warning'}
         return label_dict[self] if self in label_dict else 'label-default'
 
 
@@ -193,6 +194,9 @@ class LocalTask:
         self.points_earned += current_app.config['TIMEWALL_PENALTY']
         self.update_request(RequestStatus.TIMEWALL)
 
+    def check_results(self):
+        return True
+
     def assign_badges(self):
         """
         checks for badges that can be assigned when a Request finishes successfully
@@ -323,6 +327,10 @@ class KahanTask(LocalTask):
             },
         }
 
+    @property
+    def remote_directory(self):
+        return os.path.join(current_app.config['REMOTE_PATH'], str(self.user_request.id))
+
     def process(self):
         """
         process the task request step by step until the task is enqueued again or it finishes
@@ -343,45 +351,46 @@ class KahanTask(LocalTask):
                 requeue_task(self)
                 break
 
+            if step_result == StepResult.END:
+                break
+
             self.update_request(step['steps'][step_result])
 
         return True
 
     def compile(self) -> StepResult:
-        # create temp directory
-        temp_dir = os.path.join(current_app.config['BASE_DIR'], 'app/uploads/tmp', str(self.user_request.id))
-        self.run_process(['mkdir', '-p', temp_dir])
-        self.run_process(['cp', os.path.join(current_app.config['BASE_DIR'], 'data/cputils.h'), temp_dir])
-        self.run_process(['cp', os.path.join(current_app.config['BASE_DIR'], 'app', self.user_request.file_location),
-                          os.path.join(temp_dir, 'busquedaCadenas.c')])
-        with open(os.path.join(temp_dir, 'Makefile'), 'w') as f:
-            f.write(self.user_request.assignment.makefile)
-        subprocess.run('make', cwd=temp_dir)
-
-        # generate script file
-        with open(os.path.join(temp_dir, 'script.sh'), 'w') as f:
-            f.write(self.user_request.assignment.execution_script)
+        remote = RemoteClient.Instance()
+        # create request directory
+        remote.execute_commands(['mkdir -p ' + self.remote_directory])
+        # assignment files
+        files = list(map(lambda attachment: os.path.join(current_app.config['BASE_DIR'], attachment.file_location),
+                         self.user_request.assignment.attachments))
+        # append cputils.c
+        files.append(os.path.join(current_app.config['BASE_DIR'], 'data/cputils.h'))
+        # append source code to compile
+        files.append(os.path.join(current_app.config['BASE_DIR'], 'app', self.user_request.file_location))
+        # upload all files
+        remote.bulk_upload(files, self.remote_directory)
+        # execute all commands at once
+        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'mv *.c busquedaCadenas.c', 'make'])
+        remote.execute_commands([concat_commands])
 
         return StepResult.OK
 
     def deploy(self):
         remote = RemoteClient.Instance()
+        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'qsub script.sh'])
+        output = remote.execute_commands([concat_commands])
+        self.user_request.kahan_id = output[0]
 
-        files = list(map(lambda attachment: os.path.join(current_app.config['BASE_DIR'], attachment.file_location),
-                         self.user_request.assignment.attachments))
-        temp_dir = os.path.join(current_app.config['BASE_DIR'], 'app/uploads/tmp', str(self.user_request.id))
-        files.append(os.path.join(temp_dir, 'busquedaCadenas'))
-        files.append(os.path.join(temp_dir, 'script.sh'))
-        remote.bulk_upload(files)
-
-        remote.execute_commands(['cd pizarra', '/script.sh'])
-
-        # TODO if OK
         return StepResult.OK
 
     def check_queue(self):
-        # TODO check queue if has to check it on the future we requeue the task
-        return StepResult.WAIT
+        remote = RemoteClient.Instance()
+        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'cat script.sh.o*'])
+        output = remote.execute_commands([concat_commands])
+        self.output = '\n'.join(output)
+        return StepResult.NOK
 
 
 def process_task(task) -> bool:
@@ -407,7 +416,7 @@ def requeue_task(task):
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue(name=task.user_request.assignment.queue)
-        rq_task = q.enqueue_in(timedelta(seconds=120), process_task, task)
+        rq_task = q.enqueue_in(timedelta(seconds=10), process_task, task)
         task.user_request.task_id = rq_task.get_id()
         db.session.add(task.user_request)
         db.session.commit()
