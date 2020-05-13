@@ -98,35 +98,15 @@
       description: |+
         <h1>Introducci&oacute;n</h1>
         <p>En esta pr&aacute;ctica vamos a resolver un problema t&iacute;pico de la computaci&oacute;n: la b&uacute;queda de una subcadena dentro de otra. El problema consiste en encontrar en una cadena B de tama&ntilde;o sizeB, una subcadena S de taman&tilde;o sizeS. Si se encuentra esta subcadena, se devuelve la posici&oacute;n de comienzo (startB) de dicha subcadena en B. En caso contrario se devuelve -1.</p>
-      makefile: |+
-        APP = busquedaCadenas
-
-        # Optimization & debug flags:
-        # DEBUG: mensajes de depuracion.
-        # PRINTSTRINGS: imprime las cadenas por pantalla.
-        CFLAGS  =  -O3 -Wall -DDEBUG
-
-        CC = gcc
-
-        all: $(APP)
-
-        $(APP): $(APP).o Makefile
-        	$(CC) -o $(APP) $(APP).o $(CFLAGS)
-
-        $(APP).o: $(APP).c Makefile cputils.h
-        	$(CC) -c $(APP).c $(CFLAGS)
-
-        clean:
-        	- rm -f *.o core $(APP) *~
-      execution_script: |+
-        #!/bin/sh
-        #PBS -l nodes=1,walltime=00:10:00
-        #PBS -q cpa
-        #PBS -d .
-
-        ./busquedaCadenas CadB_1C CadS_5c_1
       expected_result: |+
         Result: 1
+    - __key__: assignment_primos
+      name: primos
+      title: "Cálculo de Primos"
+      description: |+
+        <h1>Introducci&oacute;n</h1>
+        <p>Cálculo de primos entre x y z</p>
+      expected_result: entre el 1 y el 100000000 hay 5761456 numeros primos
 
 - Attachment:
     - __key__: attachment_1
@@ -141,6 +121,13 @@
     - __key__: attachment_4
       file_location: app/uploads/assignments/4/script.sh
       assignment: assignment_busqueda_cadena
+    - __key__: attachment_5
+      file_location: app/uploads/assignments/5/script.sh
+      assignment: assignment_primos
+    - __key__: attachment_6
+      file_location: app/uploads/assignments/5/Makefile
+      assignment: assignment_primos
+
 
 - Role:
     - __key__: users

@@ -20,10 +20,6 @@ class AssignmentForm(FlaskForm):
     title = StringField('Title', id='title', validators=[DataRequired()])
     description = StringField('Description', id='description', widget=TextArea(),
                               render_kw={"rows": "10", "cols": "80"}, validators=[DataRequired()])
-    makefile = StringField('Makefile', id='makefile', widget=TextArea(), render_kw={"rows": "10"},
-                           validators=[DataRequired()])
-    execution_script = StringField('Execution Script', id='execution-script', widget=TextArea(),
-                                   render_kw={"rows": "10"}, validators=[DataRequired()])
     expected_result = StringField('Expected Result', id='expected-result', widget=TextArea(), render_kw={"rows": "10"},
                                   validators=[DataRequired()])
     points = StringField('Points', id='points')

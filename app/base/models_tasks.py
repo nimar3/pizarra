@@ -51,7 +51,7 @@ class RequestStatus(enum.Enum):
         label_dict = {RequestStatus.COMPILING: 'label-info', RequestStatus.DEPLOYING: 'label-info',
                       RequestStatus.RUNNING: 'label-primary', RequestStatus.FINISHED: 'label-success',
                       RequestStatus.CANCELED: 'label-warning', RequestStatus.ERROR: 'label-danger',
-                      RequestStatus.KO: 'label-danger',  RequestStatus.TIMEWALL: 'label-warning'}
+                      RequestStatus.KO: 'label-danger', RequestStatus.TIMEWALL: 'label-warning'}
         return label_dict[self] if self in label_dict else 'label-default'
 
 
@@ -303,8 +303,15 @@ class KahanTask(LocalTask):
             RequestStatus.QUEUED: {
                 'f': self.check_queue,
                 'steps': {
-                    StepResult.OK: RequestStatus.RUNNING,
-                    StepResult.NOK: RequestStatus.ERROR
+                    StepResult.OK: RequestStatus.FINISHED,
+                    StepResult.NOK: RequestStatus.KO
+                }
+            },
+            RequestStatus.RUNNING: {
+                'f': self.check_queue,
+                'steps': {
+                    StepResult.OK: RequestStatus.FINISHED,
+                    StepResult.NOK: RequestStatus.KO
                 }
             },
             RequestStatus.ERROR: {
@@ -325,6 +332,12 @@ class KahanTask(LocalTask):
                     StepResult.OK: RequestStatus.FINISHED
                 }
             },
+            RequestStatus.KO: {
+                'f': self.end,
+                'steps': {
+                    StepResult.OK: RequestStatus.KO
+                }
+            }
         }
 
     @property
@@ -343,7 +356,7 @@ class KahanTask(LocalTask):
             try:
                 step_result = f()
             except Exception as e:
-                self.user_request.output = e
+                self.user_request.output = str(e)
                 self.update_request(RequestStatus.UNHANDLED_ERROR)
                 break
 
@@ -372,24 +385,43 @@ class KahanTask(LocalTask):
         # upload all files
         remote.bulk_upload(files, self.remote_directory)
         # execute all commands at once
-        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'mv *.c busquedaCadenas.c', 'make'])
+        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'mv *.c primos.c', 'make'])
         remote.execute_commands([concat_commands])
 
         return StepResult.OK
 
     def deploy(self):
         remote = RemoteClient.Instance()
-        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'qsub script.sh'])
-        output = remote.execute_commands([concat_commands])
-        self.user_request.kahan_id = output[0]
+        output = remote.execute_commands_in_directory(self.remote_directory, ['qsub script.sh'])
+        kahan_queue_id = get_kahan_queue_id(output)
+        if kahan_queue_id is None:
+            return StepResult.NOK
 
+        self.user_request.kahan_id = kahan_queue_id
         return StepResult.OK
 
     def check_queue(self):
         remote = RemoteClient.Instance()
-        concat_commands = ' && '.join(['cd ' + self.remote_directory, 'cat script.sh.o*'])
-        output = remote.execute_commands([concat_commands])
+        # check if finish
+        output = remote.execute_commands(['qstat |grep ' + self.user_request.kahan_id])
+        request_status = get_kahan_queue_status(output)
+        if request_status == RequestStatus.QUEUED or request_status == RequestStatus.RUNNING:
+            # if the status change, we update it, eg: from Q to R
+            if request_status != self.user_request.status:
+                self.update_request(request_status)
+            # requeue task
+            return StepResult.WAIT
+
+        # obtain output
+        output = remote.execute_commands_in_directory(self.remote_directory, ['cat script.sh.e*', 'cat script.sh.o*'])
         self.output = '\n'.join(output)
+        # find result and time
+        self.run_time = get_kahan_time(self.output)
+        if check_hakan_result(self.user_request.assignment.expected_result, self.output):
+            self.points_earned += self.user_request.assignment.points
+            return StepResult.OK
+
+        self.points_earned += current_app.config['KO_PENALTY']
         return StepResult.NOK
 
 
@@ -428,3 +460,37 @@ def analyze_code(file_location: str) -> dict:
     """
     code_analysis = lizard.analyze_file(file_location)
     return code_analysis.function_list[0].__dict__ if len(code_analysis.function_list) > 0 else None
+
+
+def get_kahan_queue_id(output: list):
+    """
+    obtains the kahan queue id from the output of the qsub command
+    :param output list with all the output lines from kahan server
+    """
+    return output[0] if len(output) > 0 and output[0].isdigit() else None
+
+
+def get_kahan_queue_status(output: list):
+    """
+    checks and returns the status of the queue
+    Q -> queue
+    R -> running
+    ? ->
+    """
+    if len(output) > 0:
+        # eg: ['260354', 'script.sh', 'nimar3', '0', 'R', 'cpa']
+        output = output[0].split()[4]
+        return RequestStatus.QUEUED if output == 'Q' else RequestStatus.RUNNING
+    return None
+
+
+def check_hakan_result(expected_result: str, output: str):
+    regex_result = r'Result: (.+).'
+    result = re.search(regex_result, output)
+    return True if result is not None and result.group(1) == expected_result else False
+
+
+def get_kahan_time(output: str) -> float:
+    regex_time = 'Time: (.*)\n'
+    result = re.search(regex_time, output)
+    return float(result.group(1)) if result is not None else float(60)

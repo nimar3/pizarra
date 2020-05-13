@@ -115,6 +115,15 @@ class RemoteClient(object):
             self.conn = self.__connect()
         self.scp.get(file)
 
+    def execute_commands_in_directory(self, directory, commands):
+        """
+        executes all commands as a one liner first after navigating to given directory
+
+        :param directory: directory to navigate before executing commands
+        :param commands: List of unix commands as strings.
+        """
+        return self.execute_commands([' && '.join(['cd ' + directory] + commands)])
+
     def execute_commands(self, commands) -> list:
         """
         Execute multiple commands in succession.

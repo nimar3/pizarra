@@ -119,18 +119,6 @@
                             <div class="row">
                                 <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
-                                        <label for="groups">Makefile</label>
-                                        {{ form.makefile(placeholder='CL1 = \n\nCC=nvcc\nCFLAGS= -O3 -arch=sm_35', class="form-control") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="groups">{{ _('Execution Script') }} <strong>(Kahan)</strong></label>
-                                        {{ form.execution_script(placeholder='#!/bin/sh\n#PBS -l nodes=1,walltime=00:10:00\n#PBS -q cpa\n#PBS -d .\nOMP_NUM_THREADS=8 ./progopenmp', class="form-control") }}
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
                                         <label for="groups">{{ _('Expected Result') }}</label>
                                         {{ form.expected_result(placeholder='Result: 123\nResult: 456', class="form-control") }}
                                     </div>
