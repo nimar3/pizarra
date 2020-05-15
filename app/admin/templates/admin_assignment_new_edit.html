@@ -49,13 +49,13 @@
                         <div class="box-body">
 
                             <div class="row">
-                                <div class="col-xs-6">
+                                <div class="col-md-6 col-xs-12">
                                     <div class="form-group">
                                         <label for="name">{{ _('Name') }}</label>
                                         {{ form.name(placeholder=_('Name'), class="form-control text-lowercase") }}
                                     </div>
                                 </div>
-                                <div class="col-xs-3">
+                                <div class="col-md-3 col-xs-6">
                                     <!-- Date and time range -->
                                     <div class="form-group">
                                         <label>{{ _('Start Date') }}</label>
@@ -70,7 +70,7 @@
                                     </div>
                                     <!-- /.form group -->
                                 </div>
-                                <div class="col-xs-3">
+                                <div class="col-md-3 col-xs-6">
                                     <!-- Date and time range -->
                                     <div class="form-group">
                                         <label>{{ ('Due Date') }}</label>
@@ -87,9 +87,28 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                {{ form.title(placeholder=_('Title'), class="form-control") }}
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="title">{{ _('Title') }}</label>
+                                        {{ form.title(placeholder=_('Title'), class="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="points">{{ _('Points') }}</label>
+                                        {{ form.points(placeholder=_('100'), class="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <div class="form-group">
+                                        <label for="show-output">{{ _('Output') }}</label>
+                                        <div class="checkbox">
+                                            {{ form.show_output() }} {{ _('Show execution result to User') }}
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-group">
@@ -98,21 +117,31 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-xs-6">
+                                <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
-                                        <label for="groups">{{ _('Header') }} (Makefile)</label>
-                                        {{ form.header(placeholder='CL1 = \n\nCC=nvcc\nCFLAGS= -O3 -arch=sm_35 -DCP_TABLON -DCP_CUDA \n#-L ./ -I ./ \n# -lcutil\n\n%: %.cu\n	$(CC) $(CFLAGS) $(CL1) -o $@ $<\n', class="form-control") }}
+                                        <label for="groups">{{ _('Expected Result') }}</label>
+                                        {{ form.expected_result(placeholder='Result: 123\nResult: 456', class="form-control") }}
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
                                         <label for="groups">{{ _('Groups') }}</label>
                                         {{ form.classgroups(class="form-control") }}
                                     </div>
-
+                                </div>
+                                <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
                                         <label for="groups">{{ _('Badges') }}</label>
                                         {{ form.badges(class="form-control") }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="groups">{{ _('Files') }}</label>
+                                        {{ form.files(class="form-control") }}
                                     </div>
                                 </div>
                             </div>
@@ -165,5 +194,6 @@
             $('#due-date').datetimepicker({autoclose: true});
         })
     </script>
+
 
 {% endblock %}

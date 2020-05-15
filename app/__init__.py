@@ -131,8 +131,8 @@ def create_app_worker(config):
         redis_url = app.config["RQ_DASHBOARD_REDIS_URL"]
         redis_connection = redis.from_url(redis_url)
         with Connection(redis_connection):
-            worker = Worker(app.config["QUEUES"])
-            worker.work()
+            worker = Worker(app.config['QUEUES'])
+            worker.work(with_scheduler=True)
 
 
 @babel.localeselector

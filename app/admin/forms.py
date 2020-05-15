@@ -5,7 +5,7 @@ License: MIT
 from flask_security.utils import _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed, FileField
-from wtforms import StringField
+from wtforms import StringField, BooleanField, MultipleFileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, InputRequired, ValidationError
 from wtforms.widgets import TextArea
@@ -19,10 +19,12 @@ class AssignmentForm(FlaskForm):
     due_date = StringField('Due Date', id='due-date', render_kw={'autocomplete': 'off'})
     title = StringField('Title', id='title', validators=[DataRequired()])
     description = StringField('Description', id='description', widget=TextArea(),
-                              render_kw={"rows": "10", "cols": "80"},
-                              validators=[DataRequired()])
-    header = StringField('Template', id='template', widget=TextArea(), render_kw={"rows": "10"},
-                         validators=[DataRequired()])
+                              render_kw={"rows": "10", "cols": "80"}, validators=[DataRequired()])
+    expected_result = StringField('Expected Result', id='expected-result', widget=TextArea(), render_kw={"rows": "10"},
+                                  validators=[DataRequired()])
+    points = StringField('Points', id='points')
+    show_output = BooleanField('Show Output', id='show-output')
+    files = MultipleFileField('Files')
     classgroups = QuerySelectMultipleField('Groups', query_factory=lambda: ClassGroup.query.all(),
                                            validators=[InputRequired()])
     badges = QuerySelectMultipleField('Badges', query_factory=lambda: Badge.query.all())

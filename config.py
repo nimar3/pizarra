@@ -9,12 +9,12 @@ from os import environ
 
 
 class Config(object):
-    basedir = os.path.abspath(os.path.dirname(__file__))
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     SECRET_KEY = environ.get('SECRET_KEY', 'pUdos1KbNyLYUvb4P7MvHWmuWSGH0AuYbryi045al9upVyFbyUBys5Xq5s3y')
 
     # This will create a file in <app> FOLDER
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'database.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
 
     # For 'in memory' database, please use:
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
@@ -52,14 +52,22 @@ class Config(object):
     # Tasks
     TIMEWALL = environ.get('TIMEWALL', 15.0)  # in seconds
     TIMEWALL_PENALTY = environ.get('TIMEWALL_PENALTY', -10)  # in points
+    KO_PENALTY = environ.get('TIMEWALL_PENALTY', -15)  # in points
     FORBIDDEN_CODE = ['##', 'fork', 'exec', 'popen', 'fopen', 'open', 'setjmp', 'remove', 'rename', 'system', 'getenv',
                       'MPI_File_open', 'sys/syscall.h', 'sys/stat.h', 'fstream'
                       ]
 
     # rq
     RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
-    QUEUES = ["default"]
+    QUEUES = ['default', 'kahan']
 
+    # host to connect and execute commands
+    REMOTE_HOST = environ.get('REMOTE_HOST', 'kahan.dsic.upv.es')
+    REMOTE_USER = environ.get('REMOTE_USER', 'nimar3')
+    REMOTE_PATH = environ.get('REMOTE_PATH', '/labos/alumnos/nimar3/pizarra')
+    SSH_FILE_PATH = environ.get('SSH_FILE_PATH', os.path.join(BASE_DIR, 'data/keys/id_rsa'))
+
+    # output of JSON responses
     JSONIFY_PRETTYPRINT_REGULAR = True
 
     # App Mode, TODO change to cli command

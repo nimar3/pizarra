@@ -7,17 +7,16 @@ import os
 from datetime import datetime
 
 import lizard
-import redis
 from flask import render_template, redirect, url_for, request, json, current_app, abort
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
-from rq import Connection, Queue
 from werkzeug.utils import secure_filename, escape
 
 from app import db
 from app.base.models import Assignment, User, Request
-from app.base.models_tasks import PizarraTask
+from app.base.models_tasks import create_task
+from app.base.ssh_client import RemoteClient
 from app.base.util import random_string
 from app.home import blueprint
 
@@ -153,7 +152,6 @@ def send_assignment(name):
     user_request.user = user
     user_request.file_location = file_location_relative
     user_request.ip_address = request.remote_addr
-    user_request.code_analysis = analyze_code(file_location)
 
     # commit user request to DB
     db.session.add(user_request)
@@ -168,6 +166,14 @@ def send_assignment(name):
     request_url = request.host_url[:-1] + url_for('.requests', id=user_request.id)
 
     return build_response(_('Request created, please navigate to {} to check the results'.format(request_url)), 201)
+
+
+@blueprint.route('/test')
+def test():
+    """Initialize remote host client and execute actions."""
+    remote = RemoteClient.Instance()
+    remote.execute_commands(['cd pizarra', './script.sh'])
+    return 'OK'
 
 
 @blueprint.route('/<template>')
@@ -208,14 +214,6 @@ def build_response(message: str, status_code: int) -> str:
     return response
 
 
-def analyze_code(file_location: str) -> dict:
-    """
-    execute lizard static code analyzer and returns result
-    """
-    code_analysis = lizard.analyze_file(file_location)
-    return code_analysis.function_list[0].__dict__ if len(code_analysis.function_list) > 0 else None
-
-
 def allowed_file(filename: str) -> bool:
     """
     returns if a file is allowed to be uploaded to the server
@@ -232,21 +230,3 @@ def over_request_limit(last_request: datetime) -> bool:
         difference = datetime.utcnow() - last_request
         return difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']
     return False
-
-
-def create_task(user_request: User) -> str:
-    """
-    creates and enqueues a task from pizarra to be executed by a worker and returns task id
-    """
-    with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
-        q = Queue()
-        task = q.enqueue(pizarra_task, user_request)
-        return task.get_id()
-
-
-def pizarra_task(user_request: Request) -> bool:
-    """
-    creates the task for the worker and executes it
-    """
-    task = PizarraTask(user_request)
-    return task.process_request()

@@ -1,11 +1,10 @@
-# -*- encoding: utf-8 -*-
-"""
-License: MIT
-Copyright (c) 2020 - nimar3
-"""
+#  -*- encoding: utf-8 -*-
+#  """
+#  License: MIT
+#  Copyright (c) 2020 - Pizarra
+#  """
 
 import sqla_yaml_fixtures
-from flask import current_app
 
 
 class Sample(object):
@@ -19,6 +18,6 @@ class Sample(object):
             if self.app.config['IMPORT_SAMPLE_DATA']:
                 sqla_yaml_fixtures.load(self.db.Model, self.db.session, open('data/sample.yml'))
 
-    def __init__(self, app=None, db=None, directory='data'):
+    def __init__(self):
         self.app = None
         self.db = None
