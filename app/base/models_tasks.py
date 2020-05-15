@@ -252,6 +252,7 @@ class LocalTask:
         # check if user won any badge, this can happen even if we were timewalled or an error was thrown
         self.assign_badges()
         self.update_user_quota_and_points()
+        self.user_request.update_leaderboard()
 
         return StepResult.END
 
@@ -491,6 +492,10 @@ def check_hakan_result(expected_result: str, output: str):
 
 
 def get_kahan_time(output: str) -> float:
+    """
+    returns time spent on kahan, if not found it will return 5 minutes as expected wall time
+    :param output to search for execution time
+    """
     regex_time = 'Time: (.*)\n'
     result = re.search(regex_time, output)
-    return float(result.group(1)) if result is not None else float(60)
+    return float(result.group(1)) if result is not None else float(300.0)

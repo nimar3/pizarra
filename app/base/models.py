@@ -9,7 +9,7 @@ from random import randint
 from flask import current_app
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, ForeignKey, Enum, UnicodeText, Table, JSON, \
-    Float
+    Float, and_
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
@@ -67,6 +67,7 @@ class User(db.Model, UserMixin):
     # one-to-many
     requests = relationship('Request', back_populates='user', order_by='desc(Request.timestamp)',
                             cascade='all, delete, delete-orphan')
+    leaderboard_entries = relationship('LeaderBoard', back_populates='user', cascade='all, delete, delete-orphan')
     # many-to-one (bidirectional relationship)
     classgroup_id = Column(Integer, ForeignKey('classgroup.id'))
     classgroup = relationship('ClassGroup', back_populates='students')
@@ -170,6 +171,7 @@ class ClassGroup(db.Model):
     name = Column(String(100), unique=True)
     description = Column(String(255))
     students = relationship('User', back_populates='classgroup', cascade='all, delete, delete-orphan')
+    leaderboard_entries = relationship('LeaderBoard', back_populates='classgroup', cascade='all, delete, delete-orphan')
     assignments = relationship('Assignment', secondary=classgroups_assignments, back_populates='classgroups',
                                order_by='asc(Assignment.due_date)')
 
@@ -193,7 +195,7 @@ class Badge(db.Model):
     secret = Column(Boolean, default=False)
     image = Column(String)
     background_color = Column(String)
-    assignments = relationship("Assignment", secondary=assignments_badges, back_populates="badges")
+    assignments = relationship('Assignment', secondary=assignments_badges, back_populates='badges')
 
     def __repr__(self):
         return '{} - {}'.format(self.title, self.subtitle)
@@ -219,11 +221,12 @@ class Request(db.Model):
     assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
     user = relationship('User', back_populates='requests')
     user_id = Column('user_id', Integer, ForeignKey('user.id'))
+    leaderboard = relationship('LeaderBoard', uselist=False, back_populates='request')
 
     @property
     def finished_execution(self):
         return self.status in [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL,
-                               RequestStatus.FINISHED]
+                               RequestStatus.FINISHED, RequestStatus.KO]
 
     @property
     def max_execution_time(self):
@@ -232,6 +235,26 @@ class Request(db.Model):
 
     def __repr__(self):
         return 'Request: {} from {} for Assignment {}'.format(self.id, self.user, self.assignment)
+
+    def update_leaderboard(self):
+
+        if self.status == RequestStatus.FINISHED:
+            leaderboard_entry = LeaderBoard.query.filter(
+                and_(LeaderBoard.user_id == self.user_id, LeaderBoard.assignment_id == self.assignment_id)).first()
+
+            if leaderboard_entry is None:
+                leaderboard_entry = LeaderBoard()
+                leaderboard_entry.run_time = self.run_time
+                leaderboard_entry.assignment = self.assignment
+                leaderboard_entry.classgroup = self.user.classgroup
+                leaderboard_entry.user = self.user
+                leaderboard_entry.request = self
+            else:
+                if self.run_time < leaderboard_entry.run_time:
+                    leaderboard_entry.request = self
+
+            db.session.add(leaderboard_entry)
+            db.session.commit()
 
 
 class Assignment(db.Model):
@@ -250,11 +273,12 @@ class Assignment(db.Model):
     expected_result = Column(UnicodeText)
     queue = Column(String, default='default')
     timewall = Column(Float)
+    leaderboard_entries = relationship('LeaderBoard', back_populates='assignment')
     requests = relationship('Request', back_populates='assignment', order_by='desc(Request.timestamp)',
                             cascade='delete')
     attachments = relationship('Attachment', back_populates='assignment', cascade='delete')
-    classgroups = relationship("ClassGroup", secondary=classgroups_assignments, back_populates="assignments")
-    badges = relationship("Badge", secondary=assignments_badges, back_populates="assignments")
+    classgroups = relationship('ClassGroup', secondary=classgroups_assignments, back_populates='assignments')
+    badges = relationship('Badge', secondary=assignments_badges, back_populates='assignments')
 
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
@@ -286,17 +310,22 @@ class Assignment(db.Model):
         return '{} - {}'.format(self.name, self.title)
 
 
-class Leaderboard(db.Model):
+class LeaderBoard(db.Model):
     """
-    Represents a Leaderboard for an Assignment
+    Represents a LeaderBoard for an Assignment
     """
     __tablename__ = 'leaderboard'
     id = Column(Integer, primary_key=True)
-    run_time = Column(Integer)
-    user_id = Column('user_id', Integer, ForeignKey('user.id'))
+    run_time = Column(Float)
+    request = relationship('Request', back_populates='leaderboard')
     request_id = Column('request_id', Integer, ForeignKey('request.id'))
-    classgroup_id = Column('classgroup_id'), Integer, ForeignKey('classgroup.id')
+    user = relationship('User', back_populates='leaderboard_entries')
+    user_id = Column('user_id', Integer, ForeignKey('user.id'))
+    assignment = relationship('Assignment', back_populates='leaderboard_entries')
     assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
+    # many-to-one (bidirectional relationship)
+    classgroup_id = Column(Integer, ForeignKey('classgroup.id'))
+    classgroup = relationship('ClassGroup', back_populates='leaderboard_entries')
 
 
 class Attachment(db.Model):
