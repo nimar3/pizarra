@@ -418,10 +418,10 @@ class KahanTask(LocalTask):
         self.output = '\n'.join(output)
         # find result and time
         self.run_time = get_kahan_time(self.output)
-        if check_hakan_result(self.user_request.assignment.expected_result, self.output):
+        if check_kahan_result(self.user_request.assignment.expected_result, self.output):
             self.points_earned += self.user_request.assignment.points
             return StepResult.OK
-
+            
         self.points_earned += current_app.config['KO_PENALTY']
         return StepResult.NOK
 
@@ -485,7 +485,7 @@ def get_kahan_queue_status(output: list):
     return None
 
 
-def check_hakan_result(expected_result: str, output: str):
+def check_kahan_result(expected_result: str, output: str):
     regex_result = r'Result: (.+).'
     result = re.search(regex_result, output)
     return True if result is not None and result.group(1) == expected_result else False
