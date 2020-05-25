@@ -6,7 +6,6 @@ Copyright (c) 2019 - present AppSeed.us
 import os
 from datetime import datetime
 
-import lizard
 from flask import render_template, redirect, url_for, request, json, current_app, abort
 from flask_login import current_user
 from flask_security.utils import _
@@ -14,9 +13,8 @@ from jinja2 import TemplateNotFound
 from werkzeug.utils import secure_filename, escape
 
 from app import db
-from app.base.models import Assignment, User, Request
+from app.base.models import Assignment, User, Request, LeaderBoard
 from app.base.models_tasks import create_task
-from app.base.ssh_client import RemoteClient
 from app.base.util import random_string
 from app.home import blueprint
 
@@ -33,9 +31,25 @@ def faq():
     return render_template('faq.html')
 
 
-@blueprint.route('/leaderboard')
-def leaderboard():
-    return render_template('leaderboard.html')
+@blueprint.route('/leaderboard/assignments')
+def leaderboard_assignments():
+    # leaderboard dictionary for filtered results
+    leaderboards = dict()
+    # if admin, fetch all assignments, otherwise only the ones from the user
+    assignments = Assignment.query.all() if current_user.is_admin else current_user.classgroup.assignments
+
+    # group results by assignment
+    for assignment in assignments:
+        if current_user.is_admin:
+            leaderboards[assignment.name] = LeaderBoard.query.filter_by(assignment_id=assignment.id).order_by(
+                LeaderBoard.run_time).all()
+        else:
+            # normal users filter their results by classgroup
+            leaderboards[assignment.name] = LeaderBoard.query.filter_by(assignment_id=assignment.id,
+                                                                        classgroup_id=current_user.classgroup.id).order_by(
+                LeaderBoard.run_time).all()
+
+    return render_template('leaderboard.html', leaderboards=leaderboards)
 
 
 @blueprint.route('/requests', defaults={'id': None})
@@ -166,14 +180,6 @@ def send_assignment(name):
     request_url = request.host_url[:-1] + url_for('.requests', id=user_request.id)
 
     return build_response(_('Request created, please navigate to {} to check the results'.format(request_url)), 201)
-
-
-@blueprint.route('/test')
-def test():
-    """Initialize remote host client and execute actions."""
-    remote = RemoteClient.Instance()
-    remote.execute_commands(['cd pizarra', './script.sh'])
-    return 'OK'
 
 
 @blueprint.route('/<template>')

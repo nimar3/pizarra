@@ -1,8 +1,24 @@
-{% macro item(url, message, icon) %}
+{% macro item(url, title, icon) %}
     <li class="{{ 'active' if url in request.path else '' }}">
         <a href="{{ url }}">
-            <i class="fa {{ icon }}"></i> <span>{{ message }}</span>
+            <i class="fa {{ icon }}"></i> <span>{{ title }}</span>
         </a>
+    </li>
+{% endmacro %}
+
+{% macro item_tree(title, nodes, icon) %}
+    <li class="treeview">
+        <a href="#">
+            <i class="fa {{ icon }}"></i> <span>{{ title }}</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            {% for item in nodes %}
+                <li><a href="{{ item.url }}"><i class="fa fa-circle-o"></i> {{ item.title }}</a></li>
+            {% endfor %}
+        </ul>
     </li>
 {% endmacro %}
 
@@ -29,7 +45,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             {% if current_user.is_admin %}
-            <li class="header">{{ _('ADMINISTRATION') }}</li>
+                <li class="header">{{ _('ADMINISTRATION') }}</li>
                 {{ item(url_for('admin_blueprint.route_admin_home'), _('Requests'), 'fa-upload') }}
                 {{ item(url_for('rq_dashboard.overview'), _('Task Scheduler'), 'fa-tasks' ) }}
                 {{ item(url_for('admin_blueprint.classgroups'), _('Groups'), 'fa-users') }}
@@ -46,7 +62,7 @@
 
             {{ item(url_for('home_blueprint.requests'), _('My Requests'), 'fa-upload') }}
 
-            {{ item(url_for('home_blueprint.leaderboard'),_('Leaderboard'), 'fa-flag-checkered') }}
+            {{ item_tree(_('Leaderboards'), [{'title': _('Assignments'), 'url': ''}, {'title': _('ClassGroup'), 'url': ''}], 'fa-flag-checkered') }}
 
             {{ item(url_for('home_blueprint.faq'),_('FAQ'), 'fa-question') }}
 

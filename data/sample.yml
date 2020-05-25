@@ -186,7 +186,7 @@
     - __key__: class_a
       name: "G2019-A1"
       description: "Class from 2019 A1 group"
-      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic, assignment_busqueda_cadena]
+      assignments: [assignment_hello_world, assignment_primos, assignment_busqueda_cadena]
     - __key__: class_b
       name: "G2019-B1"
       description: "Class from 2019 B1 group"
@@ -486,6 +486,43 @@
       points: 100
       status: "FINISHED"
       run_time: 38.2331
+    - __key__: request_7
+      user: alberto_barcia_rincon
+      assignment: assignment_hello_world
+      points: 110
+      status: "FINISHED"
+      run_time: 47.12
+    - __key__: request_8
+      user: lucia_garcia_candela
+      assignment: assignment_hello_world
+      points: 100
+      status: "FINISHED"
+      run_time: 125.134
+    - __key__: request_9
+      user: javier_perez_callejas
+      assignment: assignment_hello_world
+      points: 100
+      status: "FINISHED"
+      run_time: 52.43
+    - __key__: request_10
+      user: marina_cabrera_martin
+      assignment: assignment_hello_world
+      points: 100
+      status: "FINISHED"
+      run_time: 40.98
+    - __key__: request_11
+      user: monica_ruiz_gascon
+      assignment: assignment_hello_world
+      points: 100
+      status: "FINISHED"
+      run_time: 45.433
+    - __key__: request_12
+      user: francisco_jose_ruiz_carmona
+      assignment: assignment_hello_world
+      points: 100
+      status: "FINISHED"
+      run_time: 38.2331
+
 
 - LeaderBoard:
     - __key__: leaderboard_1
@@ -522,5 +559,41 @@
       user: francisco_jose_ruiz_carmona
       assignment: assignment_primos
       request: request_6
+      classgroup: class_a
+      run_time: 38.2331
+    - __key__: leaderboard_7
+      user: alberto_barcia_rincon
+      assignment: assignment_hello_world
+      request: request_7
+      classgroup: class_a
+      run_time: 47.12
+    - __key__: leaderboard_8
+      user: lucia_garcia_candela
+      assignment: assignment_hello_world
+      request: request_8
+      classgroup: class_a
+      run_time: 125.134
+    - __key__: leaderboard_9
+      user: javier_perez_callejas
+      assignment: assignment_hello_world
+      request: request_9
+      classgroup: class_a
+      run_time: 52.43
+    - __key__: leaderboard_10
+      user: marina_cabrera_martin
+      assignment: assignment_hello_world
+      request: request_10
+      classgroup: class_a
+      run_time: 40.98
+    - __key__: leaderboard_11
+      user: monica_ruiz_gascon
+      assignment: assignment_hello_world
+      request: request_11
+      classgroup: class_a
+      run_time: 45.433
+    - __key__: leaderboard_12
+      user: francisco_jose_ruiz_carmona
+      assignment: assignment_hello_world
+      request: request_12
       classgroup: class_a
       run_time: 38.2331
