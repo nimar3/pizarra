@@ -62,7 +62,8 @@
 
             {{ item(url_for('home_blueprint.requests'), _('My Requests'), 'fa-upload') }}
 
-            {{ item_tree(_('Leaderboards'), [{'title': _('Assignments'), 'url': ''}, {'title': _('ClassGroup'), 'url': ''}], 'fa-flag-checkered') }}
+            {{ item_tree(_('Leaderboards'), [{'title': _('Assignments'), 'url': url_for('home_blueprint.leaderboard_assignments')},
+            {'title': _('Group'), 'url': url_for('home_blueprint.leaderboard_group')}], 'fa-flag-checkered') }}
 
             {{ item(url_for('home_blueprint.faq'),_('FAQ'), 'fa-question') }}
 

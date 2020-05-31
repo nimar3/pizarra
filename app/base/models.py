@@ -252,6 +252,7 @@ class Request(db.Model):
             else:
                 if self.run_time < leaderboard_entry.run_time:
                     leaderboard_entry.request = self
+                    leaderboard_entry.run_time = self.run_time
 
             db.session.add(leaderboard_entry)
             db.session.commit()

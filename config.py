@@ -29,7 +29,7 @@ class Config(object):
     DEFAULT_THEME = None
 
     # Sample Data
-    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', False)
+    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', True)
 
     # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}

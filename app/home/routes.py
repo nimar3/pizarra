@@ -10,6 +10,7 @@ from flask import render_template, redirect, url_for, request, json, current_app
 from flask_login import current_user
 from flask_security.utils import _
 from jinja2 import TemplateNotFound
+from sqlalchemy import desc, func
 from werkzeug.utils import secure_filename, escape
 
 from app import db
@@ -31,6 +32,25 @@ def faq():
     return render_template('faq.html')
 
 
+@blueprint.route('/leaderboard/group')
+def leaderboard_group():
+    leaderboards = dict()
+    # two different leaderboards, one by student and one by group
+    # fetch all students
+    query = User.query
+    if not current_user.is_admin:
+        query = query.filter_by(classgroup_id=current_user.classgroup.id)
+    leaderboards['classgroup'] = query.order_by(desc(User.points)).all()
+    # fetch all teams
+    query = db.session.query(User.team, func.count(User.points).label('team_points'))
+    if not current_user.is_admin:
+        query = query.filter_by(classgroup_id=current_user.classgroup.id)
+    query = query.group_by(User.team).order_by(desc('team_points'))
+    # leaderboards['teams'] = query.all()
+
+    return render_template('leaderboard_classgroup.html', leaderboards=leaderboards)
+
+
 @blueprint.route('/leaderboard/assignments')
 def leaderboard_assignments():
     # leaderboard dictionary for filtered results
@@ -40,14 +60,11 @@ def leaderboard_assignments():
 
     # group results by assignment
     for assignment in assignments:
-        if current_user.is_admin:
-            leaderboards[assignment.name] = LeaderBoard.query.filter_by(assignment_id=assignment.id).order_by(
-                LeaderBoard.run_time).all()
-        else:
-            # normal users filter their results by classgroup
-            leaderboards[assignment.name] = LeaderBoard.query.filter_by(assignment_id=assignment.id,
-                                                                        classgroup_id=current_user.classgroup.id).order_by(
-                LeaderBoard.run_time).all()
+        query = LeaderBoard.query.filter_by(assignment_id=assignment.id)
+        if not current_user.is_admin:
+            # students only see results from their classgroup
+            query = query.filter_by(classgroup_id=current_user.classgroup.id)
+        leaderboards[assignment.name] = query.order_by(LeaderBoard.run_time).all()
 
     return render_template('leaderboard.html', leaderboards=leaderboards)
 
