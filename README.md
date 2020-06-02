@@ -45,7 +45,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
       - [ ] create
       - [ ] edit
       - [ ] logic to assign them to users
-    - [ ] manage RQ task scheduler
+    - [x] manage RQ task scheduler
     - [ ] summaries ? 
     - [ ] global status ?
 - Assignments
@@ -58,7 +58,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] filter
   - [x] info
 - LeaderBoard
-  - [ ] view
+  - [x] view
 - FAQ
   - [ ] info
 - RQ
@@ -69,11 +69,11 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] update status
   - [x] update user quota
   - [x] update points to request and user 
-  - [ ] verify results with inputs
+  - [x] verify results with inputs
 - Docker
   - [x] Dockerfile
   - [x] docker-compose
-  - [ ] support for gunicorn
+  - [x] support for gunicorn
   
 
 ## Other features

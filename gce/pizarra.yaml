@@ -57,7 +57,7 @@ spec:
               name: pizarra
           volumeMounts:
             - name: nfs-volume
-              mountPath: /app/uploads
+              mountPath: /opt/pizarra/app/uploads
               subPath: pizarra
       volumes:
         - name: nfs-volume
@@ -107,7 +107,7 @@ spec:
                 key: db_password
           volumeMounts:
             - name: nfs-volume
-              mountPath: /app/uploads
+              mountPath: /opt/pizarra/app/uploads
               subPath: pizarra
       volumes:
         - name: nfs-volume
