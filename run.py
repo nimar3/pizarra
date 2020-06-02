@@ -19,4 +19,4 @@ except KeyError:
 app = create_app_web(config_mode) if environ.get('APP_MODE', 'Pizarra') == 'Pizarra' else create_app_worker(config_mode)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')

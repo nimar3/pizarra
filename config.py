@@ -9,15 +9,16 @@ from os import environ
 
 
 class Config(object):
+    # Base directory location of pizarra
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+    LOG_LEVEL = environ.get('LOG_LEVEL', 'INFO')
+
+    # secret to hash passwords, for production env DO NOT USE this one
     SECRET_KEY = environ.get('SECRET_KEY', 'pUdos1KbNyLYUvb4P7MvHWmuWSGH0AuYbryi045al9upVyFbyUBys5Xq5s3y')
 
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
-
-    # For 'in memory' database, please use:
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -28,8 +29,11 @@ class Config(object):
     # DEFAULT_THEME = "themes/dark"
     DEFAULT_THEME = None
 
+    # output of JSON responses
+    JSONIFY_PRETTYPRINT_REGULAR = True
+
     # Sample Data
-    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', True)
+    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', False)
 
     # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}
@@ -41,7 +45,7 @@ class Config(object):
     FILE_ALLOWED_EXTENSIONS = {'c', 'cpp'}
     MAX_CONTENT_LENGTH = 1 * 1024 * 1024  # 1 megabyte
 
-    TIME_BETWEEN_REQUESTS = environ.get('TIME_BETWEEN_REQUESTS', 5)  # in seconds
+    TIME_BETWEEN_REQUESTS = environ.get('TIME_BETWEEN_REQUESTS', 60)  # in seconds
 
     # Teams
     TEAM_MAX_SIZE = environ.get('TEAM_MAX_SIZE', 3)
@@ -54,8 +58,7 @@ class Config(object):
     TIMEWALL_PENALTY = environ.get('TIMEWALL_PENALTY', -10)  # in points
     KO_PENALTY = environ.get('TIMEWALL_PENALTY', -15)  # in points
     FORBIDDEN_CODE = ['##', 'fork', 'exec', 'popen', 'fopen', 'open', 'setjmp', 'remove', 'rename', 'system', 'getenv',
-                      'MPI_File_open', 'sys/syscall.h', 'sys/stat.h', 'fstream'
-                      ]
+                      'MPI_File_open', 'sys/syscall.h', 'sys/stat.h', 'fstream']
 
     # rq
     RQ_DASHBOARD_REDIS_URL = environ.get('RQ_DASHBOARD_REDIS_URL', 'redis://localhost:6379/0')
@@ -65,13 +68,11 @@ class Config(object):
     REMOTE_HOST = environ.get('REMOTE_HOST', 'kahan.dsic.upv.es')
     REMOTE_USER = environ.get('REMOTE_USER', 'nimar3')
     REMOTE_PATH = environ.get('REMOTE_PATH', '/labos/alumnos/nimar3/pizarra')
-    SSH_FILE_PATH = environ.get('SSH_FILE_PATH', os.path.join(BASE_DIR, 'data/keys/id_rsa'))
+    SSH_FILE_PATH = environ.get('SSH_FILE_PATH', os.path.join(BASE_DIR, 'app/data/keys/id_rsa'))
 
-    # output of JSON responses
-    JSONIFY_PRETTYPRINT_REGULAR = True
-
-    # App Mode, TODO change to cli command
+    # App Mode
     APP_MODE = environ.get('APP_MODE', 'Pizarra')
+    # Compiler bin to use when running a local queue or executing locally
     COMPILER = environ.get('COMPILER', 'gcc')
 
 

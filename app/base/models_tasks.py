@@ -380,7 +380,7 @@ class KahanTask(LocalTask):
         files = list(map(lambda attachment: os.path.join(current_app.config['BASE_DIR'], attachment.file_location),
                          self.user_request.assignment.attachments))
         # append cputils.c
-        files.append(os.path.join(current_app.config['BASE_DIR'], 'data/cputils.h'))
+        files.append(os.path.join(current_app.config['BASE_DIR'], 'app/data/cputils.h'))
         # append source code to compile
         files.append(os.path.join(current_app.config['BASE_DIR'], 'app', self.user_request.file_location))
         # upload all files
