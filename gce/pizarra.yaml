@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizarra
+  labels:
+    app: pizarra
+    tier: backend
+spec:
+  ports:
+  - port: 5005
+    targetPort: 5005
+  selector:
+    app: pizarra
+    tier: backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizarra
+  labels:
+    app: pizarra
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pizarra
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: pizarra
+        tier: backend
+    spec:
+      containers:
+        - image: eu.gcr.io/pizarra-279100/pizarra
+          name: pizarra
+          env:
+          - name: RQ_DASHBOARD_REDIS_URL
+            value: "redis://redis:6379/0"
+          - name: CONFIG_MODE
+            value: "Production"
+          - name: IMPORT_SAMPLE_DATA
+            value: "True"
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: pizarra-credentials
+                key: db_username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pizarra-credentials
+                key: db_password
+          ports:
+            - containerPort: 5005
+              name: pizarra
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /app/uploads
+              subPath: pizarra
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: nfs-server.default.svc.cluster.local
+            path: "/"
+            readOnly: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  labels:
+    app: worker
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: worker
+        tier: backend
+    spec:
+      containers:
+        - image: eu.gcr.io/pizarra-279100/pizarra
+          name: worker
+          env:
+          - name: RQ_DASHBOARD_REDIS_URL
+            value: "redis://redis:6379/0"
+          - name: CONFIG_MODE
+            value: "Production"
+          - name: APP_MODE
+            value: "Worker"
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: pizarra-credentials
+                key: db_username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pizarra-credentials
+                key: db_password
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /app/uploads
+              subPath: pizarra
+      volumes:
+        - name: nfs-volume
+          nfs:
+            server: nfs-server.default.svc.cluster.local
+            path: "/"
+            readOnly: false

@@ -1,0 +1,21 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: repd-west4-a-b
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-standard
+  replication-type: regional-pd
+  zones: europe-west4-a, europe-west4-b
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nfs-vol-pvc
+spec:
+  storageClassName: repd-west4-a-b
+  resources:
+    requests:
+      storage: 200Gi
+  accessModes:
+    - ReadWriteOnce
