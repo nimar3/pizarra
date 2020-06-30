@@ -55,7 +55,7 @@ class RequestStatus(enum.Enum):
         return label_dict[self] if self in label_dict else 'label-default'
 
 
-class LocalTask:
+class LocalJob:
 
     def __init__(self, user_request):
         self.user_request = user_request
@@ -64,21 +64,37 @@ class LocalTask:
         self.return_code = 0
         self.run_time = 0.0
         self.points_earned = 0
-        # defines the function to be executed in next step
+        # automata
         self.task_process = {
-            RequestStatus.CREATED: self.__not_contains_malicious_content,
-            RequestStatus.VERIFYING: self.compile,
-            RequestStatus.COMPILING: self.run
+            RequestStatus.CREATED: {
+                'f': self.start,
+                'steps': {
+                    StepResult.OK: RequestStatus.VERIFYING,
+                }
+            },
+            RequestStatus.VERIFYING: {
+                'f': self.verify,
+                'steps': {
+                    StepResult.OK: RequestStatus.FINISHED,
+                    StepResult.NOK: RequestStatus.ERROR
+                }
+            }
         }
 
     def __str__(self):
         return 'Task {} -> {}'.format(self.user_request.id, self.user_request.status)
 
     def get_task_step(self):
+        """
+        returns the step to execute for the current status of the Job
+        """
         return self.task_process[self.user_request.status]
 
     @property
-    def is_task_completed(self):
+    def is_job_completed(self):
+        """
+        checks if a job is completed given a list of statuses
+        """
         completed_task_status = [RequestStatus.CANCELED, RequestStatus.ERROR, RequestStatus.TIMEWALL,
                                  RequestStatus.FINISHED, RequestStatus.UNHANDLED_ERROR]
 
@@ -86,10 +102,14 @@ class LocalTask:
 
     @property
     def rule_engine_attributes(self):
+        """
+        mapping of other objects to dictionaries to be able to use them in the Rule engine
+        """
         return {
             'request': self.user_request.__dict__,
             'user': self.user_request.user.__dict__,
-            'assignment': self.user_request.assignment.__dict__
+            'assignment': self.user_request.assignment.__dict__,
+            'leaderboard': self.user_request.leaderboard.__dict__
         }
 
     def process(self):
@@ -97,19 +117,17 @@ class LocalTask:
         process the task request
         """
         step_result = True
-        while step_result and not self.is_task_completed:
+        while step_result and not self.is_job_completed:
             logging.info('Task: {} -> Status {}'.format(self.user_request.id, self.user_request.status))
             f = self.get_task_step()
             step_result = f()
 
-        if self.is_task_completed:
+        if self.is_job_completed:
             # check if user won any badge, this can happen even if we were timewalled or an error was thrown
             self.assign_badges()
             self.update_user_quota_and_points()
             # update request one last time to set points_earned to request
             self.update_request()
-
-        return True
 
     def start(self):
         """
@@ -269,7 +287,7 @@ class LocalTask:
         db.session.commit()
 
 
-class KahanTask(LocalTask):
+class KahanJob(LocalJob):
 
     def __init__(self, user_request):
         super().__init__(user_request)
@@ -362,15 +380,13 @@ class KahanTask(LocalTask):
                 break
 
             if step_result == StepResult.WAIT:
-                requeue_task(self)
+                requeue_job(self)
                 break
 
             if step_result == StepResult.END:
                 break
 
             self.update_request(step['steps'][step_result])
-
-        return True
 
     def compile(self) -> StepResult:
         remote = RemoteClient.Instance()
@@ -421,37 +437,37 @@ class KahanTask(LocalTask):
         if check_kahan_result(self.user_request.assignment.expected_result, self.output):
             self.points_earned += self.user_request.assignment.points
             return StepResult.OK
-            
+
         self.points_earned += current_app.config['KO_PENALTY']
         return StepResult.NOK
 
 
-def process_task(task) -> bool:
+def process_job(job):
     """
-    process a task and returns the result
+    process a given job
     """
-    return task.process()
+    job.process()
 
 
-def create_task(user_request) -> str:
+def create_job(user_request) -> str:
     """
-    creates and enqueues a task from pizarra to be executed by a worker and returns task id
+    creates and enqueues a job from pizarra to be executed by a worker and returns job id
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
         q = Queue(name=user_request.assignment.queue)
-        rq_task = q.enqueue(process_task, KahanTask(user_request))
-        return rq_task.get_id()
+        rq_job = q.enqueue(process_job, KahanJob(user_request))
+        return rq_job.get_id()
 
 
-def requeue_task(task):
+def requeue_job(job):
     """
-    enqueues a task to be executed in the future
+    enqueues a job to be executed in the future
     """
     with Connection(redis.from_url(current_app.config["RQ_DASHBOARD_REDIS_URL"])):
-        q = Queue(name=task.user_request.assignment.queue)
-        rq_task = q.enqueue_in(timedelta(seconds=10), process_task, task)
-        task.user_request.task_id = rq_task.get_id()
-        db.session.add(task.user_request)
+        q = Queue(name=job.user_request.assignment.queue)
+        rq_job = q.enqueue_in(timedelta(seconds=10), process_job, job)
+        job.user_request.job_id = rq_job.get_id()
+        db.session.add(job.user_request)
         db.session.commit()
 
 

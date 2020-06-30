@@ -15,7 +15,7 @@ from werkzeug.utils import secure_filename, escape
 
 from app import db
 from app.base.models import Assignment, User, Request, LeaderBoard
-from app.base.models_tasks import create_task
+from app.base.models_jobs import create_job
 from app.base.util import random_string
 from app.home import blueprint
 
@@ -189,7 +189,7 @@ def send_assignment(name):
     db.session.commit()
 
     # create and enqueue task
-    task_id = create_task(user_request)
+    task_id = create_job(user_request)
     user_request.task_id = task_id
     db.session.add(user_request)
     db.session.commit()

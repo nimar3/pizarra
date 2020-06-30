@@ -15,7 +15,7 @@ class Config(object):
     LOG_LEVEL = environ.get('LOG_LEVEL', 'INFO')
 
     # secret to hash passwords, for production env DO NOT USE this one
-    SECRET_KEY = environ.get('SECRET_KEY', 'pUdos1KbNyLYUvb4P7MvHWmuWSGH0AuYbryi045al9upVyFbyUBys5Xq5s3y')
+    SECRET_KEY = environ.get('SECRET_KEY', 'pizarra-app')
 
     # This will create a file in <app> FOLDER
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
@@ -33,7 +33,7 @@ class Config(object):
     JSONIFY_PRETTYPRINT_REGULAR = True
 
     # Sample Data
-    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', False)
+    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', True)
 
     # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}
@@ -51,7 +51,7 @@ class Config(object):
     TEAM_MAX_SIZE = environ.get('TEAM_MAX_SIZE', 3)
 
     # Registration
-    REGISTRATION_ENABLED = environ.get('REGISTRATION_ENABLED', True)
+    REGISTRATION_ENABLED = environ.get('REGISTRATION_ENABLED', False)
 
     # Tasks
     TIMEWALL = environ.get('TIMEWALL', 15.0)  # in seconds

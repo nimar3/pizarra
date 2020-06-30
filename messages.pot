@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-14 20:31+0800\n"
+"POT-Creation-Date: 2020-06-10 11:10+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,112 +17,975 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
 
-#: app/account/templates/account_profile.html:16
-#: app/account/templates/account_profile.html:23
-msgid "Profile"
+#: app/account/routes.py:34
+msgid "New Access Token has been generated!"
 msgstr ""
 
-#: app/account/templates/account_profile.html:17
-msgid "everything about you"
+#: app/account/routes.py:54
+msgid "You joined Team {}"
 msgstr ""
 
-#: app/account/templates/account_profile.html:21
-msgid "Account"
+#: app/account/routes.py:56
+msgid "You are unable to join team {} because is full"
 msgstr ""
 
-#: app/account/templates/account_profile.html:37
-#: app/account/templates/account_profile.html:101
-#: app/account/templates/account_profile.html:274
-msgid "User Profile Picture"
+#: app/account/routes.py:58
+msgid "You already belong to team {}"
 msgstr ""
 
-#: app/account/templates/account_profile.html:49
-msgid "Group Members"
+#: app/account/routes.py:60
+msgid "Team with key {} was not found"
 msgstr ""
 
-#: app/account/templates/account_profile.html:53
-#: app/account/templates/account_profile.html:130
-msgid "Badges"
+#: app/account/routes.py:73
+msgid "You left the team successfully"
 msgstr ""
 
-#: app/account/templates/account_profile.html:56
-msgid "Requests"
+#: app/account/routes.py:81
+msgid "You cannot create a new Team until you leave your current one"
 msgstr ""
 
-#: app/account/templates/account_profile.html:61
-msgid "Quota"
+#: app/account/routes.py:86
+msgid "Team with name {} already exist, please pick another one"
 msgstr ""
 
-#: app/account/templates/account_profile.html:73
+#: app/account/routes.py:95
+msgid "You created and joined the team {}"
+msgstr ""
+
+#: app/account/routes.py:109
+msgid "Password has been updated!"
+msgstr ""
+
+#: app/account/routes.py:111
+msgid "Unable to update password"
+msgstr ""
+
+#: app/account/templates/_profile_about_me.html:4
 msgid "About Me"
 msgstr ""
 
-#: app/account/templates/account_profile.html:77
+#: app/account/templates/_profile_about_me.html:8
 msgid "Education"
 msgstr ""
 
-#: app/account/templates/account_profile.html:80
+#: app/account/templates/_profile_about_me.html:11
 msgid "You are enroled in"
 msgstr ""
 
-#: app/account/templates/account_profile.html:87
+#: app/account/templates/_profile_about_me.html:17
 msgid "Location"
 msgstr ""
 
-#: app/account/templates/account_profile.html:89
+#: app/account/templates/_profile_about_me.html:19
 msgid "Space"
 msgstr ""
 
-#: app/account/templates/account_profile.html:93
+#: app/account/templates/_profile_about_me.html:24
+#: app/home/templates/macros/teams.html:5
 msgid "Team"
 msgstr ""
 
-#: app/account/templates/account_profile.html:103
-#: app/account/templates/account_profile.html:276
+#: app/account/templates/_profile_about_me.html:39
+#: app/account/templates/_profile_resume.html:6
+#: app/base/templates/site_template/header/user_info.html:6
+#: app/base/templates/site_template/header/user_info.html:14
+#: app/base/templates/site_template/sidebar.html:34
+#: app/home/templates/leaderboard.html:65
+#: app/home/templates/leaderboard_classgroup.html:65
+#: app/home/templates/macros/teams.html:17
+#: app/home/templates/macros/teams.html:46
+msgid "User Avatar"
+msgstr ""
+
+#: app/account/templates/_profile_about_me.html:41
+#: app/account/templates/_profile_tab_classgroup.html:10
+#: app/home/templates/macros/teams.html:19
 msgid "You!"
 msgstr ""
 
-#: app/account/templates/account_profile.html:109
+#: app/account/templates/_profile_about_me.html:47
 msgid "Seems like you are not part of a team"
 msgstr ""
 
-#: app/account/templates/account_profile.html:111
-msgid "Join a new Team"
+#: app/account/templates/_profile_about_me.html:58
+msgid "Create a new Team"
 msgstr ""
 
-#: app/account/templates/account_profile.html:126
-msgid "Activity"
+#: app/account/templates/_profile_about_me.html:69
+msgid "Share Team URL for others to join"
 msgstr ""
 
-#: app/account/templates/account_profile.html:135
-msgid "Group"
+#: app/account/templates/_profile_about_me.html:87
+#: app/account/templates/_profile_about_me.html:96
+#: app/home/templates/assignment.html:108 app/home/templates/request.html:97
+#: app/home/templates/request.html:106
+msgid "Close"
 msgstr ""
 
-#: app/account/templates/account_profile.html:144
-msgid "Access Key"
+#: app/account/templates/_profile_about_me.html:89
+msgid "Leaving Team"
 msgstr ""
 
-#: app/account/templates/account_profile.html:302
-msgid "Password"
+#: app/account/templates/_profile_about_me.html:92
+msgid "Are you sure you want to leave this team?"
 msgstr ""
 
-#: app/account/templates/account_profile.html:309
-msgid "Repeat Password"
+#: app/account/templates/_profile_about_me.html:98
+msgid "Leave"
 msgstr ""
 
-#: app/account/templates/account_profile.html:318
-msgid "Submit"
+#: app/account/templates/_profile_resume.html:18
+msgid "Group Members"
 msgstr ""
 
-#: app/account/templates/account_profile.html:329
-msgid "This key is for personal use and should not be shared! Use it wisely."
+#: app/account/templates/_profile_resume.html:22
+#: app/account/templates/profile.html:50
+#: app/admin/templates/admin_assignment_new_edit.html:137
+#: app/base/templates/site_template/header/user_info.html:30
+#: app/home/templates/assignment.html:85
+#: app/home/templates/macros/assignment.html:48
+msgid "Badges"
 msgstr ""
 
-#: app/account/templates/account_profile.html:341
+#: app/account/templates/_profile_resume.html:25
+#: app/admin/templates/_header.html:12
+#: app/admin/templates/admin_assignments.html:40
+#: app/base/templates/site_template/header/user_info.html:24
+#: app/base/templates/site_template/sidebar.html:49
+msgid "Requests"
+msgstr ""
+
+#: app/account/templates/_profile_resume.html:30
+#: app/admin/templates/admin_assignment_new_edit.html:99
+#: app/admin/templates/admin_students.html:47
+msgid "Points"
+msgstr ""
+
+#: app/account/templates/_profile_resume.html:34
+#: app/admin/templates/admin_students.html:46
+msgid "Quota"
+msgstr ""
+
+#: app/account/templates/_profile_tab_accesskey.html:5
+msgid "This token is for personal use and should not be shared! Use it wisely."
+msgstr ""
+
+#: app/account/templates/_profile_tab_accesskey.html:17
 msgid "Regenerate Key"
 msgstr ""
 
-#: app/account/templates/account_profile.html:346
+#: app/account/templates/_profile_tab_accesskey.html:22
 msgid "Copy Key"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:10
+#: app/home/templates/request.html:15
+msgid "Request"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:11
+msgid "sent to"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:14
+msgid "You sent a Request with ID"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:16
+msgid "for the Assignment"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:19
+msgid "Status for this request is"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:36
+msgid "Registered"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:36
+msgid "you joined Pizarra"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:51
+#: app/home/templates/macros/assignment.html:55
+msgid "Badge"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:51
+msgid "earned"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:53
+msgid "You earned the Badge"
+msgstr ""
+
+#: app/account/templates/_profile_tab_activity.html:61
+msgid "Badge Image"
+msgstr ""
+
+#: app/account/templates/_profile_tab_classgroup.html:8
+msgid "User Profile Picture"
+msgstr ""
+
+#: app/account/templates/_profile_tab_password.html:11
+#: app/account/templates/profile.html:54
+#: app/admin/templates/admin_students.html:70
+#: app/base/templates/login/login.html:42
+#: app/base/templates/login/register.html:50
+msgid "Password"
+msgstr ""
+
+#: app/account/templates/_profile_tab_password.html:13
+msgid "Repeat Password"
+msgstr ""
+
+#: app/account/templates/_profile_tab_password.html:18
+msgid "Submit"
+msgstr ""
+
+#: app/account/templates/profile.html:21 app/account/templates/profile.html:28
+#: app/base/templates/site_template/header/user_info.html:39
+msgid "Profile"
+msgstr ""
+
+#: app/account/templates/profile.html:22
+msgid "everything about you"
+msgstr ""
+
+#: app/account/templates/profile.html:26
+msgid "Account"
+msgstr ""
+
+#: app/account/templates/profile.html:48
+msgid "Activity"
+msgstr ""
+
+#: app/account/templates/profile.html:52 app/admin/templates/admin_home.html:38
+#: app/admin/templates/admin_students.html:45
+#: app/admin/templates/admin_students.html:116
+#: app/base/templates/site_template/sidebar.html:66
+msgid "Group"
+msgstr ""
+
+#: app/account/templates/profile.html:56
+msgid "Access Token"
+msgstr ""
+
+#: app/admin/forms.py:39
+msgid "Only CSV file allowed!"
+msgstr ""
+
+#: app/admin/routes.py:37
+msgid "Request with ID #{} removed successfully"
+msgstr ""
+
+#: app/admin/routes.py:54
+msgid "Group {} ({}) removed successfully"
+msgstr ""
+
+#: app/admin/routes.py:76
+msgid "Student {} ({}) was removed successfully"
+msgstr ""
+
+#: app/admin/routes.py:90
+msgid "Password for user {} ({}) was reset to <b>{}</b>"
+msgstr ""
+
+#: app/admin/routes.py:113
+msgid "Assignment {} removed successfully"
+msgstr ""
+
+#: app/admin/routes.py:132
+msgid "Assignment has been updated!"
+msgstr ""
+
+#: app/admin/routes.py:160
+msgid "New Assignment has been created!"
+msgstr ""
+
+#: app/admin/routes.py:185
+msgid "email already exist in DB for username {}"
+msgstr ""
+
+#: app/admin/templates/_header.html:14
+#: app/base/templates/site_template/sidebar.html:50
+msgid "Task Scheduler"
+msgstr ""
+
+#: app/admin/templates/_header.html:16
+#: app/admin/templates/admin_assignment_new_edit.html:131
+#: app/admin/templates/admin_assignments.html:43
+#: app/admin/templates/admin_classgroups.html:5
+#: app/base/templates/site_template/sidebar.html:51
+msgid "Groups"
+msgstr ""
+
+#: app/admin/templates/_header.html:18
+#: app/admin/templates/admin_classgroups.html:37
+#: app/admin/templates/admin_students.html:12
+#: app/base/templates/site_template/sidebar.html:52
+msgid "Students"
+msgstr ""
+
+#: app/admin/templates/_header.html:20
+#: app/admin/templates/admin_assignment_new_edit.html:20
+#: app/admin/templates/admin_assignments.html:7
+#: app/admin/templates/admin_classgroups.html:38
+#: app/base/templates/site_template/header/user_info.html:27
+#: app/base/templates/site_template/sidebar.html:53
+#: app/base/templates/site_template/sidebar.html:65
+#: app/home/templates/assignment.html:22
+#: app/home/templates/assignment_list.html:5
+#: app/home/templates/assignment_list.html:21 app/home/templates/home.html:35
+#: app/home/templates/request_list.html:21
+msgid "Assignments"
+msgstr ""
+
+#: app/admin/templates/_header.html:22
+#: app/admin/templates/admin_settings.html:5
+#: app/base/templates/site_template/sidebar.html:54
+msgid "System Settings"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:3
+msgid "Edit Assignment"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:3
+msgid "New Assignment"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:15
+#: app/admin/templates/admin_home.html:39 app/home/templates/assignment.html:17
+#: app/home/templates/macros/latest_requests.html:21
+#: app/home/templates/request.html:33 app/home/templates/request_list.html:51
+msgid "Assignment"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:16
+msgid "edit"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:16
+#: app/admin/templates/admin_assignment_new_edit.html:21
+msgid "new"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:19
+#: app/admin/templates/base_admin.html:3 app/admin/templates/base_admin.html:18
+#: app/admin/templates/base_admin.html:22
+msgid "Admin"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:32
+msgid "Editor"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:38
+msgid "Remove Assignment?"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:39
+msgid "Do you want to remove this Assignment? This cannot be undone."
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:40
+#: app/admin/templates/admin_classgroups.html:57
+#: app/admin/templates/admin_students.html:78
+#: app/home/templates/request.html:79 app/home/templates/request.html:109
+msgid "Remove"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:54
+#: app/admin/templates/admin_assignment_new_edit.html:55
+#: app/admin/templates/admin_assignments.html:38
+#: app/admin/templates/admin_classgroups.html:35
+#: app/admin/templates/admin_students.html:44
+#: app/home/templates/leaderboard.html:54
+#: app/home/templates/leaderboard_classgroup.html:54
+msgid "Name"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:61
+#: app/admin/templates/admin_assignments.html:41
+msgid "Start Date"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:93
+#: app/admin/templates/admin_assignment_new_edit.html:94
+#: app/admin/templates/admin_assignments.html:39
+msgid "Title"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:100
+msgid "100"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:105
+#: app/home/templates/request.html:56
+msgid "Output"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:107
+msgid "Show execution result to User"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:116
+#: app/admin/templates/admin_classgroups.html:36
+msgid "Description"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:122
+msgid "Expected Result"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:143
+msgid "Files"
+msgstr ""
+
+#: app/admin/templates/admin_assignment_new_edit.html:153
+msgid "Save"
+msgstr ""
+
+#: app/admin/templates/admin_assignments.html:19
+msgid "All Assignments"
+msgstr ""
+
+#: app/admin/templates/admin_assignments.html:23
+#: app/admin/templates/admin_classgroups.html:21
+#: app/admin/templates/admin_home.html:21
+#: app/admin/templates/admin_students.html:28
+#: app/home/templates/leaderboard.html:39
+#: app/home/templates/leaderboard_classgroup.html:39
+#: app/home/templates/request_list.html:36
+msgid "Search"
+msgstr ""
+
+#: app/admin/templates/admin_assignments.html:36
+#: app/admin/templates/admin_classgroups.html:34
+#: app/admin/templates/admin_home.html:34
+#: app/admin/templates/admin_students.html:41
+#: app/home/templates/macros/latest_requests.html:19
+#: app/home/templates/request_list.html:49
+msgid "ID"
+msgstr ""
+
+#: app/admin/templates/admin_assignments.html:37
+#: app/admin/templates/admin_home.html:40
+#: app/home/templates/macros/assignment.html:75
+#: app/home/templates/macros/latest_requests.html:22
+#: app/home/templates/request_list.html:52
+msgid "Status"
+msgstr ""
+
+#: app/admin/templates/admin_assignments.html:42
+msgid "Due Date"
+msgstr ""
+
+#: app/admin/templates/admin_assignments.html:61
+msgid "Edit"
+msgstr ""
+
+#: app/admin/templates/admin_classgroups.html:17
+msgid "All Groups"
+msgstr ""
+
+#: app/admin/templates/admin_classgroups.html:54
+msgid "Remove Group?"
+msgstr ""
+
+#: app/admin/templates/admin_classgroups.html:55
+msgid "Are you sure you want to remove this Group? This cannot be undone."
+msgstr ""
+
+#: app/admin/templates/admin_home.html:5
+#: app/base/templates/site_template/sidebar.html:59
+#: app/home/templates/home.html:8 app/home/templates/home.html:15
+#: app/home/templates/home.html:20
+msgid "Dashboard"
+msgstr ""
+
+#: app/admin/templates/admin_home.html:17
+msgid "All Requests"
+msgstr ""
+
+#: app/admin/templates/admin_home.html:35
+#: app/home/templates/macros/assignment.html:73
+#: app/home/templates/macros/latest_requests.html:20
+#: app/home/templates/request.html:36 app/home/templates/request_list.html:50
+msgid "Date"
+msgstr ""
+
+#: app/admin/templates/admin_home.html:36
+#: app/home/templates/macros/assignment.html:74
+msgid "User"
+msgstr ""
+
+#: app/admin/templates/admin_home.html:37
+#: app/admin/templates/admin_students.html:43
+#: app/base/templates/login/register.html:45
+msgid "Email"
+msgstr ""
+
+#: app/admin/templates/admin_home.html:41
+#: app/home/templates/request_list.html:53
+msgid "Points Assigned"
+msgstr ""
+
+#: app/admin/templates/admin_home.html:42
+#: app/home/templates/macros/assignment.html:76
+#: app/home/templates/macros/latest_requests.html:23
+#: app/home/templates/request_list.html:54
+msgid "Time"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:24
+msgid "All Students"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:42
+msgid "Username"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:48
+msgid "Last Login"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:62
+msgid "Never"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:67
+msgid "Reset Student Password?"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:68
+msgid ""
+"Do you want to generate a random password for this user? This cannot be "
+"undone."
+msgstr ""
+
+#: app/admin/templates/admin_students.html:75
+msgid "Remove Student?"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:76
+msgid "Are you sure you want to remove this Student? This cannot be undone."
+msgstr ""
+
+#: app/admin/templates/admin_students.html:101
+msgid "Import Students"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:123
+msgid "Students *.csv file"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:143
+msgid "Upload"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:160
+msgid "Download"
+msgstr ""
+
+#: app/admin/templates/admin_students.html:165
+msgid ""
+"This results are not stored in any local file or DB. Please download the "
+"results"
+msgstr ""
+
+#: app/admin/templates/base_admin.html:19
+msgid "administration of Pizarra App"
+msgstr ""
+
+#: app/admin/templates/base_admin.html:67
+msgid "Cancel"
+msgstr ""
+
+#: app/admin/templates/base_admin.html:70
+msgid "Confirm"
+msgstr ""
+
+#: app/base/templates/errors/page_403.html:16
+msgid "Access Denied"
+msgstr ""
+
+#: app/base/templates/errors/page_403.html:17
+msgid "Full authentication is required to access this resource."
+msgstr ""
+
+#: app/base/templates/errors/page_403.html:24
+#: app/base/templates/login/login.html:3
+#: app/base/templates/login/register.html:75
+msgid "Login"
+msgstr ""
+
+#: app/base/templates/errors/page_404.html:16
+msgid "Page not found"
+msgstr ""
+
+#: app/base/templates/errors/page_404.html:17
+msgid "This page you are looking for does not exist."
+msgstr ""
+
+#: app/base/templates/errors/page_404.html:24
+#: app/base/templates/errors/page_500.html:24
+#: app/home/templates/assignment.html:21
+#: app/home/templates/assignment_list.html:20 app/home/templates/faq.html:17
+#: app/home/templates/home.html:16 app/home/templates/home.html:19
+#: app/home/templates/leaderboard.html:20
+#: app/home/templates/leaderboard_classgroup.html:20
+#: app/home/templates/request.html:19 app/home/templates/request_list.html:19
+msgid "Home"
+msgstr ""
+
+#: app/base/templates/errors/page_500.html:16
+msgid "Server Error"
+msgstr ""
+
+#: app/base/templates/errors/page_500.html:17
+msgid ""
+"We track these errors automatically, but if the problem persists feel "
+"free to contact us.."
+msgstr ""
+
+#: app/base/templates/login/login.html:24
+msgid "create your own user"
+msgstr ""
+
+#: app/base/templates/login/login.html:36
+msgid "Username / Email"
+msgstr ""
+
+#: app/base/templates/login/login.html:50
+msgid "Remember Me"
+msgstr ""
+
+#: app/base/templates/login/login.html:58
+msgid "Sign In"
+msgstr ""
+
+#: app/base/templates/login/login.html:66
+msgid "Not a member?"
+msgstr ""
+
+#: app/base/templates/login/login.html:67
+#: app/base/templates/login/register.html:3
+#: app/base/templates/login/register.html:65
+msgid "Register"
+msgstr ""
+
+#: app/base/templates/login/register.html:58
+msgid "I agree to the"
+msgstr ""
+
+#: app/base/templates/login/register.html:58
+msgid "terms"
+msgstr ""
+
+#: app/base/templates/login/register.html:74
+msgid "Have an account?"
+msgstr ""
+
+#: app/base/templates/site_template/navigation.html:13
+msgid "Toggle navigation"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:41
+msgid "Online"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:48
+msgid "ADMINISTRATION"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:57
+msgid "MAIN NAVIGATION"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:61
+#: app/home/templates/assignment_list.html:16
+msgid "My Assignments"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:63
+#: app/home/templates/request.html:3 app/home/templates/request.html:21
+#: app/home/templates/request_list.html:3
+#: app/home/templates/request_list.html:15
+msgid "My Requests"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:65
+#: app/home/templates/leaderboard.html:17
+#: app/home/templates/leaderboard.html:22
+#: app/home/templates/leaderboard_classgroup.html:17
+#: app/home/templates/leaderboard_classgroup.html:22
+msgid "Leaderboards"
+msgstr ""
+
+#: app/base/templates/site_template/sidebar.html:68
+#: app/home/templates/faq.html:3 app/home/templates/faq.html:14
+#: app/home/templates/faq.html:19
+msgid "FAQ"
+msgstr ""
+
+#: app/base/templates/site_template/header/user_info.html:43
+#: app/base/templates/site_template/sidebar.html:70
+msgid "Logout"
+msgstr ""
+
+#: app/home/routes.py:129
+msgid "Authentication failed"
+msgstr ""
+
+#: app/home/routes.py:141
+msgid "Unable to find Assignment"
+msgstr ""
+
+#: app/home/routes.py:147
+msgid "Assignment has not started yet"
+msgstr ""
+
+#: app/home/routes.py:150
+msgid "Assignment is closed and not accepting any more requests"
+msgstr ""
+
+#: app/home/routes.py:153
+msgid "Assignment unavailable"
+msgstr ""
+
+#: app/home/routes.py:156
+msgid "You are sending Requests too fast. Time between Requests is {} seconds"
+msgstr ""
+
+#: app/home/routes.py:161
+msgid ""
+"You have used all your Quota for sending Requests. Please contact an "
+"Administrator"
+msgstr ""
+
+#: app/home/routes.py:165
+msgid "There is no file in this Request"
+msgstr ""
+
+#: app/home/routes.py:171
+msgid "The extension of this file is not allowed"
+msgstr ""
+
+#: app/home/routes.py:199
+msgid "Request created, please navigate to {} to check the results"
+msgstr ""
+
+#: app/home/templates/assignment.html:30
+msgid "Hurry up!"
+msgstr ""
+
+#: app/home/templates/assignment.html:30
+msgid "This Assignment is closing in less than 24 hours!"
+msgstr ""
+
+#: app/home/templates/assignment.html:34
+msgid "Times up!"
+msgstr ""
+
+#: app/home/templates/assignment.html:34
+msgid "This Assignment is closed and not receiving any more requests"
+msgstr ""
+
+#: app/home/templates/assignment.html:38
+msgid "Completed"
+msgstr ""
+
+#: app/home/templates/assignment.html:38
+msgid ""
+"You already submitted a request that passed. You can keep trying to "
+"improve your results!"
+msgstr ""
+
+#: app/home/templates/assignment.html:48
+msgid "Due date:"
+msgstr ""
+
+#: app/home/templates/assignment.html:53 app/home/templates/assignment.html:74
+#: app/home/templates/assignment.html:110
+msgid "Submit Assignment"
+msgstr ""
+
+#: app/home/templates/assignment.html:72
+msgid "Print"
+msgstr ""
+
+#: app/home/templates/assignment.html:77 app/home/templates/leaderboard.html:3
+#: app/home/templates/leaderboard_classgroup.html:3
+#: app/home/templates/macros/assignment.html:103
+msgid "Leaderboard"
+msgstr ""
+
+#: app/home/templates/assignment.html:91
+msgid "You earned this Badge"
+msgstr ""
+
+#: app/home/templates/assignment.html:95
+msgid "Complete the Badge mission to earn it"
+msgstr ""
+
+#: app/home/templates/assignment.html:113
+msgid "Copy the following code in your console to submit your Assignment"
+msgstr ""
+
+#: app/home/templates/assignment.html:122
+msgid "Copy"
+msgstr ""
+
+#: app/home/templates/assignment_list.html:17
+msgid "All your homework"
+msgstr ""
+
+#: app/home/templates/home.html:29
+msgid "Total Requests"
+msgstr ""
+
+#: app/home/templates/home.html:29
+msgid "Your Requests"
+msgstr ""
+
+#: app/home/templates/home.html:31
+msgid "Quota Used"
+msgstr ""
+
+#: app/home/templates/home.html:31 app/home/templates/home.html:33
+#: app/home/templates/home.html:35
+msgid "More info"
+msgstr ""
+
+#: app/home/templates/home.html:33
+msgid "Success Rate"
+msgstr ""
+
+#: app/home/templates/home.html:50
+msgid "Latest Badge"
+msgstr ""
+
+#: app/home/templates/leaderboard.html:55
+msgid "Run Time"
+msgstr ""
+
+#: app/home/templates/leaderboard_classgroup.html:55
+msgid "Poits"
+msgstr ""
+
+#: app/home/templates/request.html:47
+msgid "Request Input"
+msgstr ""
+
+#: app/home/templates/request.html:54
+msgid "Code Analysis"
+msgstr ""
+
+#: app/home/templates/request.html:59
+msgid "Total run time"
+msgstr ""
+
+#: app/home/templates/request.html:64
+msgid "Output is unavailable for this Assignment"
+msgstr ""
+
+#: app/home/templates/request.html:75
+msgid "Back"
+msgstr ""
+
+#: app/home/templates/request.html:99
+msgid "Removing Request"
+msgstr ""
+
+#: app/home/templates/request.html:102
+msgid "Are you sure you want to remove this Request?"
+msgstr ""
+
+#: app/home/templates/request_list.html:16
+msgid "preview of results of all your Assignments"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:3
+msgid "Passed"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:5
+msgid "Closed"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:7
+msgid "Closes soon"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:9
+msgid "Open"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:11
+msgid "Opens Soon"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:28
+msgid "Assignment image"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:31
+msgid "Due Date:"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:40
+msgid "No description available"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:67
+msgid "Latest Requests"
+msgstr ""
+
+#: app/home/templates/macros/assignment.html:107
+msgid "Full Description"
+msgstr ""
+
+#: app/home/templates/macros/badges.html:47
+msgid "No Badges found"
+msgstr ""
+
+#: app/home/templates/macros/badges.html:48
+msgid "Keep fightning!"
+msgstr ""
+
+#: app/home/templates/macros/badges.html:53
+msgid "Check your assignments to earn some badges"
+msgstr ""
+
+#: app/home/templates/macros/latest_requests.html:5
+msgid "Your Latest Requests"
+msgstr ""
+
+#: app/home/templates/macros/latest_requests.html:50
+msgid "View All Requests"
+msgstr ""
+
+#: app/home/templates/macros/teams.html:8
+msgid "Members"
+msgstr ""
+
+#: app/home/templates/macros/teams.html:29
+msgid "View all group members"
+msgstr ""
+
+#: app/home/templates/macros/teams.html:41
+msgid "Team Solo"
+msgstr ""
+
+#: app/home/templates/macros/teams.html:42
+msgid "You don't have a team"
+msgstr ""
+
+#: app/home/templates/macros/teams.html:63
+msgid "Go to your Class to find teammates!"
 msgstr ""
 

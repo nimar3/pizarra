@@ -13,7 +13,7 @@ from sqlalchemy import Boolean, Binary, DateTime, Column, Integer, String, Forei
 from sqlalchemy.orm import relationship, backref
 
 from app import db, login_manager
-from app.base.models_tasks import RequestStatus
+from app.base.models_jobs import RequestStatus
 from app.base.util import hash_pass, random_string, process_date
 
 # many-to-many relationships
@@ -144,7 +144,7 @@ class Role(db.Model, RoleMixin):
 class Team(db.Model):
     """
     Represents a Team of students in the database
-    A Student can be a part of many teams (in case he is part of more than one Group)
+    A Student can be a part of only one team
     A Team can have many students
     """
     __tablename__ = 'team'
