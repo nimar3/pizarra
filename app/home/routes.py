@@ -241,6 +241,9 @@ def allowed_file(filename: str) -> bool:
     """
     returns if a file is allowed to be uploaded to the server
     """
+    if filename is None or filename.strip() is None:
+        return False
+
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['FILE_ALLOWED_EXTENSIONS']
 
@@ -249,7 +252,7 @@ def over_request_limit(last_request: datetime) -> bool:
     """
     returns if an user is over the request limit and has to wait to send another request
     """
-    if last_request is not None:
+    if last_request is not None and isinstance(last_request, datetime) and last_request < datetime.utcnow():
         difference = datetime.utcnow() - last_request
         return difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']
-    return False
+    return True

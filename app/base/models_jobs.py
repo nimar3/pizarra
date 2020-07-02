@@ -512,6 +512,8 @@ def get_kahan_time(output: str) -> float:
     returns time spent on kahan, if not found it will return 5 minutes as expected wall time
     :param output to search for execution time
     """
-    regex_time = 'Time: (.*)\n'
-    result = re.search(regex_time, output)
-    return float(result.group(1)) if result is not None else float(300.0)
+    if output is not None:
+        regex_time = 'Time: (.*)\n'
+        result = re.search(regex_time, output)
+        return float(result.group(1)) if result is not None else float(300.0)
+    return float(300.0)
