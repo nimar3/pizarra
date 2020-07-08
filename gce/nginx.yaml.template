@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: eu.gcr.io/pizarra-279100/nginx
+        image: eu.gcr.io/${PROJECT_ID}/nginx
         ports:
           - containerPort: 80
             name: http

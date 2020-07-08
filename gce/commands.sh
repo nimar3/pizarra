@@ -1,6 +1,8 @@
 #!/bin/bash
 
-export PROJECT_ID=pizarra-279100
+read -p 'GCE Project ID: ' PROJECT_ID
+
+export PROJECT_ID=$PROJECT_ID
 export DB_USERNAME=pizarra
 export DB_PASSWORD=pizarra
 
@@ -29,7 +31,12 @@ kubectl apply -f nfs.yaml
 kubectl apply -f redis.yaml
 
 # deploy DB
-kubectl apply -f postgress.yaml
+kubectl apply -f postgres.yaml
+
+# deploy nginx
+cat nginx.yaml.template | envsubst > nginx.yaml
+kubectl apply -f nginx.yaml
 
 # deploy Pizarra
+cat pizarra.yaml.template | envsubst > pizarra.yaml
 kubectl apply -f pizarra.yaml
