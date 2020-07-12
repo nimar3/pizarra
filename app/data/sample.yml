@@ -177,9 +177,17 @@
 
 - Team:
     - __key__: team_foo
-      name: "foo"
+      name: "Zootopia"
     - __key__: team_bar
       name: "bar"
+    - __key__: team_uvas
+      name: "UP uvas"
+    - __key__: team_flogger
+      name: "Flogger"
+    - __key__: team_morse
+      name: "Morse"
+    - __key__: team_paralelo
+      name: "Paralelo"
 
 - Badge:
     - __key__: badge_flash
@@ -235,11 +243,11 @@
 - ClassGroup:
     - __key__: class_a
       name: "G2019-A1"
-      description: "Class from 2019 A1 group"
+      description: "Grupo CPA 2019 A1"
       assignments: [assignment_hello_world, assignment_primos, assignment_busqueda_cadena]
     - __key__: class_b
       name: "G2019-B1"
-      description: "Class from 2019 B1 group"
+      description: "Grupo LPP 2019 B1"
       assignments: [assignment_hello_world, assignment_openmpi_basic]
     - __key__: class_c
       name: "G2019-C1"
@@ -247,11 +255,11 @@
       assignments: [assignment_hello_world, assignment_openmpi_basic]
     - __key__: class_d
       name: "G2019-D1"
-      description: "Class from 2019 D1 group"
+      description: "Class LPP from 2019 D1 group"
       assignments: [assignment_hello_world, assignment_openmpi_basic]
     - __key__: class_e
       name: "G2019-E1"
-      description: "Class from 2019 E1 group"
+      description: "Grup LPP 2019 E1 group"
       assignments: [assignment_hello_world, assignment_openmpi_basic]
 
 
@@ -302,6 +310,7 @@
       points: 130
       classgroup: class_a
       roles: [users]
+      team: team_flogger
     - __key__: lucia_garcia_candela
       email: lucia.garcia.candela@upv.es
       name: Lucia Garcia Candela
@@ -316,6 +325,7 @@
       points: 120
       classgroup: class_a
       roles: [users]
+      team: team_paralelo
     - __key__: marina_cabrera_martin
       email: marina.cabrera.martin@upv.es
       name: Marina Cabrera Martin
@@ -323,6 +333,7 @@
       points: 150
       classgroup: class_a
       roles: [users]
+      team: team_uvas
     - __key__: monica_ruiz_gascon
       email: monica.ruiz.gascon@upv.es
       name: Monica Ruiz Gascon
@@ -330,6 +341,7 @@
       points: 80
       classgroup: class_a
       roles: [users]
+      team: team_bar
     - __key__: francisco_jose_ruiz_carmona
       email: francisco.jose.ruiz.carmona@upv.es
       name: Francisco Jose Ruiz Carmona
@@ -337,6 +349,7 @@
       points: 150
       classgroup: class_a
       roles: [users]
+      team: team_morse
     - __key__: juan_antonio_rodriguez_perales
       email: juan.antonio.rodriguez.perales@upv.es
       name: Juan Antonio Rodriguez Perales
@@ -344,6 +357,7 @@
       points: 70
       classgroup: class_a
       roles: [users]
+      team: team_flogger
     - __key__: rosa_recio_santana
       email: rosa.recio.santana@upv.es
       name: Rosa Recio Santana
@@ -351,6 +365,7 @@
       points: 150
       classgroup: class_a
       roles: [users]
+      team: team_uvas
     - __key__: ana_hernandez_prieto
       email: ana.hernandez.prieto@upv.es
       name: Ana Hernandez Prieto
@@ -358,6 +373,7 @@
       points: 150
       classgroup: class_a
       roles: [users]
+      team: team_morse
     - __key__: maria_carmen_hernandez_sanchez
       email: maria.carmen.hernandez.sanchez@upv.es
       name: Maria Carmen Hernandez Sanchez
@@ -365,6 +381,7 @@
       points: 200
       classgroup: class_a
       roles: [users]
+      team: team_bar
     - __key__: jose_luis_izquierdo_arjona
       email: jose.luis.izquierdo.arjona@upv.es
       name: Jose Luis Izquierdo Arjona
@@ -372,6 +389,7 @@
       points: 150
       classgroup: class_a
       roles: [users]
+      team: team_paralelo
     - __key__: maria_teresa_fernandez_ochoa
       email: maria.teresa.fernandez.ochoa@upv.es
       name: Maria Teresa Fernandez Ochoa
@@ -379,6 +397,7 @@
       points: 150
       classgroup: class_b
       roles: [users]
+      team: team_bar
     - __key__: maria_angeles_lozano_caceres
       email: maria.angeles.lozano.caceres@upv.es
       name: Maria Ángeles Lozano Caceres
@@ -616,34 +635,34 @@
       assignment: assignment_hello_world
       request: request_7
       classgroup: class_a
-      run_time: 47.12
+      run_time: 0.12
     - __key__: leaderboard_8
       user: lucia_garcia_candela
       assignment: assignment_hello_world
       request: request_8
       classgroup: class_a
-      run_time: 125.134
+      run_time: 0.134
     - __key__: leaderboard_9
       user: javier_perez_callejas
       assignment: assignment_hello_world
       request: request_9
       classgroup: class_a
-      run_time: 52.43
+      run_time: 0.43
     - __key__: leaderboard_10
       user: marina_cabrera_martin
       assignment: assignment_hello_world
       request: request_10
       classgroup: class_a
-      run_time: 40.98
+      run_time: 0.98
     - __key__: leaderboard_11
       user: monica_ruiz_gascon
       assignment: assignment_hello_world
       request: request_11
       classgroup: class_a
-      run_time: 45.433
+      run_time: 0.433
     - __key__: leaderboard_12
       user: francisco_jose_ruiz_carmona
       assignment: assignment_hello_world
       request: request_12
       classgroup: class_a
-      run_time: 38.2331
+      run_time: 0.2331

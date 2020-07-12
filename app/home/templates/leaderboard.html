@@ -25,58 +25,70 @@
 
     {% for leaderboard in leaderboards %}
         {% if leaderboards[leaderboard] | count > 0 %}
-        <!-- Main content -->
-        <section class="content">
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">{{ leaderboard }}</h3>
-                            <div class="box-tools">
-                                <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
-                                    <input type="text" id="table-search-{{ leaderboard }}"
-                                           class="form-control pull-right js-table-search"
-                                           placeholder="{{ _('Search') }}">
+            <!-- Main content -->
+            <section class="content">
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">{{ leaderboard }}</h3>
+                                <div class="box-tools">
+                                    <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
+                                        <input type="text" id="table-search-{{ leaderboard }}"
+                                               class="form-control pull-right js-table-search"
+                                               placeholder="{{ _('Search') }}">
 
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i>
-                                        </button>
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body table-responsive">
-                            <table class="table table-hover js-table" id="table-{{ leaderboard }}">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>{{ _('Name') }}</th>
-                                    <th>{{ _('Run Time') }}</th>
-                                </tr>
-                                </thead>
-                                <tbody style="font-size: 17px">
-                                {% for entry in leaderboards[leaderboard] %}
-                                    <tr {{ 'style=background-color:#00a65a4d;font-weight:bold' if current_user.id == entry.user.id else '' }} >
-                                        <td>{{ loop.index }}</td>
-                                        <td><img class="profile-user-img img-responsive img-circle"
-                                                 style="width:40px; padding: 0; display: unset; border:1px solid #d2d6de"
-                                                 src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + entry.user.avatar) }}"
-                                                 alt="{{ _('User Avatar') }}"> {{ entry.user.name }}</td>
-                                        <td>{{ entry.run_time }}</td>
+                            <!-- /.box-header -->
+                            <div class="box-body table-responsive">
+                                <table class="table table-hover js-table" id="table-{{ leaderboard }}">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>{{ _('Name') }}</th>
+                                        <th>{{ _('Team') }}</th>
+                                        <th>{{ _('Run Time') }}</th>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody style="font-size: 17px">
+                                    {% for entry in leaderboards[leaderboard] %}
+                                        <tr {{ 'style=background-color:#00a65a4d;font-weight:bold' if current_user.id == entry.user.id else '' }} >
+                                            <td>{{ loop.index }}</td>
+                                            <td><img class="profile-user-img img-responsive img-circle"
+                                                     style="width:40px; padding: 0; display: unset; border:1px solid #d2d6de"
+                                                     src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + entry.user.avatar) }}"
+                                                     alt="{{ _('User Avatar') }}"> {{ entry.user.name }}</td>
+                                            <td>
+                                                {% if entry.user.team %}
+                                                    {% for member in entry.user.team.members %}
+                                                        <img class="profile-user-img img-responsive img-circle"
+                                                             style="width:40px; padding: 0; display: unset; border:1px solid #d2d6de"
+                                                             src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + member.avatar) }}"
+                                                             alt="{{ member.name }}" title="{{ member.name }}">
+                                                    {% endfor %}
+                                                    {{ entry.user.team.name }}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ entry.run_time }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.box -->
                     </div>
-                    <!-- /.box -->
                 </div>
-            </div>
-        </section>
-        <!-- /.content -->
+            </section>
+            <!-- /.content -->
         {% endif %}
     {% endfor %}
 
@@ -100,7 +112,7 @@
                     'info': true,
                     'autoWidth': true,
                     'sDom': 'ltipr',
-                    'aaSorting': [[2, 'asc']]
+                    'aaSorting': [[3, 'asc']]
                 });
 
                 // datatables search on searchbox keypress

@@ -20,72 +20,72 @@ msgstr ""
 
 #: app/account/routes.py:34
 msgid "New Access Token has been generated!"
-msgstr ""
+msgstr "Nuevo Token de Acceso ha sido generado!"
 
 #: app/account/routes.py:54
 msgid "You joined Team {}"
-msgstr ""
+msgstr "Te has unido al Equipo {}"
 
 #: app/account/routes.py:56
 msgid "You are unable to join team {} because is full"
-msgstr ""
+msgstr "No puedes unirte al equipo {} porque está completo"
 
 #: app/account/routes.py:58
 msgid "You already belong to team {}"
-msgstr ""
+msgstr "Ya perteneces al equipo {}"
 
 #: app/account/routes.py:60
 msgid "Team with key {} was not found"
-msgstr ""
+msgstr "El Equipo con la clave {} no ha sido encontrado"
 
 #: app/account/routes.py:73
 msgid "You left the team successfully"
-msgstr ""
+msgstr "Has abandonado el equipo exitosamente"
 
 #: app/account/routes.py:81
 msgid "You cannot create a new Team until you leave your current one"
-msgstr ""
+msgstr "No puedes crear un nuevo Equipo hasta que no abandones el actual"
 
 #: app/account/routes.py:86
 msgid "Team with name {} already exist, please pick another one"
-msgstr ""
+msgstr "El Equipo con el nombre {} ya existe, por favor elige un nombre diferente"
 
 #: app/account/routes.py:95
 msgid "You created and joined the team {}"
-msgstr ""
+msgstr "Has creado y te has unido al equipo {}"
 
 #: app/account/routes.py:109
 msgid "Password has been updated!"
-msgstr ""
+msgstr "¡La contraseña ha sido actualizada!"
 
 #: app/account/routes.py:111
 msgid "Unable to update password"
-msgstr ""
+msgstr "No es posible actualizar la contraseña"
 
 #: app/account/templates/_profile_about_me.html:4
 msgid "About Me"
-msgstr ""
+msgstr "Sobre Mi"
 
 #: app/account/templates/_profile_about_me.html:8
 msgid "Education"
-msgstr ""
+msgstr "Curso Académico"
 
 #: app/account/templates/_profile_about_me.html:11
 msgid "You are enroled in"
-msgstr ""
+msgstr "Te has inscrito"
 
 #: app/account/templates/_profile_about_me.html:17
 msgid "Location"
-msgstr ""
+msgstr "Ubicación"
 
 #: app/account/templates/_profile_about_me.html:19
 msgid "Space"
-msgstr ""
+msgstr "Espacio"
 
 #: app/account/templates/_profile_about_me.html:24
 #: app/home/templates/macros/teams.html:5
 msgid "Team"
-msgstr ""
+msgstr "Equipo"
 
 #: app/account/templates/_profile_about_me.html:39
 #: app/account/templates/_profile_resume.html:6
@@ -97,48 +97,48 @@ msgstr ""
 #: app/home/templates/macros/teams.html:17
 #: app/home/templates/macros/teams.html:46
 msgid "User Avatar"
-msgstr ""
+msgstr "Avatar de Usuario"
 
 #: app/account/templates/_profile_about_me.html:41
 #: app/account/templates/_profile_tab_classgroup.html:10
 #: app/home/templates/macros/teams.html:19
 msgid "You!"
-msgstr ""
+msgstr "¡Tú!"
 
 #: app/account/templates/_profile_about_me.html:47
 msgid "Seems like you are not part of a team"
-msgstr ""
+msgstr "Parece que no eres parte de un equipo"
 
 #: app/account/templates/_profile_about_me.html:58
 msgid "Create a new Team"
-msgstr ""
+msgstr "Crear un nuevo Equipo"
 
 #: app/account/templates/_profile_about_me.html:69
 msgid "Share Team URL for others to join"
-msgstr ""
+msgstr "Compartir URL del equipo para que otros se unan"
 
 #: app/account/templates/_profile_about_me.html:87
 #: app/account/templates/_profile_about_me.html:96
 #: app/home/templates/assignment.html:108 app/home/templates/request.html:97
 #: app/home/templates/request.html:106
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: app/account/templates/_profile_about_me.html:89
 msgid "Leaving Team"
-msgstr ""
+msgstr "Abandonar Equipo"
 
 #: app/account/templates/_profile_about_me.html:92
 msgid "Are you sure you want to leave this team?"
-msgstr ""
+msgstr "¿Estás seguro que quieres abandonar este equipo?"
 
 #: app/account/templates/_profile_about_me.html:98
 msgid "Leave"
-msgstr ""
+msgstr "Abandonar"
 
 #: app/account/templates/_profile_resume.html:18
 msgid "Group Members"
-msgstr ""
+msgstr "Miembros de la Clase"
 
 #: app/account/templates/_profile_resume.html:23
 #: app/account/templates/profile.html:50 app/admin/templates/_header.html:22
@@ -148,7 +148,7 @@ msgstr ""
 #: app/home/templates/assignment.html:85
 #: app/home/templates/macros/assignment.html:94
 msgid "Badges"
-msgstr ""
+msgstr "Insignias"
 
 #: app/account/templates/_profile_resume.html:26
 #: app/admin/templates/_header.html:12
@@ -156,7 +156,7 @@ msgstr ""
 #: app/base/templates/site_template/header/user_info.html:24
 #: app/base/templates/site_template/sidebar.html:49
 msgid "Requests"
-msgstr ""
+msgstr "Envíos"
 
 #: app/account/templates/_profile_resume.html:31
 #: app/admin/templates/admin_assignment_new_edit.html:99
@@ -164,70 +164,70 @@ msgstr ""
 #: app/admin/templates/admin_students.html:47
 #: app/home/templates/leaderboard_classgroup.html:55
 msgid "Points"
-msgstr ""
+msgstr "Puntos"
 
 #: app/account/templates/_profile_resume.html:35
 #: app/admin/templates/admin_students.html:46
 msgid "Quota"
-msgstr ""
+msgstr "Quota"
 
 #: app/account/templates/_profile_tab_accesskey.html:5
 msgid "This token is for personal use and should not be shared! Use it wisely."
-msgstr ""
+msgstr "Este token es para uso personal y ¡no debe ser compartido! Úsalo inteligentemente."
 
 #: app/account/templates/_profile_tab_accesskey.html:17
 msgid "Regenerate Key"
-msgstr ""
+msgstr "Volver a generar Clave"
 
 #: app/account/templates/_profile_tab_accesskey.html:22
 msgid "Copy Key"
-msgstr ""
+msgstr "Copiar Clave"
 
 #: app/account/templates/_profile_tab_activity.html:10
 #: app/home/templates/request.html:15
 msgid "Request"
-msgstr ""
+msgstr "Solicitar"
 
 #: app/account/templates/_profile_tab_activity.html:11
 msgid "sent to"
-msgstr ""
+msgstr "enviar a"
 
 #: app/account/templates/_profile_tab_activity.html:14
 msgid "You sent a Request with ID"
-msgstr ""
+msgstr "Has enviado una Solicitud con el ID"
 
 #: app/account/templates/_profile_tab_activity.html:16
 msgid "for the Assignment"
-msgstr ""
+msgstr "para la Tarea"
 
 #: app/account/templates/_profile_tab_activity.html:19
 msgid "Status for this request is"
-msgstr ""
+msgstr "El estado de esta solicitud es"
 
 #: app/account/templates/_profile_tab_activity.html:36
 msgid "Registered"
-msgstr ""
+msgstr "Registrado"
 
 #: app/account/templates/_profile_tab_activity.html:36
 msgid "you joined Pizarra"
-msgstr ""
+msgstr "te has unido a Pizarra"
 
 #: app/account/templates/_profile_tab_activity.html:51
 #: app/home/templates/macros/assignment.html:102
 msgid "Badge"
-msgstr ""
+msgstr "Insignia"
 
 #: app/account/templates/_profile_tab_activity.html:51
 msgid "earned"
-msgstr ""
+msgstr "obtenido"
 
 #: app/account/templates/_profile_tab_activity.html:53
 msgid "You earned the Badge"
-msgstr ""
+msgstr "Has obtenido la Insignia"
 
 #: app/account/templates/_profile_tab_activity.html:61
 msgid "Badge Image"
-msgstr ""
+msgstr "Imagen de la Insignia"
 
 #: app/account/templates/_profile_tab_password.html:11
 #: app/account/templates/profile.html:54
@@ -235,88 +235,88 @@ msgstr ""
 #: app/base/templates/login/login.html:38
 #: app/base/templates/login/register.html:50
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: app/account/templates/_profile_tab_password.html:13
 msgid "Repeat Password"
-msgstr ""
+msgstr "Repetir Contraseña"
 
 #: app/account/templates/_profile_tab_password.html:18
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: app/account/templates/profile.html:21 app/account/templates/profile.html:28
 #: app/base/templates/site_template/header/user_info.html:39
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 #: app/account/templates/profile.html:22
 msgid "everything about you"
-msgstr ""
+msgstr "todo sobre ti"
 
 #: app/account/templates/profile.html:26
 msgid "Account"
-msgstr ""
+msgstr "Cuenta"
 
 #: app/account/templates/profile.html:48
 msgid "Activity"
-msgstr ""
+msgstr "Actividad"
 
 #: app/account/templates/profile.html:52 app/admin/templates/admin_home.html:38
 #: app/admin/templates/admin_students.html:45
 #: app/admin/templates/admin_students.html:116
 #: app/base/templates/site_template/sidebar.html:66
 msgid "Group"
-msgstr ""
+msgstr "Grupo"
 
 #: app/account/templates/profile.html:56
 msgid "Access Token"
-msgstr ""
+msgstr "Token de acceso"
 
 #: app/admin/forms.py:39
 msgid "Only CSV file allowed!"
-msgstr ""
+msgstr "¡Sólo se permiten archivos CSV!"
 
 #: app/admin/routes.py:37
 msgid "Request with ID #{} removed successfully"
-msgstr ""
+msgstr "El Envío con el ID #{} se ha eliminado satisfactoriamente"
 
 #: app/admin/routes.py:54
 msgid "Group {} ({}) removed successfully"
-msgstr ""
+msgstr "El Grupo {} ({}) se ha eliminado satisfactoriamente"
 
 #: app/admin/routes.py:76
 msgid "Student {} ({}) was removed successfully"
-msgstr ""
+msgstr "El Estudiante {} ({}) se ha eliminado satisfactoriamente"
 
 #: app/admin/routes.py:90
 msgid "Password for user {} ({}) was reset to <b>{}</b>"
-msgstr ""
+msgstr "La Contraseña para el usuario {} ({}) se ha restablecido a <b>{}</b>"
 
 #: app/admin/routes.py:118
 msgid "Badge {} removed successfully"
-msgstr ""
+msgstr "La Insignia {} se ha removido satisfactoriamente"
 
 #: app/admin/routes.py:130
 msgid "Assignment {} removed successfully"
-msgstr ""
+msgstr "Tarea {} eliminada satisfactoriamente"
 
 #: app/admin/routes.py:149
 msgid "Assignment has been updated!"
-msgstr ""
+msgstr "La Tarea ha sido actualizada"
 
 #: app/admin/routes.py:179
 msgid "New Assignment has been created!"
-msgstr ""
+msgstr "Nueva Tarea ha sido creada"
 
 #: app/admin/routes.py:204
 msgid "email already exist in DB for username {}"
-msgstr ""
+msgstr "email ya existente en la base de datos para el nombre de usuario {}"
 
 #: app/admin/templates/_header.html:14
 #: app/base/templates/site_template/sidebar.html:50
 msgid "Task Scheduler"
-msgstr ""
+msgstr "Programador de Tareas"
 
 #: app/admin/templates/_header.html:16
 #: app/admin/templates/admin_assignment_new_edit.html:128
@@ -324,14 +324,14 @@ msgstr ""
 #: app/admin/templates/admin_classgroups.html:5
 #: app/base/templates/site_template/sidebar.html:51
 msgid "Groups"
-msgstr ""
+msgstr "Grupos"
 
 #: app/admin/templates/_header.html:18
 #: app/admin/templates/admin_classgroups.html:37
 #: app/admin/templates/admin_students.html:12
 #: app/base/templates/site_template/sidebar.html:52
 msgid "Students"
-msgstr ""
+msgstr "Estudiantes"
 
 #: app/admin/templates/_header.html:20
 #: app/admin/templates/admin_assignment_new_edit.html:20
@@ -346,55 +346,55 @@ msgstr ""
 #: app/home/templates/assignment_list.html:21 app/home/templates/home.html:35
 #: app/home/templates/request_list.html:21
 msgid "Assignments"
-msgstr ""
+msgstr "Tareas"
 
 #: app/admin/templates/_header.html:24
 #: app/admin/templates/admin_settings.html:5
 #: app/base/templates/site_template/sidebar.html:54
 msgid "System Settings"
-msgstr ""
+msgstr "Ajustes del Sistema"
 
 #: app/admin/templates/admin_assignment_new_edit.html:3
 msgid "Edit Assignment"
-msgstr ""
+msgstr "Editar Tareas"
 
 #: app/admin/templates/admin_assignment_new_edit.html:3
 msgid "New Assignment"
-msgstr ""
+msgstr "Nueva Tarea"
 
 #: app/admin/templates/admin_assignment_new_edit.html:15
 #: app/admin/templates/admin_home.html:39 app/home/templates/assignment.html:17
 #: app/home/templates/macros/latest_requests.html:34
 #: app/home/templates/request.html:33 app/home/templates/request_list.html:51
 msgid "Assignment"
-msgstr ""
+msgstr "Tarea"
 
 #: app/admin/templates/admin_assignment_new_edit.html:16
 msgid "edit"
-msgstr ""
+msgstr "editar"
 
 #: app/admin/templates/admin_assignment_new_edit.html:16
 #: app/admin/templates/admin_assignment_new_edit.html:21
 msgid "new"
-msgstr ""
+msgstr "nuevo"
 
 #: app/admin/templates/admin_assignment_new_edit.html:19
 #: app/admin/templates/base_admin.html:3 app/admin/templates/base_admin.html:18
 #: app/admin/templates/base_admin.html:22
 msgid "Admin"
-msgstr ""
+msgstr "Administrador"
 
 #: app/admin/templates/admin_assignment_new_edit.html:32
 msgid "Editor"
-msgstr ""
+msgstr "Editor"
 
 #: app/admin/templates/admin_assignment_new_edit.html:38
 msgid "Remove Assignment?"
-msgstr ""
+msgstr "¿Eliminar Tarea?"
 
 #: app/admin/templates/admin_assignment_new_edit.html:39
 msgid "Do you want to remove this Assignment? This cannot be undone."
-msgstr ""
+msgstr "¿Quieres eliminar esta Tarea? Esto no podrá ser deshecho"
 
 #: app/admin/templates/admin_assignment_new_edit.html:40
 #: app/admin/templates/admin_badges.html:63
@@ -402,7 +402,7 @@ msgstr ""
 #: app/admin/templates/admin_students.html:78
 #: app/home/templates/request.html:79 app/home/templates/request.html:109
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: app/admin/templates/admin_assignment_new_edit.html:54
 #: app/admin/templates/admin_assignment_new_edit.html:55
@@ -413,54 +413,54 @@ msgstr ""
 #: app/home/templates/leaderboard.html:55
 #: app/home/templates/leaderboard_classgroup.html:54
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: app/admin/templates/admin_assignment_new_edit.html:61
 #: app/admin/templates/admin_assignments.html:41
 msgid "Start Date"
-msgstr ""
+msgstr "Fecha de Inicio"
 
 #: app/admin/templates/admin_assignment_new_edit.html:93
 #: app/admin/templates/admin_assignment_new_edit.html:94
 #: app/admin/templates/admin_assignments.html:39
 #: app/admin/templates/admin_badges.html:36
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: app/admin/templates/admin_assignment_new_edit.html:100
 msgid "100"
-msgstr ""
+msgstr "100"
 
 #: app/admin/templates/admin_assignment_new_edit.html:105
 #: app/home/templates/request.html:56
 msgid "Output"
-msgstr ""
+msgstr "Salida"
 
 #: app/admin/templates/admin_assignment_new_edit.html:107
 msgid "Show execution result"
-msgstr ""
+msgstr "Mostrar resultados de ejecución"
 
 #: app/admin/templates/admin_assignment_new_edit.html:116
 #: app/admin/templates/admin_badges.html:37
 #: app/admin/templates/admin_classgroups.html:36
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #: app/admin/templates/admin_assignment_new_edit.html:122
 msgid "Expected Result"
-msgstr ""
+msgstr "Resultados esperados"
 
 #: app/admin/templates/admin_assignment_new_edit.html:138
 msgid "Files"
-msgstr ""
+msgstr "Archivos"
 
 #: app/admin/templates/admin_assignment_new_edit.html:154
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: app/admin/templates/admin_assignments.html:19
 msgid "All Assignments"
-msgstr ""
+msgstr "Todas las Tareas"
 
 #: app/admin/templates/admin_assignments.html:23
 #: app/admin/templates/admin_badges.html:21
@@ -471,7 +471,7 @@ msgstr ""
 #: app/home/templates/leaderboard_classgroup.html:39
 #: app/home/templates/request_list.html:36
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: app/admin/templates/admin_assignments.html:36
 #: app/admin/templates/admin_badges.html:34
@@ -481,7 +481,7 @@ msgstr ""
 #: app/home/templates/macros/latest_requests.html:32
 #: app/home/templates/request_list.html:49
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: app/admin/templates/admin_assignments.html:37
 #: app/admin/templates/admin_home.html:40
@@ -489,175 +489,173 @@ msgstr ""
 #: app/home/templates/macros/latest_requests.html:35
 #: app/home/templates/request_list.html:52
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 #: app/admin/templates/admin_assignments.html:42
 msgid "Due Date"
-msgstr ""
+msgstr "Fecha de Finalización"
 
 #: app/admin/templates/admin_assignments.html:61
 #: app/admin/templates/admin_badges.html:56
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: app/admin/templates/admin_badges.html:17
 msgid "All Badges"
-msgstr ""
+msgstr "Todas las Insignias"
 
 #: app/admin/templates/admin_badges.html:38
 msgid "Rule"
-msgstr ""
+msgstr "Regla"
 
 #: app/admin/templates/admin_badges.html:60
 msgid "Remove Badge?"
-msgstr ""
+msgstr "¿Eliminar Insignia?"
 
 #: app/admin/templates/admin_badges.html:61
 msgid "Are you sure you want to remove this Badge? This cannot be undone."
-msgstr ""
+msgstr "¿Estás seguro que quieres eliminar esta Insignia? Esto no podrá ser deshecho."
 
 #: app/admin/templates/admin_classgroups.html:17
 msgid "All Groups"
-msgstr ""
+msgstr "Todos los Grupos"
 
 #: app/admin/templates/admin_classgroups.html:54
 msgid "Remove Group?"
-msgstr ""
+msgstr "¿Remover Grupo?"
 
 #: app/admin/templates/admin_classgroups.html:55
 msgid "Are you sure you want to remove this Group? This cannot be undone."
-msgstr ""
+msgstr "¿Estas seguro que quieres eliminar este Grupo? Esto no podrá ser deshecho."
 
 #: app/admin/templates/admin_home.html:5
 #: app/base/templates/site_template/sidebar.html:59
 #: app/home/templates/home.html:8 app/home/templates/home.html:15
 #: app/home/templates/home.html:20
 msgid "Dashboard"
-msgstr ""
+msgstr "Panel de inicio"
 
 #: app/admin/templates/admin_home.html:17
 msgid "All Requests"
-msgstr ""
+msgstr "Todos tus Envíos"
 
 #: app/admin/templates/admin_home.html:35
 #: app/home/templates/macros/assignment.html:66
 #: app/home/templates/macros/latest_requests.html:33
 #: app/home/templates/request.html:36 app/home/templates/request_list.html:50
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: app/admin/templates/admin_home.html:36
 #: app/home/templates/macros/assignment.html:67
 msgid "User"
-msgstr ""
+msgstr "Usuario"
 
 #: app/admin/templates/admin_home.html:37
 #: app/admin/templates/admin_students.html:43
 #: app/base/templates/login/register.html:45
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: app/admin/templates/admin_home.html:41
 #: app/home/templates/request_list.html:53
 msgid "Points Assigned"
-msgstr ""
+msgstr "Puntos Asignados"
 
 #: app/admin/templates/admin_home.html:42
 #: app/home/templates/macros/assignment.html:69
 #: app/home/templates/macros/latest_requests.html:36
 #: app/home/templates/request_list.html:54
 msgid "Time"
-msgstr ""
+msgstr "Tiempo"
 
 #: app/admin/templates/admin_students.html:24
 msgid "All Students"
-msgstr ""
+msgstr "Todos los Alumnos"
 
 #: app/admin/templates/admin_students.html:42
 msgid "Username"
-msgstr ""
+msgstr "Nombre de Usuario"
 
 #: app/admin/templates/admin_students.html:48
 msgid "Last Login"
-msgstr ""
+msgstr "Último Acceso"
 
 #: app/admin/templates/admin_students.html:62
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 #: app/admin/templates/admin_students.html:67
 msgid "Reset Student Password?"
-msgstr ""
+msgstr "Restablecer la Contraseña del Alumno"
 
 #: app/admin/templates/admin_students.html:68
-msgid ""
-"Do you want to generate a random password for this user? This cannot be "
-"undone."
-msgstr ""
+msgid "Do you want to generate a random password for this user? This cannot be undone."
+msgstr "Quieres generar una contraseña aleatoria para este usuario? Esto no podrá ser deshecho."
 
 #: app/admin/templates/admin_students.html:75
 msgid "Remove Student?"
-msgstr ""
+msgstr "¿Eliminar Alumno?"
 
 #: app/admin/templates/admin_students.html:76
 msgid "Are you sure you want to remove this Student? This cannot be undone."
-msgstr ""
+msgstr "¿Estas seguro que quieres eliminar a este Alumno? Esto no podrá ser deshecho."
 
 #: app/admin/templates/admin_students.html:101
 msgid "Import Students"
-msgstr ""
+msgstr "Importar Alumnos"
 
 #: app/admin/templates/admin_students.html:123
 msgid "Students *.csv file"
-msgstr ""
+msgstr "Archivo *.csv de Alumnos"
 
 #: app/admin/templates/admin_students.html:143
 msgid "Upload"
-msgstr ""
+msgstr "Subir archivo"
 
 #: app/admin/templates/admin_students.html:160
 msgid "Download"
-msgstr ""
+msgstr "Descargar"
 
 #: app/admin/templates/admin_students.html:165
 msgid ""
 "This results are not stored in any local file or DB. Please download the "
 "results"
-msgstr ""
+msgstr "Estos resultados no están archivados en ningún archivo local o base de datos. Por favor descarga los resultados"
 
 #: app/admin/templates/base_admin.html:19
 msgid "administration of Pizarra App"
-msgstr ""
+msgstr "administración de la aplicación Pizarra"
 
 #: app/admin/templates/base_admin.html:67
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: app/admin/templates/base_admin.html:70
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: app/base/templates/errors/page_403.html:16
 msgid "Access Denied"
-msgstr ""
+msgstr "Acceso Denegado"
 
 #: app/base/templates/errors/page_403.html:17
 msgid "Full authentication is required to access this resource."
-msgstr ""
+msgstr "Para acceder a este recurso se requiere estar autenticación."
 
 #: app/base/templates/errors/page_403.html:24
 #: app/base/templates/login/login.html:3 app/base/templates/login/login.html:21
 #: app/base/templates/login/register.html:70
 msgid "Login"
-msgstr ""
+msgstr "Iniciar sesión"
 
 #: app/base/templates/errors/page_404.html:16
 msgid "Page not found"
-msgstr ""
+msgstr "Página no encontrada"
 
 #: app/base/templates/errors/page_404.html:17
 msgid "This page you are looking for does not exist."
-msgstr ""
+msgstr "La página que buscas no existe"
 
 #: app/base/templates/errors/page_404.html:24
 #: app/base/templates/errors/page_500.html:24
@@ -668,43 +666,43 @@ msgstr ""
 #: app/home/templates/leaderboard_classgroup.html:20
 #: app/home/templates/request.html:19 app/home/templates/request_list.html:19
 msgid "Home"
-msgstr ""
+msgstr "Inicio"
 
 #: app/base/templates/errors/page_500.html:16
 msgid "Server Error"
-msgstr ""
+msgstr "Error del Servidor"
 
 #: app/base/templates/errors/page_500.html:17
 msgid ""
 "We track these errors automatically, but if the problem persists feel "
 "free to contact us.."
-msgstr ""
+msgstr "Rastreamos estos errores automáticamente, pero si el problema persiste siéntete libre de contactarnos."
 
 #: app/base/templates/login/login.html:32
 msgid "Username / Email"
-msgstr ""
+msgstr "Nombre de Usuario / Email"
 
 #: app/base/templates/login/login.html:46
 msgid "Remember Me"
-msgstr ""
+msgstr "Recuérdame"
 
 #: app/base/templates/login/login.html:54
 msgid "Sign In"
-msgstr ""
+msgstr "Registrarse"
 
 #: app/base/templates/login/login.html:62
 msgid "Not a member?"
-msgstr ""
+msgstr "¿No eres miembro?"
 
 #: app/base/templates/login/login.html:63
 #: app/base/templates/login/register.html:3
 #: app/base/templates/login/register.html:60
 msgid "Register"
-msgstr ""
+msgstr "Registrarse"
 
 #: app/base/templates/login/register.html:69
 msgid "Have an account?"
-msgstr ""
+msgstr "¿Tienes una cuenta?"
 
 #: app/base/templates/site_template/navigation.html:13
 msgid "Toggle navigation"
@@ -712,27 +710,27 @@ msgstr ""
 
 #: app/base/templates/site_template/sidebar.html:41
 msgid "Online"
-msgstr ""
+msgstr "Online"
 
 #: app/base/templates/site_template/sidebar.html:48
 msgid "ADMINISTRATION"
-msgstr ""
+msgstr "ADMINISTRACIÓN"
 
 #: app/base/templates/site_template/sidebar.html:57
 msgid "MAIN NAVIGATION"
-msgstr ""
+msgstr "NAVEGACIÓN PRINCIPAL"
 
 #: app/base/templates/site_template/sidebar.html:61
 #: app/home/templates/assignment_list.html:16
 msgid "My Assignments"
-msgstr ""
+msgstr "Mis Tareas"
 
 #: app/base/templates/site_template/sidebar.html:63
 #: app/home/templates/request.html:3 app/home/templates/request.html:21
 #: app/home/templates/request_list.html:3
 #: app/home/templates/request_list.html:15
 msgid "My Requests"
-msgstr ""
+msgstr "Mis Envíos"
 
 #: app/base/templates/site_template/sidebar.html:65
 #: app/home/templates/leaderboard.html:17
@@ -740,265 +738,265 @@ msgstr ""
 #: app/home/templates/leaderboard_classgroup.html:17
 #: app/home/templates/leaderboard_classgroup.html:22
 msgid "Leaderboards"
-msgstr ""
+msgstr "Tablas de Clasificación"
 
 #: app/base/templates/site_template/sidebar.html:68
 #: app/home/templates/faq.html:3 app/home/templates/faq.html:14
 #: app/home/templates/faq.html:19
 msgid "FAQ"
-msgstr ""
+msgstr "Preguntas Frequentes"
 
 #: app/base/templates/site_template/header/user_info.html:43
 #: app/base/templates/site_template/sidebar.html:70
 msgid "Logout"
-msgstr ""
+msgstr "Desconectarse"
 
 #: app/home/routes.py:129
 msgid "Authentication failed"
-msgstr ""
+msgstr "Autenticación fallida"
 
 #: app/home/routes.py:141
 msgid "Unable to find Assignment"
-msgstr ""
+msgstr "No de puede encontrar la Tarea"
 
 #: app/home/routes.py:147
 msgid "Assignment has not started yet"
-msgstr ""
+msgstr "La Tarea no a comenzado aún"
 
 #: app/home/routes.py:150
 msgid "Assignment is closed and not accepting any more requests"
-msgstr ""
+msgstr "La tarea se ha cerrado y no acepta mas Envíos"
 
 #: app/home/routes.py:153
 msgid "Assignment unavailable"
-msgstr ""
+msgstr "La tarea no está disponible"
 
 #: app/home/routes.py:156
 msgid "You are sending Requests too fast. Time between Requests is {} seconds"
-msgstr ""
+msgstr "Estas haciendo Envíos muy seguidos. El tiempo entre Envíos es de {} segundos"
 
 #: app/home/routes.py:161
 msgid ""
 "You have used all your Quota for sending Requests. Please contact an "
 "Administrator"
-msgstr ""
+msgstr "Has utilizado toda tu quota para Envíos. Por favor contacta a un Administrador"
 
 #: app/home/routes.py:165
 msgid "There is no file in this Request"
-msgstr ""
+msgstr "No hay ningún archivo en este Envío"
 
 #: app/home/routes.py:171
 msgid "The extension of this file is not allowed"
-msgstr ""
+msgstr "La extensión de este archivo no está permitida"
 
 #: app/home/routes.py:199
 msgid "Request created, please navigate to {} to check the results"
-msgstr ""
+msgstr "Solicitud creada, por favor navega a {} para confirmar los resultados"
 
 #: app/home/templates/assignment.html:30
 msgid "Hurry up!"
-msgstr ""
+msgstr "¡Apurate!"
 
 #: app/home/templates/assignment.html:30
 msgid "This Assignment is closing in less than 24 hours!"
-msgstr ""
+msgstr "¡Esta Tarea cierra en menos de 24 horas!"
 
 #: app/home/templates/assignment.html:34
 msgid "Times up!"
-msgstr ""
+msgstr "¡Se acabó el tiempo!"
 
 #: app/home/templates/assignment.html:34
 msgid "This Assignment is closed and not receiving any more requests"
-msgstr ""
+msgstr "Esta Tarea está cerrada y no recibe más Envíos"
 
 #: app/home/templates/assignment.html:38
 msgid "Completed"
-msgstr ""
+msgstr "Completado"
 
 #: app/home/templates/assignment.html:38
 msgid ""
 "You already submitted a request that passed. You can keep trying to "
 "improve your results!"
-msgstr ""
+msgstr "Ya has realizado un envío exitoso. ¡Puedes seguir intentándolo para mejorar tus resultados!"
 
 #: app/home/templates/assignment.html:48
 msgid "Due date:"
-msgstr ""
+msgstr "Fecha de finalización"
 
 #: app/home/templates/assignment.html:53 app/home/templates/assignment.html:74
 #: app/home/templates/assignment.html:110
 msgid "Submit Assignment"
-msgstr ""
+msgstr "Enviar Tarea"
 
 #: app/home/templates/assignment.html:72
 msgid "Print"
-msgstr ""
+msgstr "Imprimir"
 
 #: app/home/templates/assignment.html:77 app/home/templates/leaderboard.html:3
 #: app/home/templates/leaderboard_classgroup.html:3
 msgid "Leaderboard"
-msgstr ""
+msgstr "Tabla de clasificación"
 
 #: app/home/templates/assignment.html:91
 msgid "You earned this Badge"
-msgstr ""
+msgstr "Has ganado esta Insignia"
 
 #: app/home/templates/assignment.html:95
 msgid "Complete the Badge mission to earn it"
-msgstr ""
+msgstr "Completa la misión para ganar la Insignia"
 
 #: app/home/templates/assignment.html:113
 msgid "Copy the following code in your console to submit your Assignment"
-msgstr ""
+msgstr "Copia el siguiente código en tu consola para enviar tu tarea"
 
 #: app/home/templates/assignment.html:122
 msgid "Copy"
-msgstr ""
+msgstr "Copiar"
 
 #: app/home/templates/assignment_list.html:17
 msgid "All your homework"
-msgstr ""
+msgstr "Todas tus tareas"
 
 #: app/home/templates/home.html:29
 msgid "Total Requests"
-msgstr ""
+msgstr "Total de Envíos"
 
 #: app/home/templates/home.html:29
 msgid "Your Requests"
-msgstr ""
+msgstr "Tus Envíos"
 
 #: app/home/templates/home.html:31
 msgid "Quota Used"
-msgstr ""
+msgstr "Uso de Quota"
 
 #: app/home/templates/home.html:31 app/home/templates/home.html:33
 #: app/home/templates/home.html:35
 msgid "More info"
-msgstr ""
+msgstr "Más información"
 
 #: app/home/templates/home.html:33
 msgid "Success Rate"
-msgstr ""
+msgstr "Tasa de éxito"
 
 #: app/home/templates/home.html:50
 msgid "Latest Badge"
-msgstr ""
+msgstr "Últimas Insignias"
 
 #: app/home/templates/leaderboard.html:56
 msgid "Run Time"
-msgstr ""
+msgstr "Tiempo de ejecución"
 
 #: app/home/templates/request.html:47
 msgid "Request Input"
-msgstr ""
+msgstr "Entrada"
 
 #: app/home/templates/request.html:54
 msgid "Code Analysis"
-msgstr ""
+msgstr "Análisis de Código"
 
 #: app/home/templates/request.html:59
 msgid "Total run time"
-msgstr ""
+msgstr "Tiempo de ejecución"
 
 #: app/home/templates/request.html:64
 msgid "Output is unavailable for this Assignment"
-msgstr ""
+msgstr "Salida no disponible para esta Tarea"
 
 #: app/home/templates/request.html:75
 msgid "Back"
-msgstr ""
+msgstr "Atrás"
 
 #: app/home/templates/request.html:99
 msgid "Removing Request"
-msgstr ""
+msgstr "Borrando Envío"
 
 #: app/home/templates/request.html:102
 msgid "Are you sure you want to remove this Request?"
-msgstr ""
+msgstr "Estás seguro que quieres eliminar este Envío?"
 
 #: app/home/templates/request_list.html:16
 msgid "preview of results of all your Assignments"
-msgstr ""
+msgstr "vista de resultados de tus Tareas"
 
 #: app/home/templates/macros/assignment.html:3
 msgid "Passed"
-msgstr ""
+msgstr "Completada"
 
 #: app/home/templates/macros/assignment.html:5
 msgid "Closed"
-msgstr ""
+msgstr "Cerrado"
 
 #: app/home/templates/macros/assignment.html:7
 msgid "Closes soon"
-msgstr ""
+msgstr "Cierra pronto"
 
 #: app/home/templates/macros/assignment.html:9
 msgid "Open"
-msgstr ""
+msgstr "Abrir"
 
 #: app/home/templates/macros/assignment.html:11
 msgid "Opens Soon"
-msgstr ""
+msgstr "Abre pronto"
 
 #: app/home/templates/macros/assignment.html:28
 msgid "Assignment image"
-msgstr ""
+msgstr "Imagen de Tarea"
 
 #: app/home/templates/macros/assignment.html:31
 msgid "Due Date:"
-msgstr ""
+msgstr "Fecha Fin:"
 
 #: app/home/templates/macros/assignment.html:40
 msgid "No description available"
-msgstr ""
+msgstr "Sin descripción"
 
 #: app/home/templates/macros/assignment.html:49
 msgid "Full Description"
-msgstr ""
+msgstr "Descripción completa"
 
 #: app/home/templates/macros/assignment.html:60
 msgid "Latest Requests"
-msgstr ""
+msgstr "Últimos Envíos"
 
 #: app/home/templates/macros/badges.html:47
 msgid "No Badges found"
-msgstr ""
+msgstr "No se han encontrado Insignias"
 
 #: app/home/templates/macros/badges.html:48
 msgid "Keep fightning!"
-msgstr ""
+msgstr "Seigue Luchando!"
 
 #: app/home/templates/macros/badges.html:53
 msgid "Check your assignments to earn some badges"
-msgstr ""
+msgstr "Revisa tus Tareas para obtener Insignias"
 
 #: app/home/templates/macros/latest_requests.html:5
 msgid "Your Latest Requests"
-msgstr ""
+msgstr "Tus últimos Envíos"
 
 #: app/home/templates/macros/latest_requests.html:20
 msgid "Not found"
-msgstr ""
+msgstr "No encontrado"
 
 #: app/home/templates/macros/latest_requests.html:23
 msgid "No Requests found"
-msgstr ""
+msgstr "No se han encontrado Envíos"
 
 #: app/home/templates/macros/latest_requests.html:24
 msgid "Check your Assignments and start earning points and badges!"
-msgstr ""
+msgstr "Revisa tus Tareas y comienza a obtener puntos e Insignias!"
 
 #: app/home/templates/macros/latest_requests.html:64
 msgid "View All Requests"
-msgstr ""
+msgstr "Ver todos los envíos"
 
 #: app/home/templates/macros/teams.html:8
 msgid "Members"
-msgstr ""
+msgstr "Miembros"
 
 #: app/home/templates/macros/teams.html:29
 msgid "View all group members"
-msgstr ""
+msgstr "Ver todos los miembros del Grupo"
 
 #: app/home/templates/macros/teams.html:41
 msgid "Team Solo"
@@ -1006,9 +1004,9 @@ msgstr ""
 
 #: app/home/templates/macros/teams.html:42
 msgid "You don't have a team"
-msgstr ""
+msgstr "No tienes Equipo"
 
 #: app/home/templates/macros/teams.html:63
 msgid "Go to your Class to find teammates!"
-msgstr ""
+msgstr "Ve a tu Clase para encontrar compañeros de Equipo!"
 
