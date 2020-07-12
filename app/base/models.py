@@ -102,7 +102,7 @@ class User(db.Model, UserMixin):
             setattr(self, 'username', generate_username(kwargs['email']))
 
         if 'access_token' not in kwargs:
-            setattr(self, 'access_token', random_string())
+            setattr(self, 'access_token', random_string(20))
 
         if 'roles' not in kwargs:
             roles = [Role.query.filter_by(name='users').first()]
@@ -229,9 +229,21 @@ class Request(db.Model):
                                RequestStatus.FINISHED, RequestStatus.KO]
 
     @property
+    def executed_successfully(self):
+        return self.status == RequestStatus.FINISHED
+
+    @property
     def max_execution_time(self):
         return current_app.config['TIMEWALL'] if self.assignment.timewall is None else min(
             current_app.config['TIMEWALL'], self.assignment.timewall)
+
+    @property
+    def position(self):
+        return 1
+
+    @property
+    def other_attributes(self):
+        return dict(position=self.position, executed_successfully=self.executed_successfully)
 
     def __repr__(self):
         return 'Request: {} from {} for Assignment {}'.format(self.id, self.user, self.assignment)

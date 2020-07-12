@@ -252,6 +252,8 @@ def over_request_limit(last_request: datetime) -> bool:
     """
     returns if an user is over the request limit and has to wait to send another request
     """
+    if last_request is None:
+        return False
     if last_request is not None and isinstance(last_request, datetime) and last_request < datetime.utcnow():
         difference = datetime.utcnow() - last_request
         return difference.seconds < current_app.config['TIME_BETWEEN_REQUESTS']

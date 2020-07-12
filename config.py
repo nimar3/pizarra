@@ -45,7 +45,7 @@ class Config(object):
     FILE_ALLOWED_EXTENSIONS = {'c', 'cpp'}
     MAX_CONTENT_LENGTH = 1 * 1024 * 1024  # 1 megabyte
 
-    TIME_BETWEEN_REQUESTS = environ.get('TIME_BETWEEN_REQUESTS', 60)  # in seconds
+    TIME_BETWEEN_REQUESTS = environ.get('TIME_BETWEEN_REQUESTS', 5)  # in seconds
 
     # Teams
     TEAM_MAX_SIZE = environ.get('TEAM_MAX_SIZE', 3)

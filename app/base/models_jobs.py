@@ -109,7 +109,8 @@ class LocalJob:
             'request': self.user_request.__dict__,
             'user': self.user_request.user.__dict__,
             'assignment': self.user_request.assignment.__dict__,
-            'leaderboard': self.user_request.leaderboard.__dict__
+            'leaderboard': self.user_request.leaderboard.__dict__ if self.user_request.leaderboard is not None else dict(),
+            'status': self.user_request.other_attributes
         }
 
     def process(self):
@@ -268,9 +269,9 @@ class LocalJob:
         task was completed, update it for points, badges and more
         """
         # check if user won any badge, this can happen even if we were timewalled or an error was thrown
+        self.user_request.update_leaderboard()
         self.assign_badges()
         self.update_user_quota_and_points()
-        self.user_request.update_leaderboard()
 
         return StepResult.END
 
@@ -375,7 +376,7 @@ class KahanJob(LocalJob):
             try:
                 step_result = f()
             except Exception as e:
-                self.user_request.output = str(e)
+                self.output = str(e)
                 self.update_request(RequestStatus.UNHANDLED_ERROR)
                 break
 
@@ -502,6 +503,8 @@ def get_kahan_queue_status(output: list):
 
 
 def check_kahan_result(expected_result: str, output: str):
+    if expected_result is None:
+        return True
     regex_result = r'Result: (.+).'
     result = re.search(regex_result, output)
     return True if result is not None and result.group(1) == expected_result else False
@@ -513,7 +516,7 @@ def get_kahan_time(output: str) -> float:
     :param output to search for execution time
     """
     if output is not None:
-        regex_time = 'Time: (.*)\n'
+        regex_time = 'Time: (.*)'
         result = re.search(regex_time, output)
         return float(result.group(1)) if result is not None else float(300.0)
     return float(300.0)
