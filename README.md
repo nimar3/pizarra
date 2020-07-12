@@ -2,6 +2,54 @@
 
 A web app in Python 3.x to manage Parallel Programming Competitions based on [Tablón](https://trasgo.infor.uva.es/tablon/)
 
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+The only two prerequisites for running Pizarra are Python3 and Docker. Docker is only mandatory if you want to build an image to deploy it, for testing purposes in a local env. is not actually necesary. 
+
+
+### Installing
+
+Execute the following commands to have your local development env running
+
+```
+pip install -r requirements_dev.txt 
+python run.py
+```
+
+## Deployment
+
+Pizarra is prepared to be deployed in Google Cloud Engine, after you setup your account in GCE and created a new project execute the script [commands.sh](gce/commands.sh)
+
+## Built With
+
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/) - as micro framework for the web app
+* [Flask Dashboard AdminLTE](https://github.com/app-generator/flask-dashboard-adminlte) - for Dashboard template
+* [Redis Queue](https://python-rq.org/) - for Task Scheduling
+
+## Contributing
+
+Just create a pull request with your improvements :)
+
+## Versioning
+
+Stable branch is ``master`` in tag version 1.0, future stable versions will be tagged as mayor 1.X or minor releases 1.X.X
+
+## Authors
+
+* **Nicolas Martini** - *Initial work* - [nimar3](https://github.com/nimar3)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+## Acknowledgments
+
+To Pedro Alonso Jordá, the DSIC and the UPV for all the support.
+
 ## Features
 
 - Account
@@ -35,19 +83,19 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
       - [x] remove
       - [x] create
       - [x] edit
-      - [ ] attachments
+      - [x] attachments
     - groups
       - [x] list
       - [x] remove
-      - [ ] edit
+      - [x] edit
     - badges
-      - [ ] list
-      - [ ] create
-      - [ ] edit
-      - [ ] logic to assign them to users
+      - [x] list
+      - [x] create
+      - [x] edit
+      - [x] logic to assign them to users
     - [x] manage RQ task scheduler
-    - [ ] summaries ? 
-    - [ ] global status ?
+    - [x] summaries ? 
+    - [x] global status ?
 - Assignments
   - [x] list
   - [x] info
@@ -60,7 +108,7 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
 - LeaderBoard
   - [x] view
 - FAQ
-  - [ ] info
+  - [x] info
 - RQ
   - [x] enqueue
   - [x] check for malicious code
@@ -75,12 +123,11 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
   - [x] docker-compose
   - [x] support for gunicorn
   
-
 ## Other features
 
 - Localization
   - [X] English
-  - [ ] Spanish (WIP)
+  - [x] Spanish
 
 ## Screenshots
 
@@ -110,58 +157,3 @@ A web app in Python 3.x to manage Parallel Programming Competitions based on [Ta
 ![Task Scheduler!](/app/base/static/assets/pizarra/img/readme/rq-task-scheduler.png "Task Scheduler")
 
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-TODO Dockerfile
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-```
-TODO full guide
-```
-
-```
-pip install -r requirements.txt 
-python run.py
-```
-
-## Deployment
-
-```
-TODO
-```
-
-## Built With
-
-* [Flask](https://flask.palletsprojects.com/en/1.1.x/) - as micro framework for the web app
-* [Flask Dashboard AdminLTE](https://github.com/app-generator/flask-dashboard-adminlte) - for Dashboard template
-* [Redis Queue](https://python-rq.org/) - for Task Scheduling
-
-## Contributing
-
-
-## Versioning
-
-## Authors
-
-* **Nicolas Martini** - *Initial work* - [nimar3](https://github.com/nimar3)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## Acknowledgments
-
-```
-TODO
-```

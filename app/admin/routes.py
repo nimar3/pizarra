@@ -13,7 +13,7 @@ from werkzeug.utils import secure_filename
 from app import db
 from app.admin import blueprint
 from app.admin.forms import AssignmentForm, UsersUploadForm
-from app.base.models import Assignment, ClassGroup, Request, User
+from app.base.models import Assignment, ClassGroup, Request, User, Badge
 from app.base.util import random_string, process_date, hash_pass
 
 
@@ -98,9 +98,26 @@ def assignments():
     return render_template('admin_assignments.html', assignment_list=Assignment.query.all())
 
 
+@blueprint.route('/badges')
+def badges():
+    return render_template('admin_badges.html', badges_list=Badge.query.all())
+
+
 @blueprint.route('/settings')
 def settings():
     return render_template('admin_settings.html')
+
+
+@blueprint.route('/badges/remove/<id>', methods=['GET', 'POST'])
+def badges_remove(id):
+    badge = Badge.query.filter_by(name=id).first()
+    if badge is not None:
+        assignment_name = badge.name
+        db.session.delete(badge)
+        db.session.commit()
+        flash(_('Badge {} removed successfully').format(assignment_name), 'success')
+
+    return redirect(url_for('.assignments'))
 
 
 @blueprint.route('/assignments/remove/<name>', methods=['GET', 'POST'])
@@ -138,8 +155,10 @@ def assignments_edit(name):
     # TODO find a default way to avoid this
     form.classgroups.data = assignment.classgroups
     form.badges.data = assignment.badges
+    # populate attachments
+    attachments = assignment.attachments
 
-    return render_template('admin_assignment_new_edit.html', form=form, edit=True)
+    return render_template('admin_assignment_new_edit.html', form=form, edit=True, attachments=attachments)
 
 
 @blueprint.route('/assignments/new', methods=['GET', 'POST'])
@@ -210,8 +229,6 @@ def populate_assignment(assignment, data):
     assignment.description = data['description']
     assignment.start_date = process_date(data['start_date'])
     assignment.due_date = process_date(data['due_date'])
-    assignment.makefile = data['makefile']
-    assignment.execution_script = data['execution_script']
     assignment.expected_result = data['expected_result']
     assignment.show_output = data['show_output']
     assignment.points = data['points']

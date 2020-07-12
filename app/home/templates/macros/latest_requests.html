@@ -12,37 +12,51 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <div class="table-responsive">
-                <table class="table no-margin">
-                    <thead>
-                    <tr>
-                        <th>{{ _('ID') }}</th>
-                        <th>{{ _('Date') }}</th>
-                        <th>{{ _('Assignment') }}</th>
-                        <th>{{ _('Status') }}</th>
-                        <th>{{ _('Time') }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for request in request_list %}
+            {% if request_list | count == 0 %}
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-3">
+                        <img class="media-object" style="max-width: 100%"
+                                 src="{{ url_for('base_blueprint.static', filename=STATIC_PZ + '404.png') }}" alt="{{ _('Not found') }}">
+                    </div>
+                    <div class="col-xs-8">
+                        <h4 class="media-heading">{{ _('No Requests found') }}</h4>
+                            {{ _('Check your Assignments and start earning points and badges!') }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
                         <tr>
-                            <td>
-                                <a href="{{ url_for('.requests', id=request.id) }}">#{{ request.id }}</a>
-                            </td>
-                            <td>{{ request.timestamp }}</td>
-                            <td>
-                                <a href="{{ url_for('.assignments', name=request.assignment.name) }}">{{ request.assignment.title }}</a>
-                            </td>
-                            <td>
-                                <span class="label {{ request.status.label }}">{{ request.status.name }}</span>
-                            </td>
-                            <td>{{ request.run_time }} s.</td>
+                            <th>{{ _('ID') }}</th>
+                            <th>{{ _('Date') }}</th>
+                            <th>{{ _('Assignment') }}</th>
+                            <th>{{ _('Status') }}</th>
+                            <th>{{ _('Time') }}</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.table-responsive -->
+                        </thead>
+                        <tbody>
+                        {% for request in request_list %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('.requests', id=request.id) }}">#{{ request.id }}</a>
+                                </td>
+                                <td>{{ request.timestamp }}</td>
+                                <td>
+                                    <a href="{{ url_for('.assignments', name=request.assignment.name) }}">{{ request.assignment.title }}</a>
+                                </td>
+                                <td>
+                                    <span class="label {{ request.status.label }}">{{ request.status.name }}</span>
+                                </td>
+                                <td>{{ request.run_time }} s.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            {% endif %}
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">

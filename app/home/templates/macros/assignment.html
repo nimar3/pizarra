@@ -41,31 +41,24 @@
                         </div>
                         <p>...</p>
                     </div>
-
                 </div>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <p class="lead">{{ _('Badges') }}</p>
-                        {% if assignment.badges | count > 0 %}
-                            <ul class="users-list clearfix badge-assignment-list">
-                                {% for badge in assignment.badges %}
-                                    {% if not badge.secret %}
-                                        <li>
-                                            <img src="{{ url_for('.static', filename='assets/pizarra/img/' + badge.image) }}"
-                                                 alt="{{ _('Badge') }} - {{ badge.title }}"
-                                                 data-toggle="tooltip" data-placement="bottom" title="{{ badge.title }}">
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <span class="description"></span>
-                        {% endif %}
+                <div class="row no-print">
+                    <div class="col-xs-12">
+                        <a href="{{ url_for('.assignments') + assignment.name }}"
+                           class="btn btn-default pull-right"><i class="fa fa-file-o"></i>
+                            {{ _('Full Description') }}</a>
                     </div>
+                </div>
+
+            </div>
+            <!-- /.box-footer -->
+            <div class="box-footer">
+                <div class="row">
                     <!-- /.col -->
-                    <div class="col-xs-8">
-                        <p class="lead">{{ _('Latest Requests') }}</p>
-                        {% if assignment.requests | count > 0 %}
+                    {% if assignment.requests | count > 0 %}
+                        <div class="col-xs-12">
+                            <p class="lead">{{ _('Latest Requests') }}</p>
+
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -79,7 +72,7 @@
                                     <tbody>
                                     {% for request in assignment.requests[:3] %}
                                         <tr>
-                                            <td>{{ request.timestamp }}</td>
+                                            <td>{{ request.timestamp.strftime('%Y/%m/%d %H:%M:%S') }}</td>
                                             <td>{{ request.user.username }}</td>
                                             <td><span
                                                     class="label {{ request.status.label }}">{{ request.status.name }}</span>
@@ -90,23 +83,35 @@
                                     </tbody>
                                 </table>
                             </div>
-                        {% endif %}
-                    </div>
+
+                        </div>
+                    {% endif %}
                     <!-- /.col -->
                 </div>
-            </div>
-            <!-- /.box-footer -->
-            <div class="box-footer">
-                <div class="row no-print">
-                    <div class="col-xs-12">
-                        <button type="button" class="btn btn-primary">
-                            <i class="fa fa-flag-checkered"></i> {{ _('Leaderboard') }}
-                        </button>
-                        <a href="{{ url_for('.assignments') + assignment.name }}"
-                           class="btn btn-default pull-right"><i class="fa fa-file-o"></i>
-                            {{ _('Full Description') }}</a>
+                {% if assignment.badges | count > 0 %}
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="lead">{{ _('Badges') }}</p>
+                            {% if assignment.badges | count > 0 %}
+                                <ul class="users-list clearfix badge-assignment-list">
+                                    {% for badge in assignment.badges %}
+                                        {% if not badge.secret %}
+                                            <li>
+                                                <img src="{{ url_for('.static', filename='assets/pizarra/img/' + badge.image) }}"
+                                                     style="max-width: 30%"
+                                                     alt="{{ _('Badge') }} - {{ badge.title }}"
+                                                     data-toggle="tooltip" data-placement="bottom"
+                                                     title="{{ badge.title }}">
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <span class="description"></span>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
+                {% endif %}
             </div>
             <!-- /.box-footer -->
         </div>

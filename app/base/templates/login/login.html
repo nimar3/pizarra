@@ -18,11 +18,7 @@
                 {% if msg %}
                     {{ msg | safe }}
                 {% else %}
-                    <span>
-                Use default credentials: <strong>admin / 123</strong>
-                <br/>
-                OR <a href={{ url_for('base_blueprint.create_user') }}>{{ _('create your own user') }}</a>
-            </span>
+                    <b>{{ _('Login') }}</b>
                 {% endif %}
             </p>
 

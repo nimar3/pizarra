@@ -5,7 +5,7 @@ License: MIT
 from flask_security.utils import _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileRequired, FileAllowed, FileField
-from wtforms import StringField, BooleanField, MultipleFileField
+from wtforms import StringField, MultipleFileField, BooleanField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from wtforms.validators import DataRequired, InputRequired, ValidationError
 from wtforms.widgets import TextArea
@@ -23,7 +23,7 @@ class AssignmentForm(FlaskForm):
     expected_result = StringField('Expected Result', id='expected-result', widget=TextArea(), render_kw={"rows": "10"},
                                   validators=[DataRequired()])
     points = StringField('Points', id='points')
-    show_output = BooleanField('Show Output', id='show-output')
+    show_output = BooleanField('Show Output', id='show-output', render_kw={'checked': True})
     files = MultipleFileField('Files')
     classgroups = QuerySelectMultipleField('Groups', query_factory=lambda: ClassGroup.query.all(),
                                            validators=[InputRequired()])

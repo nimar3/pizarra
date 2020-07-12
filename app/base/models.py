@@ -328,6 +328,10 @@ class LeaderBoard(db.Model):
     classgroup_id = Column(Integer, ForeignKey('classgroup.id'))
     classgroup = relationship('ClassGroup', back_populates='leaderboard_entries')
 
+    @property
+    def position(self):
+        return 1
+
 
 class Attachment(db.Model):
     """
@@ -338,6 +342,10 @@ class Attachment(db.Model):
     file_location = Column(String)
     assignment = relationship('Assignment', back_populates='attachments')
     assignment_id = Column('assignment_id', Integer, ForeignKey('assignment.id'))
+
+    @property
+    def filename(self):
+        return self.file_location.rsplit('/', 1)[-1]
 
 
 @login_manager.user_loader

@@ -33,7 +33,7 @@ class Config(object):
     JSONIFY_PRETTYPRINT_REGULAR = True
 
     # Sample Data
-    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', False)
+    IMPORT_SAMPLE_DATA = environ.get('IMPORT_SAMPLE_DATA', True)
 
     # Translations
     SUPPORTED_LANGUAGES = {'es': 'Spanish', 'en': 'English'}

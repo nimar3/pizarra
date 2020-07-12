@@ -15,7 +15,8 @@
 
         <ul class="list-group list-group-unbordered">
             <li class="list-group-item">
-                <b>{{ _('Group Members') }}</b> <a class="pull-right" href="#">
+                <b>{{ _('Group Members') }}</b> <a class="pull-right"
+                                                   href="{{ url_for('account_blueprint.route_account_home', anchor='classgroup') }}">
                 {{ current_user.classgroup.students | count }}</a>
             </li>
             <li class="list-group-item">

@@ -104,7 +104,7 @@
                                     <div class="form-group">
                                         <label for="show-output">{{ _('Output') }}</label>
                                         <div class="checkbox">
-                                            {{ form.show_output() }} {{ _('Show execution result to User') }}
+                                            {{ form.show_output() }} {{ _('Show execution result') }}
                                         </div>
                                     </div>
                                 </div>
@@ -123,16 +123,11 @@
                                         {{ form.expected_result(placeholder='Result: 123\nResult: 456', class="form-control") }}
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
                                         <label for="groups">{{ _('Groups') }}</label>
                                         {{ form.classgroups(class="form-control") }}
                                     </div>
-                                </div>
-                                <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
                                         <label for="groups">{{ _('Badges') }}</label>
                                         {{ form.badges(class="form-control") }}
@@ -142,6 +137,12 @@
                                     <div class="form-group">
                                         <label for="groups">{{ _('Files') }}</label>
                                         {{ form.files(class="form-control") }}
+                                    </div>
+                                    <div class="row">
+                                        {% for attachment in attachments %}
+                                            <div class="col-xs-12"><i
+                                                    class="fa fa-fw fa-file-code-o"></i> {{ attachment.filename }}</div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>

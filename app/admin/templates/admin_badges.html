@@ -1,0 +1,83 @@
+{% extends "base_admin.html" %}
+
+{% block admin_header %}
+
+    <li class="active">{{ _('Badges') }}</li>
+
+{% endblock admin_header %}
+
+{% block  admin_content %}
+    <!-- Main content -->
+    <section class="content">
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">{{ _('All Badges') }}</h3>
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
+                                <input type="text" name="table-search" id="table-search" class="form-control pull-right"
+                                       placeholder="{{ _('Search') }}">
+
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table class="table table-hover" id="table">
+                            <thead>
+                            <tr>
+                                <th>{{ _('ID') }}</th>
+                                <th>{{ _('Name') }}</th>
+                                <th>{{ _('Title') }}</th>
+                                <th>{{ _('Description') }}</th>
+                                <th>{{ _('Rule') }}</th>
+                                <th>{{ _('Points') }}</th>
+                                <th>{{ _('Assignments') }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for badge in badges_list %}
+                                <tr>
+                                    <td><a href="#"> #{{ badge.id }} </a></td>
+                                    <td>{{ badge.name }}</td>
+                                    <td>{{ badge.title }}</td>
+                                    <td>{{ badge.description }}</td>
+                                    <td>{{ badge.rule }}</td>
+                                    <td>{{ badge.points }}</td>
+                                    <td>{{ badge.assignments | map(attribute='name') | join(', ') }}</td>
+                                    <td>
+                                        <small class="label bg-yellow" style="font-weight: unset"> <i
+                                                    class="fa fa-fw fa-edit"></i> {{ _('Edit') }}</small>
+                                        <a href="#" data-target="#modal-bootboxjs"
+                                           data-id=""
+                                           data-url="{{ url_for('.badges_remove', id=badge.id) }}"
+                                           data-title="{{ _('Remove Badge?') }}"
+                                           data-message="{{ _('Are you sure you want to remove this Badge? This cannot be undone.') }}">
+                                            <small class="label bg-red" style="font-weight: unset"> <i
+                                                    class="fa fa-fw fa-trash-o"></i> {{ _('Remove') }}</small></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <div class="row no-print">
+            <div class="col-xs-12">
+                <a href="#" class="btn btn-success pull-right"><i
+                        class="fa fa-plus"></i> {{ ('New Badge') }}</a>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+{% endblock %}

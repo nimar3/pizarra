@@ -2,15 +2,17 @@
     - __key__: assignment_hello_world
       name: hello_world
       title: "Hello World"
-      due_date: 2020-05-01 23:59:59
+      due_date: 2020-08-01 23:59:59
       description: |+
-        <h2>Hilos OpenMP</h2>
-        <p>Para escoger el número de hilos OpenMP, hay que especificar el parámetro -t del cliente. Por defecto el número de hilos es 1. En tablón, la función omp_set_num_threads ya no tiene prioridad. Aunque se puede seguir utilizando para reducir el número de hilos que se usa en la región paralela.</p>
-        <p>Por ejemplo, el siguiente código selecciona manualmente 3 hilos pero sólo se hará efectivo cuando desde el cliente se envíe el programa con -t >= 3.</p>
+        <p>En el siguiente ejercicio se introduce el uso Hilos OpenMP para la impresión de una cadena de texto. Cada hilo de ejecucución imprimirá la palabra <i>Hola Mundo #numero-core</i></p>
+        <h3>Hilos OpenMP</h3>
+        <p>El código fuente que se encuentra a continuación sirve de ejemplo como primer interacción con el cluster <i>kahan</i> y el envío de soluciones a Pizarra.</p>
         <pre>
-        <code>#include <omp.h>
+        <code>
+        #include <omp.h>
         #include <stdio.h>
         #include <stdlib.h>
+        #include "cputils.h"
 
         int main (int argc, char *argv[]) {
 
@@ -96,17 +98,40 @@
       name: busqueda_cadena
       title: "Búsqueda de cadenas"
       description: |+
-        <h1>Introducci&oacute;n</h1>
         <p>En esta pr&aacute;ctica vamos a resolver un problema t&iacute;pico de la computaci&oacute;n: la b&uacute;queda de una subcadena dentro de otra. El problema consiste en encontrar en una cadena B de tama&ntilde;o sizeB, una subcadena S de taman&tilde;o sizeS. Si se encuentra esta subcadena, se devuelve la posici&oacute;n de comienzo (startB) de dicha subcadena en B. En caso contrario se devuelve -1.</p>
       expected_result: |+
         Result: 1
+      start_date: 2020-05-01 00:00:00
+      due_date: 2020-06-01 23:59:59
     - __key__: assignment_primos
       name: primos
       title: "Cálculo de Primos"
       description: |+
-        <h1>Introducci&oacute;n</h1>
-        <p>Cálculo de primos entre x y z</p>
+        En esta práctica vamos a hacer uso de la paralelización de tareas para resolver un problema habitual en las matemáticas: encontrar números primos.
+        <h3>¿Cómo saber si un número natural es primo o compuesto?</h3>
+        <p>Es necesario tener en cuenta dos cosas:</p>
+        <p>1) Todo número compuesto es divisible por al menos un número primo. Sería incorrecto decir simplemente que un número natural que tiene un divisor primo es un número compuesto, ya que todo número primo tiene un divisor primo que es él mismo. Entonces, teniendo en cuenta esto y el hecho de que el número 1 no tiene ningún divisor primo por debajo y no es ni primo ni compuesto, podemos decir que un número natural distinto de 1 es primo si no tiene ningún divisor primo por debajo.</p>
+        <p>2) Con el cuadrado de cada número primo empieza la lista infinita de números compuestos cuyo único divisor primo es ese número primo.</p>
+        <p> Este segundo punto nos dice que los cuadrados de los números primos son números importantes que deben ser tenidos en cuenta. Ahora, tengamos en cuenta los dos puntos de arriba, sobre todo el punto dos, para poder elaborar explicaciones que nos permitan llegar a una conclusión
+        importante de este tema.</p>
+        <h3>Tarea</h3>
+        <p>Dado un número entero dado encontrar la cantidad de números primos entre el 1 y ese número.</p>
+        <p>Recordad hacer uso de la librería <code>cputils.h</code> y el <code>método omp_get_wtime()</code></p>
+        <pre>
+        <code>
+          #include "cputils.h"
+
+          double t1 = omp_get_wtime();
+          / * code */
+          double t2 = omp_get_wtime();
+          / * impresion resultado */
+          printf("Time: %f\n", t2-t1 );
+          printf("Result: entre el 1 y el %llu hay %llu numeros primos.\n", N, n);
+        </code>
+        </pre>
       expected_result: entre el 1 y el 100000000 hay 5761456 numeros primos
+      start_date: 2020-04-01 00:00:00
+      due_date: 2020-08-01 23:59:59
 
 - Attachment:
     - __key__: attachment_1
@@ -151,25 +176,27 @@
       description: "Earn when finishing an Assignment first of your Group"
       background_color: "bg-aqua-active"
       image: "badge-flash-128x128.png"
-      assignments: [assignment_hello_world, assignment_openmp_basic, assignment_openmpi_basic]
+      assignments: [assignment_openmp_basic, assignment_openmpi_basic, assignment_busqueda_cadena]
     - __key__: badge_first_place
       name: "first_place"
       title: "First Place"
       subtitle: "Number one!"
-      description: "Earn when a program is the fastest of the Assignment"
+      description: "Earn when your solution is the fastest of your Group"
+      rule: "request.leaderboard.position == 1"
+      points: 150
       background_color: "bg-maroon-active"
       image: "badge-number-one-128x128.png"
-      assignments: [assignment_hello_world, assignment_openmpi_basic]
+      assignments: [assignment_openmpi_basic, assignment_primos, assignment_busqueda_cadena]
     - __key__: badge_beat_the_machine
       name: "beat_the_machine"
       title: "Beat the machine"
       subtitle: "Damn! you are fast"
       description: "Earn when your program runs below a certain threshold"
-      rule: "request.run_time < 10"
+      rule: "request.run_time < 40"
       points: 75
       background_color: "bg-navy-active"
       image: "badge-beat-the-machine-256x256.png"
-      assignments: [assignment_hello_world, assignment_openmp_basic]
+      assignments: [assignment_openmp_basic, assignment_primos]
     - __key__: badge_bingo
       name: "bingo"
       title: "Bingo"
@@ -180,6 +207,16 @@
       secret: True
       background_color: "bg-navy-active"
       image: "badge-bingo-256x256.png"
+      assignments: [assignment_hello_world, assignment_primos]
+    - __key__: badge_hello_world
+      name: "badge_hello_world"
+      title: "Hello World!!"
+      subtitle: "Welcome to Pizarra"
+      description: "Your first correct execution of code in the cluster"
+      rule: "True"
+      points: 50
+      background_color: "bg-aqua-active"
+      image: "badge-hello-world-256x256.png"
       assignments: [assignment_hello_world]
 
 - ClassGroup:
@@ -216,11 +253,10 @@
       quota: 9999
       roles: [admins]
     - __key__: user_foo
-      username: "foo"
-      email: "foo@test.test"
-      name: "Diego Velázquez"
+      username: "nmartini"
+      email: "nimar3@inf.upv.es"
+      name: "Nicolás Martini"
       password: "foo"
-      access_token: "123"
       quota_used: 0
       roles: [users]
       classgroup: class_a
@@ -234,8 +270,8 @@
       roles: [users]
       classgroup: class_a
     - __key__: user_test
-      username: "test"
-      email: "test@test.test"
+      username: "salvador.dali"
+      email: "salvador.dali@test.test"
       name: "Salvador Dalí"
       password: "test"
       roles: [users]
@@ -327,126 +363,126 @@
       name: Maria Teresa Fernandez Ochoa
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: maria_angeles_lozano_caceres
       email: maria.angeles.lozano.caceres@upv.es
       name: Maria Ángeles Lozano Caceres
       quota_used: 600
       points: 30
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: ana_del_moral_molina
       email: ana.del.moral.molina@upv.es
       name: Ana Del Moral Molina
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: pedro_acosta_lopez
       email: pedro.acosta.lopez@upv.es
       name: Pedro Acosta Lopez
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: luis_garcia_gomez
       email: luis.garcia.gomez@upv.es
       name: Luis Garcia Gomez
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: ana_jimenez_valverde
       email: ana.jimenez.valverde@upv.es
       name: Ana Jimenez Valverde
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: jose_ortuno_ruiz
       email: jose.ortuno.ruiz@upv.es
       name: Jose Ortuño Ruiz
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: maria_isabel_salamanca_vazquez
       email: maria.isabel.salamanca.vazquez@upv.es
       name: Maria Isabel Salamanca Vazquez
       quota_used: 600
       points: 45
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: antonio_jimenez_porras
       email: antonio.jimenez.porras@upv.es
       name: Antonio Jimenez Porras
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: josefa_medina_quintero
       email: josefa.medina.quintero@upv.es
       name: Josefa Medina Quintero
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: angela_ortiz_zamora
       email: angela.ortiz.zamora@upv.es
       name: Ángela Ortiz Zamora
       quota_used: 600
       points: 100
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: josep_lopez_ugarte
       email: josep.lopez.ugarte@upv.es
       name: Josep Lopez Ugarte
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: carmen_artero_codina
       email: carmen.artero.codina@upv.es
       name: Carmen Artero Codina
       quota_used: 600
       points: 100
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: iratxe_gonzalez_crespo
       email: iratxe.gonzalez.crespo@upv.es
       name: Iratxe Gonzalez Crespo
       quota_used: 600
       points: 110
-      classgroup: class_a
+      classgroup: class_b
       roles: [users]
     - __key__: maria_gonzalez_garcia
       email: maria.gonzalez.garcia@upv.es
       name: Maria Gonzalez Garcia
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_c
       roles: [users]
     - __key__: pablo_martin_gutierrez
       email: pablo.martin.gutierrez@upv.es
       name: Pablo Martin Gutierrez
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_c
       roles: [users]
     - __key__: alvaro_gil_melgar
       email: alvaro.gil.melgar@upv.es
       name: Álvaro Gil Melgar
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_c
       roles: [users]
     - __key__: maria_romero_pinto
       email: maria.romero.pinto@upv.es
       name: Maria Romero Pinto
       quota_used: 600
       points: 150
-      classgroup: class_a
+      classgroup: class_c
       roles: [users]
 
 - Request:
