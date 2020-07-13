@@ -533,7 +533,7 @@ msgstr "¿Estas seguro que quieres eliminar este Grupo? Esto no podrá ser deshe
 #: app/home/templates/home.html:8 app/home/templates/home.html:15
 #: app/home/templates/home.html:20
 msgid "Dashboard"
-msgstr "Panel de inicio"
+msgstr "Panel de Control"
 
 #: app/admin/templates/admin_home.html:17
 msgid "All Requests"
@@ -688,7 +688,7 @@ msgstr "Recuérdame"
 
 #: app/base/templates/login/login.html:54
 msgid "Sign In"
-msgstr "Registrarse"
+msgstr "Ingresar"
 
 #: app/base/templates/login/login.html:62
 msgid "Not a member?"
@@ -698,7 +698,7 @@ msgstr "¿No eres miembro?"
 #: app/base/templates/login/register.html:3
 #: app/base/templates/login/register.html:60
 msgid "Register"
-msgstr "Registrarse"
+msgstr "Regístrate"
 
 #: app/base/templates/login/register.html:69
 msgid "Have an account?"
@@ -932,7 +932,7 @@ msgstr "Cierra pronto"
 
 #: app/home/templates/macros/assignment.html:9
 msgid "Open"
-msgstr "Abrir"
+msgstr "Abierta"
 
 #: app/home/templates/macros/assignment.html:11
 msgid "Opens Soon"

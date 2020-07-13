@@ -2,7 +2,7 @@
     - __key__: assignment_hello_world
       name: hello_world
       title: "Hello World"
-      due_date: 2020-08-01 23:59:59
+      due_date: 2020-07-14 23:59:59
       description: |+
         <p>En el siguiente ejercicio se introduce el uso Hilos OpenMP para la impresión de una cadena de texto. Cada hilo de ejecucución imprimirá la palabra <i>Hola Mundo #numero-core</i></p>
         <h3>Hilos OpenMP</h3>
@@ -278,7 +278,7 @@
       email: "nimar3@inf.upv.es"
       name: "Nicolás Martini"
       password: "foo"
-      access_token: "123"
+      access_token: "05d251ea28c5be"
       quota_used: 0
       roles: [users]
       classgroup: class_a
